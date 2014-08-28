@@ -11,8 +11,10 @@ create table article{
     author                varchar(255)            default '' not null,
     article_type          enum('sanwen','gushi','lizhi','other')    default 'other' not null, -- category
     abstracts             varchar(255)            default '' not null, -- good snapshop 
-    recommend_star        smallint unsigned       default '0' not null,
-    scan_times            int unsigned            default '0' not null, -- total read times   
+    recommend_star        smallint unsigned       default 0   not null,
+    praise_times	  int unsigned		  default 0   not null, -- nice number	
+    share_times		  int unsigned		  default 0   not null, --share
+    scan_times            int unsigned            default 0   not null, -- total read times   
     physical_path         varchar(255)            default '' not null, -- storage path
     primary key (article_id)
 }engine=innodb;
@@ -30,8 +32,8 @@ create table preview{
     author                varchar(255)            default '' not null,
     article_type          enum('sanwen','gushi','lizhi','other')    default 'other' not null, -- category
     abstracts             varchar(255)            default '' not null, -- good snapshop 
-    recommend_star        smallint unsigned       default '0' not null,
-    scan_times            int unsigned            default '0' not null, -- total read times   
+    recommend_star        smallint unsigned       default 0 not null,
+    scan_times            int unsigned            default 0 not null, -- total read times   
     physical_path         varchar(255)            default '' not null, -- storage path
     dt_created             datetime        default '0000-00-00 00:00:00' not null,
     dt_updated             datetime        default '0000-00-00 00:00:00' not null,
