@@ -1,0 +1,13 @@
+<article>
+	<title>example</title>
+	<subtitle>android</subtitle> <!-- 副标题 -->
+	<author>android</author>
+	<create_time>2014-08-27</create_time>
+	<recommend_star>5</recommend_star> <!-- 推荐阅读指数（0-5） -->
+	<source>http://www.baidu.com</source>
+	<content>
+		<part>first part${img:http://www.baidu.com}hello</part> <!-- 段落 -->
+		<part>second part</part>
+		<part>third part</part>
+	</content>
+</article>
