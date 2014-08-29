@@ -1,0 +1,1 @@
+test git structures for android and server ..
