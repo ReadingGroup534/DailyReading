@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity {
 //		mRightListView.setAdapter(new ArrayAdapter<String>(this,
 //				android.R.layout.simple_expandable_list_item_1, TITLES));
 
-		// 监听菜单
+		// 监听菜单 左右
 		mLeftListView.setOnItemClickListener(new DrawerItemClickListenerLeft());
 //		mRightListView.setOnItemClickListener(new DrawerItemClickListenerRight());
 	}
@@ -64,10 +64,10 @@ public class MainActivity extends FragmentActivity {
 			//according to the click row number decide to start which fragment;
 			switch (position) {
 			case 0:
-				fragment = new FirstFragment();
+				fragment = new EmotionalFragment();
 				break;
 			case 1:
-				fragment = new SecondFragment();
+				fragment = new EssayFragment();
 				break;
 			case 2:
 			case 3:

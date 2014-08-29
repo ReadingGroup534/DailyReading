@@ -1,13 +1,11 @@
 package com.aiteu.dailyreading.book;
 
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import android.util.Log;
 
 public class SAXBookParser implements BookParser {
 
@@ -20,6 +18,8 @@ public class SAXBookParser implements BookParser {
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			// 从factory获取SAXParser实例
 			SAXParser saxParser = factory.newSAXParser();
+			 //设置解析器的相关特性，true表示开启命名空间特性
+//            saxParser.setProperty("http://xml.org/sax/features/namespaces",true);
 			// 实例化自定义Handler
 			XMLContentHandler handler = new XMLContentHandler();
 			saxParser.parse(is, handler);

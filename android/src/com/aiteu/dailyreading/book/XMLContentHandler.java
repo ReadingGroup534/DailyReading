@@ -7,6 +7,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+
 /**
  * //SAX类：DefaultHandler，它实现了ContentHandler接口。在实现的时候，只需要继承该类，重载相应的方法即可。
  * 
@@ -18,8 +19,11 @@ public class XMLContentHandler extends DefaultHandler {
 
 	private List<BookBean> books = null;
 	private BookBean currentBook;
-	private String tagName = null;// 当前解析的元素标签
-
+//	private String tagName = null;// 当前解析的元素标签
+	private Boolean isBook = false;
+	private Boolean isTitle = false;
+	private Boolean isContent = false;
+	
 	public List<BookBean> getBookBeans() {
 		return books;
 	}
@@ -32,13 +36,20 @@ public class XMLContentHandler extends DefaultHandler {
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 		// TODO Auto-generated method stub
-		if (tagName != null) {
+		/*if (tagName != null) {
 			String data = new String(ch, start, length);
 			if (tagName.equals("title")) {
 				this.currentBook.setTitle(data);
 			} else if (tagName.equals("content")) {
 				this.currentBook.setContent(data);
 			}
+		}*/
+		//设置属性值
+		if (isTitle) {
+			//解决null问题
+			currentBook.setTitle(currentBook.getTitle()==null?"":currentBook.getTitle()+new String(ch,start,length));
+		}else if (isContent) {
+			currentBook.setContent(currentBook.getContent()==null?"":currentBook.getContent()+new String(ch,start,length));
 		}
 	}
 
@@ -60,11 +71,29 @@ public class XMLContentHandler extends DefaultHandler {
 	public void startElement(String namespaceURI, String localName,
 			String qName, Attributes attributes) throws SAXException {
 		// TODO Auto-generated method stub
-		if (localName.equals("book")) {
+		/*if (localName.equals("book")) {
 			currentBook = new BookBean();
-			currentBook.setTitle(attributes.getValue("id"));
+			currentBook.setId(Integer.parseInt(attributes.getValue("id")));
 		}
-		this.tagName = localName;
+		this.tagName = localName;*/
+		
+		String tagName = localName.length()!=0?localName:qName;
+		tagName = tagName.toLowerCase().trim();
+		//如果读取到的是book标签开始，则实例化Book
+		if (tagName.equals("book")) {
+			isBook = true;
+			currentBook = new BookBean();
+			//导航到了book开始节点后
+			currentBook.setId(Integer.parseInt(attributes.getValue("id")));
+		}
+		//然后读取其他节点
+		if (isBook) {
+			if (tagName.equals("title")) {
+				isTitle = true;
+			}else if (tagName.equals("content")) {
+				isContent = true;
+			}
+		}
 	}
 
 	/**
@@ -76,11 +105,24 @@ public class XMLContentHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		// TODO Auto-generated method stub
-		if (localName.equals("book")) {
+		String tagName = localName.length()!=0?localName:qName;
+		tagName = tagName.toLowerCase().trim();
+		
+		//如果讀取的是book 标签结束，则把Book 添加进集合中
+		if (tagName.equals("book")) {
+			isBook = true;
 			books.add(currentBook);
-			currentBook = null;
+//			currentBook = null;
 		}
-		this.tagName = null;
+		//然后读取其他节点
+		if (isBook) {
+			if (tagName.equals("title")) {
+				isTitle = false;
+			}else if (tagName.equals("content")) {
+				isContent = false;
+			}
+		}
+//		this.tagName = null;
 	}
 
 }
