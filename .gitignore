@@ -1,0 +1,6 @@
+*.swp
+*.tmp
+android/.classpath
+android/.project
+android/bin/*
+android/gen/*
