@@ -21,8 +21,13 @@ public class XMLContentHandler extends DefaultHandler {
 	private BookBean currentBook;
 //	private String tagName = null;// 当前解析的元素标签
 	private Boolean isBook = false;
+	private Boolean isAuthor = false;
+	private Boolean isSubtitle = false;
+	private Boolean isRecommend_Star = false;
+	private Boolean isCreate_Time = false;
 	private Boolean isTitle = false;
 	private Boolean isContent = false;
+	private Boolean isSource = false;
 	
 	public List<BookBean> getBookBeans() {
 		return books;
@@ -44,12 +49,24 @@ public class XMLContentHandler extends DefaultHandler {
 				this.currentBook.setContent(data);
 			}
 		}*/
+		
+		String data = new String(ch, start, length);
 		//设置属性值
 		if (isTitle) {
 			//解决null问题
-			currentBook.setTitle(currentBook.getTitle()==null?"":currentBook.getTitle()+new String(ch,start,length));
+			currentBook.setTitle(currentBook.getTitle()==null?"":currentBook.getTitle()+data);
+		}else if (isSubtitle) {
+			currentBook.setSubtitle(currentBook.getSubtitle()==null?"":currentBook.getSubtitle()+data);
+		}else if (isAuthor) {
+			currentBook.setAuthor(currentBook.getAuthor()==null?"":currentBook.getAuthor()+data);
+		}else if (isCreate_Time) {
+			currentBook.setCreate_time(currentBook.getCreate_time()==null?"":currentBook.getCreate_time()+data);
+		}else if (isRecommend_Star) {
+			currentBook.setRecommend_star(Integer.parseInt(data));
 		}else if (isContent) {
-			currentBook.setContent(currentBook.getContent()==null?"":currentBook.getContent()+new String(ch,start,length));
+			currentBook.setContent(currentBook.getContent()==null?"":currentBook.getContent()+data);
+		}else if (isSource) {
+			currentBook.setSource(currentBook.getSource()==null?"":currentBook.getSource()+data);
 		}
 	}
 
@@ -92,6 +109,16 @@ public class XMLContentHandler extends DefaultHandler {
 				isTitle = true;
 			}else if (tagName.equals("content")) {
 				isContent = true;
+			}else if(tagName.equals("author")){
+				isAuthor = true;
+			}else if (tagName.equals("create_time")) {
+				isCreate_Time = true;
+			}else if (tagName.equals("recommend_star")) {
+				isRecommend_Star = true;
+			}else if (tagName.equals("subtitle")) {
+				isSubtitle = true;
+			}else if (tagName.equals("source")) {
+				isSource = true;
 			}
 		}
 	}
@@ -120,6 +147,18 @@ public class XMLContentHandler extends DefaultHandler {
 				isTitle = false;
 			}else if (tagName.equals("content")) {
 				isContent = false;
+			}else if (tagName.equals("content")) {
+				isContent = false;
+			}else if(tagName.equals("author")){
+				isAuthor = false;
+			}else if (tagName.equals("create_time")) {
+				isCreate_Time = false;
+			}else if (tagName.equals("recommend_star")) {
+				isRecommend_Star = false;
+			}else if (tagName.equals("subtitle")) {
+				isSubtitle = false;
+			}else if (tagName.equals("source")) {
+				isSource = false;
 			}
 		}
 //		this.tagName = null;

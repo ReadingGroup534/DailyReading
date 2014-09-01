@@ -403,6 +403,11 @@ public class EssayFragment extends Fragment {
 		List<BookBean> booklist = null;
 		String title1 = null;
 		String content = null;
+		String author = null;
+		String subtitle = null;
+		String create_time = null;
+		String source = null;
+		int recommend_star;
 		AssetManager am = mContext.getAssets();
 
 		// File file = new File("file:///android_asset/books.xml");
@@ -420,12 +425,22 @@ public class EssayFragment extends Fragment {
 
 					// for (int j = 0; j < booklist.size(); j++) {
 					title1 = booklist.get(i).getTitle();
+					subtitle = booklist.get(i).getSubtitle();
+					author = booklist.get(i).getAuthor();
+					create_time = booklist.get(i).getCreate_time();
+					recommend_star = booklist.get(i).getRecommend_star();
 					content = booklist.get(i).getContent();
+					source = booklist.get(i).getSource();
 					Log.i("lyc", "title:" + title1);
 					Log.i("lyc", "content:" + content);
+					Log.i("lyc", "subtitle:" + subtitle);
+					Log.i("lyc", "author:" + author);
+					Log.i("lyc", "recommend_star:" + recommend_star);
+					Log.i("lyc","source:" + source);
 
 					map.put("title", title1);
 					map.put("text", content);
+					
 					list.add(map);
 				}
 			} catch (Exception e) {
