@@ -19,7 +19,7 @@ public class EmotionalFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.first, null);
+		View view = inflater.inflate(R.layout.emotional, null);
 		return view;
 	}
 
