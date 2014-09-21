@@ -20,7 +20,7 @@ proguard/
 #Log Files
 *.log/android
 #settings
-/reading/.settings
+reading/.settings/
 #project property
 */.classpath
 */.project
