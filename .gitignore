@@ -21,9 +21,10 @@ proguard/
 *.log/android
 #settings
 reading/.settings/
+.settings
 #project property
-*/.classpath
-*/.project
+.classpath
+.project
 META-INF/
 
 
