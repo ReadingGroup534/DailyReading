@@ -237,6 +237,13 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.7.3</version>
 		</dependency>
+		
+		<!-- freemaker -->
+		<dependency>
+		    <groupId>freemarker</groupId>
+		    <artifactId>freemarker</artifactId>
+		    <version>2.3.8</version>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

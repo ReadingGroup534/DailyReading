@@ -46,7 +46,10 @@ create table preview(
  */
 drop table if exists browse;
 create table browse(
-	browse_id		int AUTO_INCREMENT not null,
+	browse_id		int     default 0  not null,
 	browse_value	varchar(255) 	default '' not null,
+        description     varchar(255)    default '',
+        dt_created      datetime        default '0000-00-00 00:00:00' not null,
+        dt_updated      timestamp,
 	primary key (browse_id)
 );
