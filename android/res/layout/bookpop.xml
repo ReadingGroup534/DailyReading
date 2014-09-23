@@ -30,7 +30,7 @@
         android:layout_weight="1"
         android:drawableTop="@drawable/reader_bookmark_operation"
         android:gravity="center"
-        android:text="@string/bookpop_card" />
+        android:text="@string/bookpop_store" />
 
     <TextView
         android:id="@+id/bookBtn4"

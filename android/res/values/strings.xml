@@ -6,8 +6,8 @@
     <string name="hello_world">Hello world!</string>
      <!-- bookpop.xml -->
     <string name="bookpop_size">字体</string>
-    <string name="bookpop_light">亮度</string>
-    <string name="bookpop_card">书签</string>
+    <string name="bookpop_light">亮度/夜间</string>
+    <string name="bookpop_store">收藏</string>
     <string name="bookpop_send">跳转</string>
     <!-- sendSuggest.xml -->
     <string name="send_suggest">发送建议</string>
