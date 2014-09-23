@@ -77,7 +77,7 @@ public class EssayFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.second, null);
+		View view = inflater.inflate(R.layout.essay, null);
 		return view;
 	}
 
@@ -144,6 +144,9 @@ public class EssayFragment extends Fragment {
 					if (firstItemIndex == 0 && !isRecored) {
 						isRecored = true;
 						startY = (int) event.getY();
+						/**
+						 * 点击item后跳转到对应的Read界面  待实现
+						 */
 						Toast.makeText(getActivity(), "你點擊了item", 1).show();
 						Log.i("lyc", "在down时候记录当前位置‘" + startY);
 					}
