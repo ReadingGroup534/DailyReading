@@ -13,6 +13,7 @@ import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.book.SAXBookParser;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -147,8 +148,11 @@ public class EssayFragment extends Fragment {
 						/**
 						 * 点击item后跳转到对应的Read界面  待实现
 						 */
-						Toast.makeText(getActivity(), "你點擊了item", 1).show();
-						Log.i("lyc", "在down时候记录当前位置‘" + startY);
+						Intent intent = new Intent(mFragmentActivity,ReadPager.class);
+						startActivity(intent);
+						Log.i("lyc","TURN TO　READ PAGER!!");
+						Toast.makeText(mFragmentActivity, "你點擊了item", 1).show();
+						Log.i("lyc", "在down时候记录当前位置" + startY);
 					}
 					break;
 
