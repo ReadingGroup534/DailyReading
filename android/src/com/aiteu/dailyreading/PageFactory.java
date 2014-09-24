@@ -7,9 +7,6 @@ import java.nio.MappedByteBuffer;
 import java.text.DecimalFormat;
 import java.util.Vector;
 
-import javax.crypto.NullCipher;
-
-import android.R.integer;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;

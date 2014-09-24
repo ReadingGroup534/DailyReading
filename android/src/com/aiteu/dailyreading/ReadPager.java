@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -49,10 +52,10 @@ public class ReadPager extends Activity implements OnClickListener,
 	private int size = 30; // 字体大小
 	private int light; // 亮度值
 	private Boolean isNight; // 亮度模式,白天和晚上
-
+	private PageFactory pageFactory;
 	private TextView bookBtn1, bookBtn2, bookBtn3, bookBtn4;
 	private SeekBar seekBar1, seekBar2, seekBar3;
-
+	private SharedPreferences.Editor editor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -126,13 +129,64 @@ public class ReadPager extends Activity implements OnClickListener,
 		// 夜间模式按钮
 		case R.id.imageBtn2:
 			if (isNight) {
-				
+				pageFactory.setM_textColor(Color.rgb(28, 28, 28));
+				imageBtn2.setImageResource(R.drawable.off);
+				isNight = false;
+				pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg));
+			}else {
+				pageFactory.setM_textColor(Color.rgb(128, 128, 128));
+				imageBtn2.setImageResource(R.drawable.on);
+				isNight = true;
+				pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg));
 			}
+			setLight();
+			pageFactory.setM_mbBufBegin(begin);
+			pageFactory.setM_mbBufEnd(begin);
+			postInvalidateUI();
+			break;
 		default:
 			break;
 		}
 	}
 
+	/**
+	 * 刷新界面
+	 */
+	private void postInvalidateUI() {
+		// TODO Auto-generated method stub
+		mPageWidget.abortAnimation();
+		pageFactory.onDraw(mCurCanvas);
+		try {
+			pageFactory.currentPage();
+			begin = pageFactory.getM_mbBufBegin(); // 获取当前阅读位置
+			word = pageFactory.getFirstLineText();
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.e(TAG, "postInvalidateUI->IOException error" + e);
+		}
+		pageFactory.onDraw(mNextCanvas);
+		mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
+		mPageWidget.postInvalidate();
+	}
+
+	/**
+	 * 记录配置文件中亮度值和横竖屏
+	 */
+	private void setLight() {
+		try {
+			light = seekBar2.getProgress();
+			editor.putInt("light", light);
+			if (isNight) {
+				editor.putBoolean("night", true);
+			} else {
+				editor.putBoolean("night", false);
+			}
+			editor.commit();
+		} catch (Exception e) {
+			Log.e(TAG, "setLight-> Exception error", e);
+		}
+	}
+	
 	/**
 	 * 记录数据，并清空popupwindow
 	 */
