@@ -12,14 +12,19 @@
 	<url>http://maven.apache.org</url>
 
 	<parent>
-	    <groupId>com.aiteu</groupId>
-	    <artifactId>aiteu</artifactId>
-	    <version>1.0.0</version>
-	    <relativePath>../aiteu/pom.xml</relativePath>
+		<groupId>com.aiteu</groupId>
+		<artifactId>aiteu</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../aiteu/pom.xml</relativePath>
 	</parent>
-	
+
 
 	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.1</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
