@@ -53,3 +53,15 @@ create table browse(
         dt_updated      timestamp,
 	primary key (browse_id)
 );
+
+/**
+* 爬虫抓取源
+*/
+drop table if exists crawler_source;
+create table crawler_source(
+	id	int(10)		auto_increment not null,
+	url	varchar(255)	default '' not null,
+	active	enum('y','n')	default 'y' not null,
+	primary key (id),
+	unique natural_key (url)
+);
