@@ -27,5 +27,6 @@
 	</bean>
 	
 	<bean id="dbsManager" class="com.aiteu.dbs.DbsManager" />
+	<bean id="dbsFactory" class="com.aiteu.dbs.DbsFactory" />
 
 </beans>

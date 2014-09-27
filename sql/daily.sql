@@ -1,4 +1,4 @@
-/**
+﻿/**
 *    最终显示给用户的数据
 */
 drop table if exists article;
@@ -51,6 +51,7 @@ create table browse(
         description     varchar(255)    default '',
         dt_created      datetime        default '0000-00-00 00:00:00' not null,
         dt_updated      timestamp,
+	active		enum('y','n')	default 'y' not null,
 	primary key (browse_id)
 );
 
