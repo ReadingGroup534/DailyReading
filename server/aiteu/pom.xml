@@ -239,9 +239,9 @@
 
 		<!-- freemaker -->
 		<dependency>
-			<groupId>freemarker</groupId>
+			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.8</version>
+			<version>2.3.19</version>
 		</dependency>
 
 		<dependency>
@@ -251,4 +251,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
 </project>
