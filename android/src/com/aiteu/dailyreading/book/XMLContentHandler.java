@@ -22,7 +22,7 @@ public class XMLContentHandler extends DefaultHandler {
 //	private String tagName = null;// 当前解析的元素标签
 	private Boolean isBook = false;
 	private Boolean isAuthor = false;
-	private Boolean isSubtitle = false;
+	private Boolean isAbstracts = false;
 	private Boolean isRecommend_Star = false;
 	private Boolean isCreate_Time = false;
 	private Boolean isTitle = false;
@@ -55,8 +55,8 @@ public class XMLContentHandler extends DefaultHandler {
 		if (isTitle) {
 			//解决null问题
 			currentBook.setTitle(currentBook.getTitle()==null?"":currentBook.getTitle()+data);
-		}else if (isSubtitle) {
-			currentBook.setSubtitle(currentBook.getSubtitle()==null?"":currentBook.getSubtitle()+data);
+		}else if (isAbstracts) {
+			currentBook.setAbstracts(currentBook.getAbstracts()==null?"":currentBook.getAbstracts()+data);
 		}else if (isAuthor) {
 			currentBook.setAuthor(currentBook.getAuthor()==null?"":currentBook.getAuthor()+data);
 		}else if (isCreate_Time) {
@@ -101,7 +101,7 @@ public class XMLContentHandler extends DefaultHandler {
 			isBook = true;
 			currentBook = new BookBean();
 			//导航到了book开始节点后
-			currentBook.setId(Integer.parseInt(attributes.getValue("id")));
+			currentBook.setArticle_id(Integer.parseInt(attributes.getValue("id")));
 		}
 		//然后读取其他节点
 		if (isBook) {
@@ -115,8 +115,8 @@ public class XMLContentHandler extends DefaultHandler {
 				isCreate_Time = true;
 			}else if (tagName.equals("recommend_star")) {
 				isRecommend_Star = true;
-			}else if (tagName.equals("subtitle")) {
-				isSubtitle = true;
+			}else if (tagName.equals("abstracts")) {
+				isAbstracts = true;
 			}else if (tagName.equals("source")) {
 				isSource = true;
 			}
@@ -147,16 +147,14 @@ public class XMLContentHandler extends DefaultHandler {
 				isTitle = false;
 			}else if (tagName.equals("content")) {
 				isContent = false;
-			}else if (tagName.equals("content")) {
-				isContent = false;
 			}else if(tagName.equals("author")){
 				isAuthor = false;
 			}else if (tagName.equals("create_time")) {
 				isCreate_Time = false;
 			}else if (tagName.equals("recommend_star")) {
 				isRecommend_Star = false;
-			}else if (tagName.equals("subtitle")) {
-				isSubtitle = false;
+			}else if (tagName.equals("abstracts")) {
+				isAbstracts = false;
 			}else if (tagName.equals("source")) {
 				isSource = false;
 			}

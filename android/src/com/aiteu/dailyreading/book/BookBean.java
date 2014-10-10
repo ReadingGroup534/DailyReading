@@ -7,21 +7,40 @@ import android.R.string;
 
 public class BookBean implements Serializable {
 
-	private int id;
+	private int article_id;
+	private boolean active;
 	private int recommend_star;
 	private String title;
 	private String content;
 	private String author;
-	private String subtitle;
+	private String article_type;
+	private String abstracts;
 	private String create_time;
 	private String source;
 
-	public int getId() {
-		return id;
+	
+	public int getArticle_id() {
+		return article_id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setArticle_id(int article_id) {
+		this.article_id = article_id;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getArticle_type() {
+		return article_type;
+	}
+
+	public void setArticle_type(String article_type) {
+		this.article_type = article_type;
 	}
 
 	public String getTitle() {
@@ -56,12 +75,13 @@ public class BookBean implements Serializable {
 		this.author = author;
 	}
 
-	public String getSubtitle() {
-		return subtitle;
+
+	public String getAbstracts() {
+		return abstracts;
 	}
 
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
+	public void setAbstracts(String abstracts) {
+		this.abstracts = abstracts;
 	}
 
 	public String getCreate_time() {

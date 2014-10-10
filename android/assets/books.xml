@@ -3,7 +3,7 @@
 
     <book id="1" >
         <title>灵渠</title>
- 		<subtitle>android</subtitle> <!-- 副标题 -->
+ 		<abstracts>android</abstracts> <!-- 副标题 -->
 		<author>louis</author>
 		<create_time>2014-08-27</create_time>
 		<recommend_star>5</recommend_star> <!-- 推荐阅读指数（0-5） -->
@@ -15,9 +15,9 @@
         </content>
     </book>
 
-    <book id= "3">
+    <book id= "2">
         <title>苏北灌溉总渠</title>
-        <subtitle>liwei</subtitle> <!-- 副标题 -->
+        <abstracts>liwei</abstracts> <!-- 副标题 -->
         <author>tianya</author>
 		<create_time>2014-08-28</create_time>
 		<recommend_star>4</recommend_star> <!-- 推荐阅读指数（0-5） -->

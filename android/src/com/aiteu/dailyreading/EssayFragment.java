@@ -148,14 +148,18 @@ public class EssayFragment extends Fragment {
 						/**
 						 * 点击item后跳转到对应的Read界面  待实现
 						 */
-						Intent intent = new Intent(mFragmentActivity,ReadPager.class);
+						Intent intent = new Intent(mFragmentActivity, ReadPager.class);
 						startActivity(intent);
 						Log.i("lyc","TURN TO　READ PAGER!!");
 						Toast.makeText(mFragmentActivity, "你點擊了item", 1).show();
 						Log.i("lyc", "在down时候记录当前位置" + startY);
 					}
 					break;
-
+			/*	case MotionEvent.ACTION_DOWN:
+					Intent intent = new Intent(mFragmentActivity,ReadPager.class);
+					startActivity(intent);
+					Log.i("lyc","TURN TO　READ PAGER!!");
+					break;*/
 				case MotionEvent.ACTION_UP:
 
 					if (state != REFRESHING && state != LOADING) {
@@ -237,14 +241,15 @@ public class EssayFragment extends Fragment {
 							}
 						}
 
-						// done状态下
+					/*	// done状态下
 						if (state == DONE) {
 							if (tempY - startY > 0) {
 								state = PULL_To_REFRESH;
 								changeHeaderViewByState();
 							}
-						}
-
+						}*/
+						
+						
 						// 更新headView的size
 						if (state == PULL_To_REFRESH) {
 							headView.setPadding(
@@ -289,7 +294,7 @@ public class EssayFragment extends Fragment {
 
 			tipsTextview.setText("松开刷新");
 
-			Log.v("lyc", "当前状态，松开刷新");
+			Log.i("lyc", "当前状态，松开刷新");
 			break;
 		case PULL_To_REFRESH:
 			mProgressBar.setVisibility(View.GONE);
@@ -411,7 +416,7 @@ public class EssayFragment extends Fragment {
 		String title1 = null;
 		String content = null;
 		String author = null;
-		String subtitle = null;
+		String abstracts = null;
 		String create_time = null;
 		String source = null;
 		int recommend_star;
@@ -432,7 +437,7 @@ public class EssayFragment extends Fragment {
 
 					// for (int j = 0; j < booklist.size(); j++) {
 					title1 = booklist.get(i).getTitle();
-					subtitle = booklist.get(i).getSubtitle();
+					abstracts = booklist.get(i).getAbstracts();
 					author = booklist.get(i).getAuthor();
 					create_time = booklist.get(i).getCreate_time();
 					recommend_star = booklist.get(i).getRecommend_star();
@@ -440,7 +445,7 @@ public class EssayFragment extends Fragment {
 					source = booklist.get(i).getSource();
 					Log.i("lyc", "title:" + title1);
 					Log.i("lyc", "content:" + content);
-					Log.i("lyc", "subtitle:" + subtitle);
+					Log.i("lyc", "abstracts:" + abstracts);
 					Log.i("lyc", "author:" + author);
 					Log.i("lyc", "recommend_star:" + recommend_star);
 					Log.i("lyc","source:" + source);
@@ -480,7 +485,7 @@ public class EssayFragment extends Fragment {
 			// 需要在加载过程中做的事情
 
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

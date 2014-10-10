@@ -12,7 +12,7 @@
 
     <RelativeLayout
         android:id="@+id/menu_layout_left"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:background="#FFFFFF" >
