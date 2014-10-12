@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">"每日美文"</string>
+    <string name="app_name">"今日阅读"</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
      <!-- bookpop.xml -->
@@ -13,6 +13,6 @@
     <string name="send_suggest">发送建议</string>
     <string name="back">返回</string>
     <!-- about.xml -->
-    <string name="title_activity_main">每日美文</string>
+    <string name="title_activity_main">今日阅读</string>
 
 </resources>

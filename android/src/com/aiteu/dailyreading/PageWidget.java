@@ -32,8 +32,8 @@ public class PageWidget extends View {
 	private int mCornerY = 1;
 	private Path mPath0;
 	private Path mPath1;
-	Bitmap mCurPageBitmap = null; // 当前页
-	Bitmap mNextPageBitmap = null;
+	private Bitmap mCurPageBitmap = null; // 当前页
+	private Bitmap mNextPageBitmap = null;
 
 	PointF mTouch = new PointF(); // 拖拽点
 	PointF mBezierStart1 = new PointF(); // 贝塞尔曲线起始点
@@ -68,8 +68,9 @@ public class PageWidget extends View {
 	GradientDrawable mFrontShadowDrawableVLR;
 	GradientDrawable mFrontShadowDrawableVRL;
 
-	Paint mPaint;
-	Scroller mScroller;
+	private Paint mPaint;
+	private Scroller mScroller;
+	private Canvas mCanvas;
 
 	public PageWidget(Context context, int width, int height) {
 		super(context);
@@ -79,13 +80,20 @@ public class PageWidget extends View {
 		mScreenHeight = height;
 		mMaxLength = (float) Math.hypot(mScreenWidth, mScreenHeight);
 		mPaint = new Paint();
+		mCanvas = new Canvas();
 		mPaint.setStyle(Paint.Style.FILL);
 
 		createDrawable();
 
+		/**
+		 * 颜色矩阵是一个5x4 的矩阵,android中可以通过颜色矩阵（ColorMatrix类）方面的操作颜色
+		 * 可以用来方面的修改图片中RGBA各分量的值
+		 */
 		ColorMatrix cm = new ColorMatrix();
-		float array[] = { 0.55f, 0, 0, 0, 80.0f, 0, 0.55f, 0, 0, 80.0f, 0, 0,
-				0.55f, 0, 80.0f, 0, 0, 0, 0.2f, 0 };
+		float array[] = { 0.55f, 0, 0, 0, 90.0f,
+						  0, 0.55f, 0, 0, 90.0f,
+						  0, 0, 0.55f, 0, 90.0f, 
+						  0, 0, 0, 0.2f, 1 };
 		cm.set(array);
 		mColorMatrixFilter = new ColorMatrixColorFilter(cm);
 		mMatrix = new Matrix();
@@ -120,15 +128,17 @@ public class PageWidget extends View {
 	public boolean doTouchEvent(MotionEvent event) {
 
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			mCanvas.drawColor(0xFFAAAAAA);
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
 			this.postInvalidate();
 		}
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			mCanvas.drawColor(0xFFAAAAAA);
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
-			// calcCornerXY(mTouch.x, mTouch.y);
-			// this.postInvalidate();
+//			 calcCornerXY(mTouch.x, mTouch.y);
+			 this.postInvalidate();
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			// if (canDragOver()) {
@@ -137,6 +147,11 @@ public class PageWidget extends View {
 			// mTouch.x = mCornerX - 10f;
 			// mTouch.y = mCornerY - 10f;
 			// }
+			
+//			mCanvas.drawColor(0xFFAAAAAA);
+//			mTouch.x = mCornerX;
+//			mTouch.y = mCornerY;
+//			this.postInvalidate();
 			// 直接画出动画而不使用时上面的条件判断
 			startAnimation(1200);
 			this.postInvalidate();
@@ -178,23 +193,26 @@ public class PageWidget extends View {
 		mBezierControl2.y = mMiddleY - (mCornerX - mMiddleX)
 				* (mCornerX - mMiddleX) / (mCornerY - mMiddleY);
 
-		Log.i("hmg", "mTouchX  " + mTouch.x + "  mTouchY  " + mTouch.y);
-		Log.i("hmg", "mBezierControl1.x  " + mBezierControl1.x
+		Log.i(TAG, "mTouchX  " + mTouch.x + "  mTouchY  " + mTouch.y);
+		Log.i(TAG, "mBezierControl1.x  " + mBezierControl1.x
 				+ "  mBezierControl1.y  " + mBezierControl1.y);
-		Log.i("hmg", "mBezierControl2.x  " + mBezierControl2.x
+		Log.i(TAG, "mBezierControl2.x  " + mBezierControl2.x
 				+ "  mBezierControl2.y  " + mBezierControl2.y);
 
 		mBezierStart1.x = mBezierControl1.x - (mCornerX - mBezierControl1.x)
 				/ 2;
 		mBezierStart1.y = mCornerY;
 
-		// 当mBezierStart1.x < 0或者mBezierStart1.x > 480时
+		// 当mBezierStart1.x < 0或者mBezierStart1.x > mScreenWidth时
 		// 如果继续翻页，会出现BUG故在此限制
 		if (mTouch.x > 0 && mTouch.x < mScreenWidth) {
 			if (mBezierStart1.x < 0 || mBezierStart1.x > mScreenWidth) {
 				if (mBezierStart1.x < 0)
 					mBezierStart1.x = mScreenWidth - mBezierStart1.x;
 
+//				if (mBezierStart1.x < 0 || mBezierStart1.x > 480) {   
+//					if (mBezierStart1.x < 0)         
+//						mBezierStart1.x = mScreenWidth - mBezierStart1.x;
 				float f1 = Math.abs(mCornerX - mTouch.x);
 				float f2 = mScreenWidth * f1 / mBezierStart1.x;
 				mTouch.x = Math.abs(mCornerX - f2);
