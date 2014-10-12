@@ -55,7 +55,7 @@ public class PageWidget extends View {
 	float[] mMatrixArray = { 0, 0, 0, 0, 0, 0, 0, 0, 1.0f };
 
 	boolean mIsRTandLB; // 是否属于右上左下
-	float mMaxLength = (float) Math.hypot(mScreenWidth, mScreenHeight);
+	float mMaxLength = 0;
 	int[] mBackShadowColors;// 背面颜色组
 	int[] mFrontShadowColors;// 前面颜色组
 	GradientDrawable mBackShadowDrawableLR; // 有阴影的GradientDrawable
