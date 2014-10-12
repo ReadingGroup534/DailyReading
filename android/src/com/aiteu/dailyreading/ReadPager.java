@@ -7,7 +7,6 @@ import java.util.Date;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
-
 import android.R.integer;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -23,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Contacts.Intents.Insert;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -113,8 +113,11 @@ public class ReadPager extends Activity implements OnClickListener,
 		bookBean = new BookBean();
 		WindowManager manager = getWindowManager();
 		Display display = manager.getDefaultDisplay();
-		screenHeight = display.getHeight();
-		screenWidth = display.getWidth();
+//		screenHeight = display.getHeight();
+//		screenWidth = display.getWidth();
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		screenWidth = dm.widthPixels;
+		screenHeight = dm.heightPixels;
 
 		defaultSize = (screenWidth * 20) / 320;
 		readHeight = screenHeight;
@@ -135,7 +138,6 @@ public class ReadPager extends Activity implements OnClickListener,
 		mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
 
 		mPageWidget.setOnTouchListener(new View.OnTouchListener() {
-
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
