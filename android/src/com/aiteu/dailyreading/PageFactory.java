@@ -379,5 +379,9 @@ public class PageFactory {
 	public void setBgBitmap(Bitmap BG) {
 		m_article_bg = BG;
 	}
+	
+	public int getM_mbBufLen() {
+		return m_mbBufLen;
+	}
 
 }
