@@ -7,6 +7,7 @@ import java.util.Date;
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Contacts.Intents.Insert;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -83,8 +85,11 @@ public class ReadPager extends Activity implements OnClickListener,
 		bookBean = new BookBean();
 		WindowManager manager = getWindowManager();
 		Display display = manager.getDefaultDisplay();
-		screenHeight = display.getHeight();
-		screenWidth = display.getWidth();
+//		screenHeight = display.getHeight();
+//		screenWidth = display.getWidth();
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		screenWidth = dm.widthPixels;
+		screenHeight = dm.heightPixels;
 
 		defaultSize = (screenWidth * 20) / 320;
 		readHeight = screenHeight;
@@ -106,6 +111,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		
 		mPageWidget.setOnTouchListener(new View.OnTouchListener() {
 			
+			@SuppressLint("WrongCall")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
@@ -290,6 +296,7 @@ public class ReadPager extends Activity implements OnClickListener,
 	/**
 	 * 刷新界面
 	 */
+	@SuppressLint("WrongCall")
 	private void postInvalidateUI() {
 		// TODO Auto-generated method stub
 		mPageWidget.abortAnimation();

@@ -75,9 +75,9 @@ public class PageWidget extends View {
 		super(context);
 		mPath0 = new Path();
 		mPath1 = new Path();
-		mScreenWidth = width;
-		mScreenHeight = height;
-
+		this.mScreenWidth = width;
+		this.mScreenHeight = height;
+		this.mMaxLength = (float) Math.hypot(mScreenWidth, mScreenHeight);
 		mPaint = new Paint();
 		mPaint.setStyle(Paint.Style.FILL);
 
