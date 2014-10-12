@@ -1,12 +1,14 @@
 package com.aiteu.dailyreading;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -52,6 +54,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			toolpop5;
 	private ImageButton imageBtn2, imageBtn3_1, imageBtn3_2, imageBtn4_1,
 			imageBtn4_2;
+	private TextView percenTextView;
 	private static int begin = 0; // 记录书籍的开始位置
 	private static String word = "";// 记录当前页面的文字
 	private int a = 0, b = 0;
@@ -70,6 +73,8 @@ public class ReadPager extends Activity implements OnClickListener,
 	private TextView bookBtn1, bookBtn2, bookBtn3, bookBtn4;
 	private SeekBar seekBar1, seekBar2, seekBar3;
 	private SharedPreferences.Editor editor;
+	private WindowManager.LayoutParams lp;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -98,14 +103,14 @@ public class ReadPager extends Activity implements OnClickListener,
 
 		mPageWidget = new PageWidget(this, screenWidth, readHeight);// 页面
 		setContentView(R.layout.read_view);
-		
+
 		RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.readlayout);
 		rLayout.addView(mPageWidget);
-		
+
 		mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
-		
+
 		mPageWidget.setOnTouchListener(new View.OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
@@ -120,39 +125,45 @@ public class ReadPager extends Activity implements OnClickListener,
 							mPageWidget.abortAnimation();
 							mPageWidget.calcCornerXY(event.getX(), event.getY());
 							pageFactory.onDraw(mCurCanvas);
-							if(mPageWidget.DragToRight()){//左返
+							if (mPageWidget.DragToRight()) {// 左返
 								try {
 									pageFactory.prePage();
 									begin = pageFactory.getM_mbBufBegin();// 获取当前阅读位置
 									word = pageFactory.getFirstLineText();// 获取当前阅读位置的首行文字
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
-									Log.i(TAG,"onTouch->prePage error", e);
+									Log.i(TAG, "onTouch->prePage error", e);
 								}
 								if (pageFactory.isM_isfirstPage()) {
-									Toast.makeText(getApplicationContext(), "这已经是第一页了", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(),
+											"这已经是第一页了", Toast.LENGTH_SHORT)
+											.show();
 									return false;
 								}
 								pageFactory.onDraw(mNextCanvas);
-							}else {// 右翻
+							} else {// 右翻
 								try {
 									pageFactory.nextPage();
 									begin = pageFactory.getM_mbBufBegin();
 									word = pageFactory.getFirstLineText();
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
-									Log.i(TAG,"onTouch->nextPager error",e);
+									Log.i(TAG, "onTouch->nextPager error", e);
 								}
 								if (pageFactory.isM_islastPage()) {
-									Toast.makeText(getApplicationContext(), "这已经是第最后一页了", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(),
+											"这已经是第最后一页了", Toast.LENGTH_SHORT)
+											.show();
 									return false;
 								}
 								pageFactory.onDraw(mNextCanvas);
 							}
-							mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
+							mPageWidget.setBitmaps(mCurPageBitmap,
+									mNextPageBitmap);
 						}
-						
-						editor.putInt(bookBean.getSource()+"begin",begin).commit();
+
+						editor.putInt(bookBean.getSource() + "begin", begin)
+								.commit();
 						ret = mPageWidget.doTouchEvent(event);
 						return ret;
 					}
@@ -160,43 +171,66 @@ public class ReadPager extends Activity implements OnClickListener,
 				return false;
 			}
 		});
-		
+
 		setPop();
 		// 提取记录在sharedpreferences的各种状态
 		sp = getSharedPreferences("config", MODE_PRIVATE);
 		editor = sp.edit();
 		getSize();// 获取配置文件中的size大小
 		getLight();// 获取配置文件中的light值
-		
-		
-		WindowManager.LayoutParams lp = getWindow().getAttributes();
-		lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f :light / 10.0f;
+
+		lp = getWindow().getAttributes();
+		lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
 		getWindow().setAttributes(lp);
-		
+
 		pageFactory = new PageFactory(screenWidth, readHeight);
-		
+
 		if (isNight) {
-			pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg));
+			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
+					getResources(), R.drawable.night_bg));
 			pageFactory.setM_textColor(Color.rgb(128, 128, 128));
-		}else {
-			pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg));
+		} else {
+			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
+					getResources(), R.drawable.day_bg));
 			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
 		}
 		begin = sp.getInt(bookBean.getSource() + "begin", 0);
 		/**
 		 * 根据传递的路径打开书
 		 */
-		
+
 	}
 
+	/**
+	 * 菜单里seekbar的改变的具体实现
+	 */
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
 		// TODO Auto-generated method stub
+		switch (seekBar.getId()) {
+		case R.id.seekBar1: // // 字体进度条
+			size = seekBar1.getProgress() + 15;
+			setSize();
+			pageFactory.setM_fontSize(size);
+			pageFactory.setM_mbBufBegin(begin);
+			pageFactory.setM_mbBufEnd(begin);
+			postInvalidateUI();
+			break;
+		case R.id.seekBar2: // 亮度
+			light = seekBar2.getProgress();
+			setLight();
+			lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
+			getWindow().setAttributes(lp);
+			break;
+		case R.id.seekBar4:
+			int percent = seekBar3.getProgress();
 
-		/**
-		 * 待实现
-		 */
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	@Override
@@ -210,7 +244,20 @@ public class ReadPager extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 
 	}
-	
+
+	/**
+	 * 记录配置文件中字体大小
+	 */
+	private void setSize() {
+		try {
+			size = seekBar1.getProgress() + 15;
+			editor.putInt("size", size);
+			editor.commit();
+		} catch (Exception e) {
+			Log.e(TAG, "setSize-> Exception error", e);
+		}
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -245,27 +292,32 @@ public class ReadPager extends Activity implements OnClickListener,
 				pageFactory.setM_textColor(Color.rgb(28, 28, 28));
 				imageBtn2.setImageResource(R.drawable.off);
 				isNight = false;
-				pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg));
-			}else {
+				pageFactory.setBgBitmap(BitmapFactory.decodeResource(
+						getResources(), R.drawable.day_bg));
+			} else {
 				pageFactory.setM_textColor(Color.rgb(128, 128, 128));
 				imageBtn2.setImageResource(R.drawable.on);
 				isNight = true;
-				pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg));
+				pageFactory.setBgBitmap(BitmapFactory.decodeResource(
+						getResources(), R.drawable.night_bg));
 			}
 			setLight();
 			pageFactory.setM_mbBufBegin(begin);
 			pageFactory.setM_mbBufEnd(begin);
 			postInvalidateUI();
 			break;
-		//我的收藏按钮
+		// 我的收藏按钮
 		case R.id.imageBtn3_1:
 			SQLiteDatabase db = myStoreHelper.getWritableDatabase();
 			BookBean bookBean = new BookBean();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm ss");
 			String time = sdf.format(new Date());
-//			db.execSQL("insert into article(article_id,active,show_time,title,author," +
-//					"article_type,abstracts,recommend_star,praise_times,share_times," +
-//					"scan_times,physical_path) values (?,?,?,?,?,?,?,?,?,?,?,?)",new String[]{});
+			// db.execSQL("insert into article(article_id,active,show_time,title,author,"
+			// +
+			// "article_type,abstracts,recommend_star,praise_times,share_times,"
+			// +
+			// "scan_times,physical_path) values (?,?,?,?,?,?,?,?,?,?,?,?)",new
+			// String[]{});
 			ContentValues cv = new ContentValues();
 			cv.put("article_id", bookBean.getArticle_id());
 			cv.put("active", bookBean.isActive());
@@ -279,7 +331,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			cv.put("share_times", time);
 			cv.put("scan_times", time);
 			cv.put("physical_path", " ");
-			
+
 			db.insert("article", null, cv);
 			break;
 		default:
@@ -324,7 +376,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			Log.e(TAG, "setLight-> Exception error", e);
 		}
 	}
-	
+
 	/**
 	 * 记录数据，并清空popupwindow
 	 */
@@ -415,7 +467,6 @@ public class ReadPager extends Activity implements OnClickListener,
 			} else {
 				mToolPopupWindow1.showAtLocation(mPageWidget, Gravity.BOTTOM,
 						0, screenWidth * 45 / 320);
-
 				// 当点击字体按钮
 				if (a == 1) {
 					mToolPopupWindow2.showAtLocation(mPageWidget,
@@ -442,34 +493,49 @@ public class ReadPager extends Activity implements OnClickListener,
 					} else {
 						imageBtn2.setImageResource(R.drawable.off);
 					}
+				}
 
-					// 当点击收藏按钮
-					if (a == 3) {
-						mToolPopupWindow4.showAtLocation(mPageWidget,
-								Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-						imageBtn3_1 = (ImageButton) toolpop3
-								.findViewById(R.id.imageBtn3_1);
-						imageBtn3_2 = (ImageButton) toolpop3
-								.findViewById(R.id.imageBtn3_2);
-						imageBtn3_1.setOnClickListener(this);
-						imageBtn3_2.setOnClickListener(this);
-					}
+				// 当点击收藏按钮
+				if (a == 3) {
+					mToolPopupWindow4.showAtLocation(mPageWidget,
+							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
+					imageBtn3_1 = (ImageButton) toolpop3
+							.findViewById(R.id.imageBtn3_1);
+					imageBtn3_2 = (ImageButton) toolpop3
+							.findViewById(R.id.imageBtn3_2);
+					imageBtn3_1.setOnClickListener(this);
+					imageBtn3_2.setOnClickListener(this);
+				}
 
-					// 当点击跳转跳转按钮
-					if (a == 4) {
-						mToolPopupWindow5.showAtLocation(mPageWidget,
-								Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-						imageBtn4_1 = (ImageButton) toolpop4
-								.findViewById(R.id.imageBtn4_1);
-						imageBtn4_2 = (ImageButton) toolpop4
-								.findViewById(R.id.imageBtn4_2);
-						seekBar3 = (SeekBar) toolpop4
-								.findViewById(R.id.seekBar4);
+				// 当点击跳转跳转按钮
+				if (a == 4) {
+					mToolPopupWindow5.showAtLocation(mPageWidget,
+							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
+					imageBtn4_1 = (ImageButton) toolpop4
+							.findViewById(R.id.imageBtn4_1);
+					imageBtn4_2 = (ImageButton) toolpop4
+							.findViewById(R.id.imageBtn4_2);
+					seekBar3 = (SeekBar) toolpop4.findViewById(R.id.seekBar4);
+					percenTextView = (TextView) toolpop4
+							.findViewById(R.id.markEdit4);
+					float percent = (float) ((begin * 1.0) / pageFactory
+							.getM_mbBufLen());
+					DecimalFormat decimalFormat = new DecimalFormat("#0");
+					String sPercent = decimalFormat.format(percent * 100) + "%";
+					percenTextView.setText(sPercent);
 
-					}
+					seekBar3.setProgress(Integer.parseInt(decimalFormat
+							.format(percent * 100)));
+					seekBar3.setOnSeekBarChangeListener(this);
+					imageBtn4_1.setOnClickListener(this);
+					imageBtn4_2.setOnClickListener(this);
 				}
 			}
+		}else {
+			
 		}
+		// 记录上次点击的是哪一个
+		b = a;
 	}
 
 	/**
@@ -479,15 +545,16 @@ public class ReadPager extends Activity implements OnClickListener,
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			if (show) {
-				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+				getWindow().clearFlags(
+						WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 				show = false;
 				mPopupWindow.dismiss();
 				popToolsDismiss();
-
 			} else {
-
-				getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-				getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+				getWindow()
+						.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+				getWindow().addFlags(
+						WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 				show = true;
 				pop();
 			}

@@ -26,8 +26,8 @@ import android.widget.Scroller;
 public class PageWidget extends View {
 
 	private static final String TAG= "Point";
-	private int mScreenWidth = 480; // 默認屏幕宽
-	private int mScreenHeight = 800; // 默认屏幕高
+	private int mScreenWidth ; // = 480; // 默認屏幕宽
+	private int mScreenHeight ; //= 800; // 默认屏幕高
 	private int mCornerX = 1; // 拖拽点对应的页脚
 	private int mCornerY = 1;
 	private Path mPath0;
@@ -55,7 +55,7 @@ public class PageWidget extends View {
 	float[] mMatrixArray = { 0, 0, 0, 0, 0, 0, 0, 0, 1.0f };
 
 	boolean mIsRTandLB; // 是否属于右上左下
-	float mMaxLength = (float) Math.hypot(mScreenWidth, mScreenHeight);
+	float mMaxLength ; //= (float) Math.hypot(mScreenWidth, mScreenHeight);
 	int[] mBackShadowColors;// 背面颜色组
 	int[] mFrontShadowColors;// 前面颜色组
 	GradientDrawable mBackShadowDrawableLR; // 有阴影的GradientDrawable
@@ -77,7 +77,7 @@ public class PageWidget extends View {
 		mPath1 = new Path();
 		mScreenWidth = width;
 		mScreenHeight = height;
-
+		mMaxLength = (float) Math.hypot(mScreenWidth, mScreenHeight);
 		mPaint = new Paint();
 		mPaint.setStyle(Paint.Style.FILL);
 
