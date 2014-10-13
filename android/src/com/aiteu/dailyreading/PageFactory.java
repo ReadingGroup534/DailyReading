@@ -1,9 +1,12 @@
 package com.aiteu.dailyreading;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.Vector;
 
@@ -18,6 +21,7 @@ public class PageFactory {
 
 	private final static String TAG = "pagefactory";
 	private URL article_url = null;
+	private File book_file = null;
 	private int m_backColor = 0xffff9e85; // 背景颜色
 	private Bitmap m_article_bg = null;
 	private int m_fontSize = 20;
@@ -102,6 +106,15 @@ public class PageFactory {
 		canvas.drawText(strPercent, mWidth - nPercentWidth, mHeight - 5, mPaint);
 	}
 
+	//打开书，实际的时候传入书的url路径
+	public void openbook(String strFilePath) throws IOException {
+		book_file = new File(strFilePath);
+		long lLen = book_file.length();
+		m_mbBufLen = (int) lLen;
+		m_mbBuf = new RandomAccessFile(book_file, "r").getChannel().map(
+				FileChannel.MapMode.READ_ONLY, 0, lLen);
+	}
+	
 	protected Vector<String> pageDown() {
 		mPaint.setTextSize(m_fontSize);
 		mPaint.setColor(m_textColor);

@@ -225,6 +225,14 @@ public class ReadPager extends Activity implements OnClickListener,
 		/**
 		 * 根据传递的路径打开书,待实现
 		 */
+		try {
+			pageFactory.openbook("/data/DB2 CMD.txt");
+			pageFactory.setM_fontSize(size);
+			pageFactory.onDraw(mCurCanvas);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.i(TAG,"error->open books", e);
+		}
 
 	}
 

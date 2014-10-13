@@ -33,6 +33,8 @@
              android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ReadPager" 
             android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".SettingActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
 
 </manifest>

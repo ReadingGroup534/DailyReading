@@ -90,10 +90,10 @@ public class PageWidget extends View {
 		 * 可以用来方面的修改图片中RGBA各分量的值
 		 */
 		ColorMatrix cm = new ColorMatrix();
-		float array[] = { 0.55f, 0, 0, 0, 90.0f,
-						  0, 0.55f, 0, 0, 90.0f,
-						  0, 0, 0.55f, 0, 90.0f, 
-						  0, 0, 0, 0.2f, 1 };
+		float array[] = { 0.55f, 0, 0, 0, 80.0f,
+						  0, 0.55f, 0, 0, 80.0f,
+						  0, 0, 0.55f, 0, 80.0f, 
+						  0, 0, 0, 0.2f, 0 };
 		cm.set(array);
 		mColorMatrixFilter = new ColorMatrixColorFilter(cm);
 		mMatrix = new Matrix();
@@ -128,33 +128,34 @@ public class PageWidget extends View {
 	public boolean doTouchEvent(MotionEvent event) {
 
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			mCanvas.drawColor(0xFFAAAAAA);
+//			mCanvas.drawColor(0xFFAAAAAA);
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
 			this.postInvalidate();
 		}
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			mCanvas.drawColor(0xFFAAAAAA);
+//			mCanvas.drawColor(0xFFAAAAAA);
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
 //			 calcCornerXY(mTouch.x, mTouch.y);
-			 this.postInvalidate();
+//			 this.postInvalidate();
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
-			// if (canDragOver()) {
-			// startAnimation(1200);
-			// } else {
-			// mTouch.x = mCornerX - 10f;
-			// mTouch.y = mCornerY - 10f;
-			// }
-			
 //			mCanvas.drawColor(0xFFAAAAAA);
+			 if (canDragOver()) {  //判断是否可以翻页
+			 startAnimation(1200);
+			 } else {
+			 mTouch.x = mCornerX - 0.09f;   //如果不能翻页就让mTouch 返回没有静止时的状态
+			 mTouch.y = mCornerY - 0.09f;	//-0.09f是防止mTouch = 0 或者= ScreenHeight  否则就会出bug
+			 }
+			this.postInvalidate();
+			
 //			mTouch.x = mCornerX;
 //			mTouch.y = mCornerY;
 //			this.postInvalidate();
 			// 直接画出动画而不使用时上面的条件判断
-			startAnimation(1200);
-			this.postInvalidate();
+//			startAnimation(1200);
+//			this.postInvalidate();
 		}
 		// return super.onTouchEvent(event);
 		return true;

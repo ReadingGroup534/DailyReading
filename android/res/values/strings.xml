@@ -13,6 +13,7 @@
     <string name="send_suggest">发送建议</string>
     <string name="back">返回</string>
     <!-- about.xml -->
-    <string name="title_activity_main">今日阅读</string>
+     <string name="title_activity_about">今日阅读</string> 
+    <string name="setting">设置</string>
 
 </resources>

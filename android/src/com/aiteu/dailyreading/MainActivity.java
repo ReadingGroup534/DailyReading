@@ -1,6 +1,8 @@
 package com.aiteu.dailyreading;
 
+import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,12 +27,18 @@ public class MainActivity extends FragmentActivity {
 	private RelativeLayout mLeftLayout;
 	private ListView mLeftListView;
 	private Boolean isNetworkOpen = false;
-
+	private long exitTime = 0;
+	private ActionBar actionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//set ActionBar's back action
+//		actionBar=getActionBar();
+//        actionBar.show();
+				
 		isNetworkOpen = isNetworkAvailable(getApplicationContext());
 		if (isNetworkOpen == false) {
 			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！", Toast.LENGTH_LONG).show();
@@ -98,6 +107,23 @@ public class MainActivity extends FragmentActivity {
         } 
         return false; 
     }
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+			if ((System.currentTimeMillis() - exitTime) > 2000) {
+				Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_LONG).show();
+				exitTime = System.currentTimeMillis();
+			}else {
+				finish();
+				System.exit(0);
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
 	
 
 }
