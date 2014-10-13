@@ -4,6 +4,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+   <!--  <RelativeLayout
+        android:id="@+id/setting_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/dockbar" >
+
+         <Button
+	        android:id="@+id/setting_return_btn"
+	        style="@style/Text.Title_Button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="35dip"
+	        android:layout_marginTop="5dp"
+	        android:layout_gravity="center_vertical"
+	        android:background="@drawable/title_btn_back"
+	        android:minWidth="60dip" 
+	        android:text="@string/back"/>
+	
+	    <TextView
+	        android:id="@+id/title_text"
+	        style="@style/Text.Title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:layout_weight="1" 
+	        android:layout_centerInParent="true"
+	        android:text="@string/setting"/>
+    </RelativeLayout> -->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -12,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:orientation="vertical" >
 
-        <RelativeLayout
+        <!-- <RelativeLayout
             android:id="@+id/night_model"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -47,7 +74,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
                 android:button="@drawable/checkbox_selector" />
-        </RelativeLayout>
+        </RelativeLayout> -->
 
         <!--
           <ImageView

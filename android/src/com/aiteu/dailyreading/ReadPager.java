@@ -19,6 +19,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Contacts.Intents.Insert;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -74,7 +76,30 @@ public class ReadPager extends Activity implements OnClickListener,
 	private SeekBar seekBar1, seekBar2, seekBar3;
 	private SharedPreferences.Editor editor;
 	private WindowManager.LayoutParams lp;
+	
+	// 实例化Handler
+	public Handler myHandler = new Handler() {
+		//接收子线程的消息，同时更新UI
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 0:
+				begin = msg.arg1;
+				pageFactory.setM_mbBufBegin(begin);
+				pageFactory.setM_mbBufEnd(begin);
+				postInvalidateUI();
+				break;
+			case 1:
+				pageFactory.setM_mbBufBegin(begin);
+				pageFactory.setM_mbBufEnd(begin);
+				postInvalidateUI();
+				break;
+			default:
+				break;
+			}
+		}
+	};
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -198,8 +223,16 @@ public class ReadPager extends Activity implements OnClickListener,
 		}
 		begin = sp.getInt(bookBean.getSource() + "begin", 0);
 		/**
-		 * 根据传递的路径打开书
+		 * 根据传递的路径打开书,待实现
 		 */
+		try {
+			pageFactory.openbook("/data/DB2 CMD.txt");
+			pageFactory.setM_fontSize(size);
+			pageFactory.onDraw(mCurCanvas);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.i(TAG,"error->open books", e);
+		}
 
 	}
 
@@ -227,7 +260,23 @@ public class ReadPager extends Activity implements OnClickListener,
 			break;
 		case R.id.seekBar4:
 			int percent = seekBar3.getProgress();
-
+			percenTextView.setText(percent + "%");
+			begin = (pageFactory.getM_mbBufLen()*percent) /100;
+			editor.putInt(bookBean.getSource()+"begin", begin).commit();
+			pageFactory.setM_mbBufBegin(begin);
+			pageFactory.setM_mbBufEnd(begin);
+			try {
+			if (percent == 100) {
+					pageFactory.prePage();
+					pageFactory.getM_mbBufBegin();
+					begin = pageFactory.getM_mbBufEnd();
+					pageFactory.setM_mbBufBegin(begin);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.e(TAG, "onProgressChanged seekBar4-> IOException error", e);
+			}
+			postInvalidateUI();
 			break;
 		default:
 			break;
@@ -336,6 +385,8 @@ public class ReadPager extends Activity implements OnClickListener,
 
 			db.insert("article", null, cv);
 			break;
+			
+			
 		default:
 			break;
 		}
@@ -473,7 +524,7 @@ public class ReadPager extends Activity implements OnClickListener,
 				if (a == 1) {
 					mToolPopupWindow2.showAtLocation(mPageWidget,
 							Gravity.BOTTOM, 0, screenWidth * 45 / 320);
-					seekBar1 = (SeekBar) toolpop1.findViewById(R.id.seekBar1);
+					seekBar1 = (SeekBar) toolpop2.findViewById(R.id.seekBar1);
 					size = sp.getInt("size", 20);
 					seekBar1.setProgress((size - 15));
 					seekBar1.setOnSeekBarChangeListener(this);
@@ -483,9 +534,8 @@ public class ReadPager extends Activity implements OnClickListener,
 				if (a == 2) {
 					mToolPopupWindow3.showAtLocation(mPageWidget,
 							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-					seekBar2 = (SeekBar) toolpop2.findViewById(R.id.seekBar2);
-					imageBtn2 = (ImageButton) toolpop2
-							.findViewById(R.id.imageBtn2);
+					seekBar2 = (SeekBar) toolpop3.findViewById(R.id.seekBar2);
+					imageBtn2 = (ImageButton) toolpop3.findViewById(R.id.imageBtn2);
 					getLight();
 					imageBtn2.setOnClickListener(this);
 					seekBar2.setOnSeekBarChangeListener(this);
@@ -501,9 +551,9 @@ public class ReadPager extends Activity implements OnClickListener,
 				if (a == 3) {
 					mToolPopupWindow4.showAtLocation(mPageWidget,
 							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-					imageBtn3_1 = (ImageButton) toolpop3
+					imageBtn3_1 = (ImageButton) toolpop4
 							.findViewById(R.id.imageBtn3_1);
-					imageBtn3_2 = (ImageButton) toolpop3
+					imageBtn3_2 = (ImageButton) toolpop4
 							.findViewById(R.id.imageBtn3_2);
 					imageBtn3_1.setOnClickListener(this);
 					imageBtn3_2.setOnClickListener(this);
@@ -513,12 +563,12 @@ public class ReadPager extends Activity implements OnClickListener,
 				if (a == 4) {
 					mToolPopupWindow5.showAtLocation(mPageWidget,
 							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-					imageBtn4_1 = (ImageButton) toolpop4
+					imageBtn4_1 = (ImageButton) toolpop5
 							.findViewById(R.id.imageBtn4_1);
-					imageBtn4_2 = (ImageButton) toolpop4
+					imageBtn4_2 = (ImageButton) toolpop5
 							.findViewById(R.id.imageBtn4_2);
 					seekBar3 = (SeekBar) toolpop4.findViewById(R.id.seekBar4);
-					percenTextView = (TextView) toolpop4
+					percenTextView = (TextView) toolpop5
 							.findViewById(R.id.markEdit4);
 					float percent = (float) ((begin * 1.0) / pageFactory
 							.getM_mbBufLen());
@@ -534,7 +584,83 @@ public class ReadPager extends Activity implements OnClickListener,
 				}
 			}
 		}else {
-			
+			if (mToolPopupWindow1.isShowing()) {
+				//对数据的纪录
+				popToolsDismiss();
+			}
+			mToolPopupWindow1.showAtLocation(mPageWidget, Gravity.BOTTOM,
+					0, screenWidth * 45 / 320);
+			// 当点击字体按钮
+			if (a == 1) {
+				mToolPopupWindow2.showAtLocation(mPageWidget,
+						Gravity.BOTTOM, 0, screenWidth * 45 / 320);
+				seekBar1 = (SeekBar) toolpop2.findViewById(R.id.seekBar1);
+				size = sp.getInt("size", 20);
+				seekBar1.setProgress((size - 15));
+				seekBar1.setOnSeekBarChangeListener(this);
+			}
+
+			// 当点击亮度按钮
+			if (a == 2) {
+				mToolPopupWindow3.showAtLocation(mPageWidget,
+						Gravity.BOTTOM, 0, screenWidth * 45 / 300);
+				seekBar2 = (SeekBar) toolpop3.findViewById(R.id.seekBar2);
+				imageBtn2 = (ImageButton) toolpop3.findViewById(R.id.imageBtn2);
+				getLight();
+				seekBar2.setProgress(light);
+				
+				if(isNight){
+					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg));
+				}else {
+					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg));
+				}
+				
+				if (isNight) {
+					imageBtn2.setImageResource(R.drawable.on);
+				} else {
+					imageBtn2.setImageResource(R.drawable.off);
+				}
+				
+				imageBtn2.setOnClickListener(this);
+				seekBar2.setOnSeekBarChangeListener(this);
+				
+			}
+
+			// 当点击收藏按钮
+			if (a == 3) {
+				mToolPopupWindow4.showAtLocation(mPageWidget,
+						Gravity.BOTTOM, 0, screenWidth * 45 / 300);
+				imageBtn3_1 = (ImageButton) toolpop4
+						.findViewById(R.id.imageBtn3_1);
+				imageBtn3_2 = (ImageButton) toolpop4
+						.findViewById(R.id.imageBtn3_2);
+				imageBtn3_1.setOnClickListener(this);
+				imageBtn3_2.setOnClickListener(this);
+			}
+
+			// 当点击跳转跳转按钮
+			if (a == 4) {
+				mToolPopupWindow5.showAtLocation(mPageWidget,
+						Gravity.BOTTOM, 0, screenWidth * 45 / 300);
+				imageBtn4_1 = (ImageButton) toolpop5
+						.findViewById(R.id.imageBtn4_1);
+				imageBtn4_2 = (ImageButton) toolpop5
+						.findViewById(R.id.imageBtn4_2);
+				seekBar3 = (SeekBar) toolpop4.findViewById(R.id.seekBar4);
+				percenTextView = (TextView) toolpop5
+						.findViewById(R.id.markEdit4);
+				float percent = (float) ((begin * 1.0) / pageFactory
+						.getM_mbBufLen());
+				DecimalFormat decimalFormat = new DecimalFormat("#0");
+				String sPercent = decimalFormat.format(percent * 100) + "%";
+				percenTextView.setText(sPercent);
+
+				seekBar3.setProgress(Integer.parseInt(decimalFormat
+						.format(percent * 100)));
+				seekBar3.setOnSeekBarChangeListener(this);
+				imageBtn4_1.setOnClickListener(this);
+				imageBtn4_2.setOnClickListener(this);
+			}
 		}
 		// 记录上次点击的是哪一个
 		b = a;

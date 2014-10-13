@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/title_activity_main" />
+            android:text="@string/title_activity_about" />
     </RelativeLayout>
 
     <ImageView

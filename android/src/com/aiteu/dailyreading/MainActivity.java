@@ -1,16 +1,23 @@
 package com.aiteu.dailyreading;
 
+import android.app.ActionBar;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 
@@ -18,32 +25,36 @@ public class MainActivity extends FragmentActivity {
 	public static final String[] TITLES = {"情感治愈" ,"经典散文","每日一文", "心灵鸡汤", "设置"};
 	private DrawerLayout mDrawerLayout;
 	private RelativeLayout mLeftLayout;
-	private RelativeLayout mRightLayout;
 	private ListView mLeftListView;
-	private ListView mRightListView;
+	private Boolean isNetworkOpen = false;
+	private long exitTime = 0;
+	private ActionBar actionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		//set ActionBar's back action
+//		actionBar=getActionBar();
+//        actionBar.show();
+				
+		isNetworkOpen = isNetworkAvailable(getApplicationContext());
+		if (isNetworkOpen == false) {
+			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！", Toast.LENGTH_LONG).show();
+		}
 		findViewById();
 		mLeftListView.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_expandable_list_item_1, TITLES));
-//		mRightListView.setAdapter(new ArrayAdapter<String>(this,
-//				android.R.layout.simple_expandable_list_item_1, TITLES));
 
-		// 监听菜单 左右
+		// 监听菜单 左
 		mLeftListView.setOnItemClickListener(new DrawerItemClickListenerLeft());
-//		mRightListView.setOnItemClickListener(new DrawerItemClickListenerRight());
 	}
 
 	private void findViewById() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mLeftLayout = (RelativeLayout) findViewById(R.id.menu_layout_left);
-//		mRightLayout = (RelativeLayout) findViewById(R.id.menu_layout_right);
 		mLeftListView = (ListView) findViewById(R.id.menu_listView_l);
-//		mRightListView = (ListView) findViewById(R.id.menu_listView_r);
 	}
 
 	/**
@@ -84,33 +95,35 @@ public class MainActivity extends FragmentActivity {
 
 	}
 	
-	/*public class DrawerItemClickListenerRight implements OnItemClickListener{
+	public static boolean isNetworkAvailable(Context context) { 
+        ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE); 
+        NetworkInfo[] info = mgr.getAllNetworkInfo(); 
+        if (info != null) { 
+            for (int i = 0; i < info.length; i++) { 
+                if (info[i].getState() == NetworkInfo.State.CONNECTED) { 
+                    return true; 
+                } 
+            } 
+        } 
+        return false; 
+    }
 
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			// TODO Auto-generated method stub
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			Fragment fragment = null;
-			
-			//according to the click row number decide to start which fragment;
-			switch (position) {
-			case 0:
-				fragment = new FirstFragment();
-				break;
-			case 1:
-				fragment = new SecondFragment();
-				break;
-			default:
-				break;
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+			if ((System.currentTimeMillis() - exitTime) > 2000) {
+				Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_LONG).show();
+				exitTime = System.currentTimeMillis();
+			}else {
+				finish();
+				System.exit(0);
 			}
-			ft.replace(R.id.fragment_layout, fragment);
-			ft.commit();
-			mDrawerLayout.closeDrawer(mRightLayout);
+			return true;
 		}
-
-		}*/
-		
+		return super.onKeyDown(keyCode, event);
+	}
+	
 	
 
 }
