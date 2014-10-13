@@ -328,7 +328,7 @@ public class PageWidget extends View {
 		calcPoints();
 		drawCurrentPageArea(canvas, mCurPageBitmap, mPath0);
 		drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
-		drawCurrentPageShadow(canvas);
+		//drawCurrentPageShadow(canvas);
 		drawCurrentBackArea(canvas, mCurPageBitmap);
 	}
 
@@ -336,7 +336,7 @@ public class PageWidget extends View {
 	 * 创建阴影的GradientDrawable
 	 */
 	private void createDrawable() {
-		int[] color = { 0x333333, 0xb0333333 };
+		int[] color = { 0x777777, 0xb0777777 };
 		mFolderShadowDrawableRL = new GradientDrawable(
 				GradientDrawable.Orientation.RIGHT_LEFT, color);
 		mFolderShadowDrawableRL
@@ -347,7 +347,7 @@ public class PageWidget extends View {
 		mFolderShadowDrawableLR
 				.setGradientType(GradientDrawable.LINEAR_GRADIENT);
 
-		mBackShadowColors = new int[] { 0xff111111, 0x111111 };
+		mBackShadowColors = new int[] { 0xff555555, 0x555555 };
 		mBackShadowDrawableRL = new GradientDrawable(
 				GradientDrawable.Orientation.RIGHT_LEFT, mBackShadowColors);
 		mBackShadowDrawableRL.setGradientType(GradientDrawable.LINEAR_GRADIENT);
@@ -356,7 +356,7 @@ public class PageWidget extends View {
 				GradientDrawable.Orientation.LEFT_RIGHT, mBackShadowColors);
 		mBackShadowDrawableLR.setGradientType(GradientDrawable.LINEAR_GRADIENT);
 
-		mFrontShadowColors = new int[] { 0x80111111, 0x111111 };
+		mFrontShadowColors = new int[] { 0x80444444, 0x444444 };
 		mFrontShadowDrawableVLR = new GradientDrawable(
 				GradientDrawable.Orientation.LEFT_RIGHT, mFrontShadowColors);
 		mFrontShadowDrawableVLR

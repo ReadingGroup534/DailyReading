@@ -32,6 +32,8 @@
         <activity android:name=".setting.AboutActivity" 
              android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ReadPager" 
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
 
