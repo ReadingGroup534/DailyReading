@@ -22,7 +22,7 @@ import android.widget.Toast;
 public class MainActivity extends FragmentActivity {
 
 	//"情感治愈" ,"经典散文" ,"联系我们", 
-	public static final String[] TITLES = {"情感治愈" ,"经典散文","每日一文", "心灵鸡汤", "设置"};
+	public static final String[] TITLES = {"情感治愈" ,"经典散文","每日一文", "心灵鸡汤", "帮助"};
 	private DrawerLayout mDrawerLayout;
 	private RelativeLayout mLeftLayout;
 	private ListView mLeftListView;
@@ -43,19 +43,25 @@ public class MainActivity extends FragmentActivity {
 		if (isNetworkOpen == false) {
 			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！", Toast.LENGTH_LONG).show();
 		}
-		findViewById();
-		mLeftListView.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_expandable_list_item_1, TITLES));
+//		findViewById();
+//		mLeftListView.setAdapter(new ArrayAdapter<String>(this,
+//				android.R.layout.simple_expandable_list_item_1, TITLES));
 
 		// 监听菜单 左
-		mLeftListView.setOnItemClickListener(new DrawerItemClickListenerLeft());
+//		mLeftListView.setOnItemClickListener(new DrawerItemClickListenerLeft());
+		
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		Fragment fragment = new EssayFragment();
+		ft.replace(R.id.fragment_layout, fragment);
+		ft.commit();
+		
 	}
 
-	private void findViewById() {
+	/*private void findViewById() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mLeftLayout = (RelativeLayout) findViewById(R.id.menu_layout_left);
 		mLeftListView = (ListView) findViewById(R.id.menu_listView_l);
-	}
+	}*/
 
 	/**
 	 * the clicklistener in left side
@@ -63,7 +69,7 @@ public class MainActivity extends FragmentActivity {
 	 * @author liyangchao
 	 * 
 	 */
-	public class DrawerItemClickListenerLeft implements OnItemClickListener {
+	/*public class DrawerItemClickListenerLeft implements OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -93,7 +99,7 @@ public class MainActivity extends FragmentActivity {
 			mDrawerLayout.closeDrawer(mLeftLayout);
 		}
 
-	}
+	}*/
 	
 	public static boolean isNetworkAvailable(Context context) { 
         ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE); 

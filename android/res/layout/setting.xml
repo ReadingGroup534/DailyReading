@@ -81,18 +81,18 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/setting_line" />
-        -->
+       
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="@color/lightgray" />
+            android:background="@color/lightgray" /> -->
 
         <RelativeLayout
             android:id="@+id/check_version"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:background="@drawable/setting_bg" >
+            android:background="@drawable/firstline_setting_bg_color" >
 
             <ImageView
                 android:id="@+id/im_check_version"

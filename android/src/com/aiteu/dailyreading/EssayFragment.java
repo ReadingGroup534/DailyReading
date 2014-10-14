@@ -146,7 +146,7 @@ public class EssayFragment extends Fragment {
 						isRecored = true;
 						startY = (int) event.getY();
 						/**
-						 * 点击item后跳转到对应的Read界面  待实现
+						 * 点击item后跳转到对应的Read界面 
 						 */
 						Intent intent = new Intent(mFragmentActivity, ReadPager.class);
 						startActivity(intent);
