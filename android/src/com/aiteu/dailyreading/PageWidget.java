@@ -128,20 +128,20 @@ public class PageWidget extends View {
 	public boolean doTouchEvent(MotionEvent event) {
 
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-//			mCanvas.drawColor(0xFFAAAAAA);
+			mCanvas.drawColor(0xFFAAAAAA);
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
 			this.postInvalidate();
 		}
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//			mCanvas.drawColor(0xFFAAAAAA);
+			mCanvas.drawColor(0xFFAAAAAA);
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
 //			 calcCornerXY(mTouch.x, mTouch.y);
 //			 this.postInvalidate();
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
-//			mCanvas.drawColor(0xFFAAAAAA);
+			mCanvas.drawColor(0xFFAAAAAA);
 			 if (canDragOver()) {  //判断是否可以翻页
 			 startAnimation(1200);
 			 } else {
