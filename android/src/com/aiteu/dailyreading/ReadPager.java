@@ -7,7 +7,6 @@ import java.util.Date;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
-import android.R.integer;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
@@ -50,6 +50,7 @@ public class ReadPager extends Activity implements OnClickListener,
 	private Bitmap mCurPageBitmap, mNextPageBitmap; // 當前頁面和下一個頁面的畫布
 	private Canvas mCurCanvas, mNextCanvas;
 	private PageWidget mPageWidget;
+//	private Pager mPageWidget ;
 	private PopupWindow mPopupWindow, mToolPopupWindow1, mToolPopupWindow2,
 			mToolPopupWindow3, mToolPopupWindow4, mToolPopupWindow5;
 	private View popupwindwow, toolpop1, toolpop2, toolpop3, toolpop4,
@@ -69,8 +70,8 @@ public class ReadPager extends Activity implements OnClickListener,
 	private SharedPreferences sp;
 	private int size = 30; // 字体大小
 	private int light; // 亮度值
-	private Boolean isNight; // 亮度模式,白天和晚上
-	private PageFactory pageFactory;
+	private Boolean isNight = false; // 亮度模式,白天和晚上
+	private PagerFactory pageFactory;
 	private BookBean bookBean;
 	private TextView bookBtn1, bookBtn2, bookBtn3, bookBtn4;
 	private SeekBar seekBar1, seekBar2, seekBar3;
@@ -78,26 +79,26 @@ public class ReadPager extends Activity implements OnClickListener,
 	private WindowManager.LayoutParams lp;
 	
 	// 实例化Handler
-	public Handler myHandler = new Handler() {
-		//接收子线程的消息，同时更新UI
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case 0:
-				begin = msg.arg1;
-				pageFactory.setM_mbBufBegin(begin);
-				pageFactory.setM_mbBufEnd(begin);
-				postInvalidateUI();
-				break;
-			case 1:
-				pageFactory.setM_mbBufBegin(begin);
-				pageFactory.setM_mbBufEnd(begin);
-				postInvalidateUI();
-				break;
-			default:
-				break;
-			}
-		}
-	};
+//	public Handler myHandler = new Handler() {
+//		//接收子线程的消息，同时更新UI
+//		public void handleMessage(Message msg) {
+//			switch (msg.what) {
+//			case 0:
+//				begin = msg.arg1;
+//				pageFactory.setM_mbBufBegin(begin);
+//				pageFactory.setM_mbBufEnd(begin);
+//				postInvalidateUI();
+//				break;
+//			case 1:
+//				pageFactory.setM_mbBufBegin(begin);
+//				pageFactory.setM_mbBufEnd(begin);
+//				postInvalidateUI();
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//	};
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -111,13 +112,14 @@ public class ReadPager extends Activity implements OnClickListener,
 
 		mContext = getBaseContext();
 		bookBean = new BookBean();
-		WindowManager manager = getWindowManager();
-		Display display = manager.getDefaultDisplay();
+//		WindowManager manager = getWindowManager();
+//		Display display = manager.getDefaultDisplay();
 //		screenHeight = display.getHeight();
 //		screenWidth = display.getWidth();
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		screenWidth = dm.widthPixels;
 		screenHeight = dm.heightPixels;
+		Log.i("lyc", "screenwidth:"+ screenWidth + "screenheight:"+ screenHeight);
 
 		defaultSize = (screenWidth * 20) / 320;
 		readHeight = screenHeight;
@@ -128,7 +130,20 @@ public class ReadPager extends Activity implements OnClickListener,
 				Config.ARGB_8888);
 		mCurCanvas = new Canvas(mCurPageBitmap);
 		mNextCanvas = new Canvas(mNextPageBitmap);
-
+		
+//		pageFactory = new PageFactory(screenWidth, readHeight);
+		
+		pageFactory = new PagerFactory(screenWidth, readHeight);
+		if (isNight) {
+			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
+					getResources(), R.drawable.night_bg));
+			pageFactory.setM_textColor(Color.rgb(128, 128, 128));
+		} else {
+			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
+					getResources(), R.drawable.day_bg));
+			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
+		}
+		
 		mPageWidget = new PageWidget(this, screenWidth, readHeight);// 页面
 		setContentView(R.layout.read_view);
 
@@ -136,7 +151,8 @@ public class ReadPager extends Activity implements OnClickListener,
 		rLayout.addView(mPageWidget);
 
 		mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
-
+		
+		
 		mPageWidget.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -161,7 +177,7 @@ public class ReadPager extends Activity implements OnClickListener,
 									// TODO Auto-generated catch block
 									Log.i(TAG, "onTouch->prePage error", e);
 								}
-								if (pageFactory.isM_isfirstPage()) {
+								if (pageFactory.isM_firstPage()) {
 									Toast.makeText(getApplicationContext(),
 											"这已经是第一页了", Toast.LENGTH_SHORT)
 											.show();
@@ -177,7 +193,7 @@ public class ReadPager extends Activity implements OnClickListener,
 									// TODO Auto-generated catch block
 									Log.i(TAG, "onTouch->nextPager error", e);
 								}
-								if (pageFactory.isM_islastPage()) {
+								if (pageFactory.isM_lastPage()) {
 									Toast.makeText(getApplicationContext(),
 											"这已经是第最后一页了", Toast.LENGTH_SHORT)
 											.show();
@@ -210,30 +226,18 @@ public class ReadPager extends Activity implements OnClickListener,
 		lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
 		getWindow().setAttributes(lp);
 
-		pageFactory = new PageFactory(screenWidth, readHeight);
-
-		if (isNight) {
-			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-					getResources(), R.drawable.night_bg));
-			pageFactory.setM_textColor(Color.rgb(128, 128, 128));
-		} else {
-			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-					getResources(), R.drawable.day_bg));
-			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
-		}
-		begin = sp.getInt(bookBean.getSource() + "begin", 0);
 		/**
-		 * 根据传递的路径打开书,待实现
+		 * 根据传递的路径打开书
 		 */
 		try {
-			pageFactory.openbook("/data/DB2 CMD.txt");
-			pageFactory.setM_fontSize(size);
+			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 			pageFactory.onDraw(mCurCanvas);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Log.i(TAG,"error->open books", e);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			Toast.makeText(this, "电子书不存在！请把电子书放到SDCard更目录下...", Toast.LENGTH_SHORT).show();
 		}
-
+		
+		begin = sp.getInt(bookBean.getSource() + "begin", 0);
 	}
 
 	/**
