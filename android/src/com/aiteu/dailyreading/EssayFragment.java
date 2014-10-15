@@ -67,7 +67,7 @@ public class EssayFragment extends Fragment {
 	private LinearLayout loadProgressBar;
 	private ProgressBar mProgressBar;
 	// 分页加载的数据的数量
-	private int pageSize = 10;
+	private int pageSize = 2;
 	private SimpleAdapter adapter;
 	private TextView tipsTextview, lastUpdatedTextView;
 	private ImageView head_arrowImageView;

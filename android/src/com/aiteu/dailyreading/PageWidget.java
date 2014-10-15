@@ -560,6 +560,7 @@ public class PageWidget extends View {
 		canvas.restore();
 	}
 
+	//翻页的动画效果
 	private void startAnimation(int delayMillis) {
 		int dx, dy;
 		// dx 水平方向滑动的距离，负值会使滚动向左滚动
