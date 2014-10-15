@@ -1,5 +1,12 @@
 package com.aiteu.dailyreading;
 
+import org.json.JSONObject;
+
+import com.aiteu.http.factory.HttpFactory;
+import com.aiteu.http.factory.HttpHandler;
+import com.aiteu.http.factory.JsonHttpFactory;
+import com.aiteu.http.handler.JsonHttpHandler;
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -54,8 +61,21 @@ public class MainActivity extends FragmentActivity {
 		Fragment fragment = new EssayFragment();
 		ft.replace(R.id.fragment_layout, fragment);
 		ft.commit();
-		
+		//FIXME 仅供测试使用
+		new Thread(testApiRunnable).run();
 	}
+	
+	final Runnable testApiRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			JsonHttpFactory jsonFactory = new JsonHttpFactory();
+			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
+			//FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
+			JSONObject json = jsonHandler.getJson("http://192.168.1.192:8080/reading-web/api/browse.json", null);
+			System.out.println(json.toString());
+		}
+	};
 
 	/*private void findViewById() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
