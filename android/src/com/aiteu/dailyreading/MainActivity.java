@@ -1,5 +1,12 @@
 package com.aiteu.dailyreading;
 
+import org.json.JSONObject;
+
+import com.aiteu.http.factory.HttpFactory;
+import com.aiteu.http.factory.HttpHandler;
+import com.aiteu.http.factory.JsonHttpFactory;
+import com.aiteu.http.handler.JsonHttpHandler;
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +62,19 @@ public class MainActivity extends FragmentActivity {
 		ft.replace(R.id.fragment_layout, fragment);
 		ft.commit();
 		
+		new Thread(testApiRunnable).run();
 	}
+	
+	final Runnable testApiRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			JsonHttpFactory jsonFactory = new JsonHttpFactory();
+			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
+			JSONObject json = jsonHandler.getJson("http://localhost:8080/api/test.json", null);
+			System.out.println(json.toString());
+		}
+	};
 
 	/*private void findViewById() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
