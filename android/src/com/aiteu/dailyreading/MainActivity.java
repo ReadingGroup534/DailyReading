@@ -1,12 +1,17 @@
 package com.aiteu.dailyreading;
 
+import java.io.IOException;
+
 import org.json.JSONObject;
 
 import com.aiteu.http.factory.HttpFactory;
 import com.aiteu.http.factory.HttpHandler;
 import com.aiteu.http.factory.JsonHttpFactory;
+import com.aiteu.http.factory.XmlHttpFactory;
 import com.aiteu.http.handler.JsonHttpHandler;
+import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.util.NetWorkHelper;
+import com.aiteu.http.xml.XmlDocument;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -73,9 +78,25 @@ public class MainActivity extends FragmentActivity {
 		ft.replace(R.id.fragment_layout, fragment);
 		ft.commit();
 		//FIXME 仅供测试使用
-//		new Thread(testApiRunnable).run();
+//		new Thread(testApiRunnable).start();
+		new Thread(testXmlParse).start();
 	}
 	
+	final Runnable testXmlParse = new Runnable() {
+		
+		@Override
+		public void run() {
+			XmlHttpFactory xmlFactory = new XmlHttpFactory();
+			XmlHttpHandler xmlHandler = (XmlHttpHandler)xmlFactory.create();
+			try {
+				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("detail.xml"));
+				System.out.println(xmlDoc.toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	};
 	final Runnable testApiRunnable = new Runnable() {
 		
 		@Override

@@ -1,0 +1,11 @@
+<article>
+    <title>这是一个测试xml解析的例子</title>
+    <author>liwei</author>
+    <time>2014-10-16 12:44</time>
+    <parts>
+        <part>这是地一段，废话就不多说了</part>
+        <part>这是第二段，解析得记清楚了</part>
+        <part>这是第三段，也是很重要的</part>
+        <part>ok,做个总结：好好干</part>
+    </parts>
+</article>

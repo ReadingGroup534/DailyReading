@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Map;
 import com.aiteu.http.factory.HttpHandler;
 import com.aiteu.http.xml.XmlDocument;
+import com.aiteu.http.xml.XmlParser;
 
 public class XmlHttpHandler implements HttpHandler{
 
@@ -24,11 +25,14 @@ public class XmlHttpHandler implements HttpHandler{
 			conn.setInstanceFollowRedirects(true);
 			conn.setRequestProperty("Content-Type", "text/html;charset=UTF-8");
 			conn.setRequestProperty("Connection", "Keep-Alive"); 
+			if(conn.getResponseCode() == 200){
+				in = conn.getInputStream();
+			}
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 		
-		return null;
+		return in;
 	}
 
 	@Override
@@ -39,5 +43,18 @@ public class XmlHttpHandler implements HttpHandler{
 	
 	public XmlDocument getXml(String url){
 		InputStream xmlStream = doGet(url);
+		if(xmlStream == null){
+			return null;
+		}
+		XmlParser parser = XmlParser.getParser();
+		return parser.getDocument(xmlStream);
+	}
+	
+	public XmlDocument getXml(InputStream in){
+		if(in == null){
+			return null;
+		}
+		XmlParser parser = XmlParser.getParser();
+		return parser.getDocument(in);
 	}
 }
