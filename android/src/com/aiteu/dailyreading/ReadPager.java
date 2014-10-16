@@ -21,9 +21,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Contacts.Intents.Insert;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -79,26 +79,26 @@ public class ReadPager extends Activity implements OnClickListener,
 	private WindowManager.LayoutParams lp;
 	
 	// 实例化Handler
-//	public Handler myHandler = new Handler() {
-//		//接收子线程的消息，同时更新UI
-//		public void handleMessage(Message msg) {
-//			switch (msg.what) {
-//			case 0:
-//				begin = msg.arg1;
-//				pageFactory.setM_mbBufBegin(begin);
-//				pageFactory.setM_mbBufEnd(begin);
-//				postInvalidateUI();
-//				break;
-//			case 1:
-//				pageFactory.setM_mbBufBegin(begin);
-//				pageFactory.setM_mbBufEnd(begin);
-//				postInvalidateUI();
-//				break;
-//			default:
-//				break;
-//			}
-//		}
-//	};
+	public Handler myHandler = new Handler() {
+		//接收子线程的消息，同时更新UI
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 0:
+				begin = msg.arg1;
+				pageFactory.setM_mbBufBegin(begin);
+				pageFactory.setM_mbBufEnd(begin);
+				postInvalidateUI();
+				break;
+			case 1:
+				pageFactory.setM_mbBufBegin(begin);
+				pageFactory.setM_mbBufEnd(begin);
+				postInvalidateUI();
+				break;
+			default:
+				break;
+			}
+		}
+	};
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -221,7 +221,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		});
 
 		setPop();
-		
+		//设置亮度
 		lp = getWindow().getAttributes();
 		lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
 		getWindow().setAttributes(lp);
@@ -230,7 +230,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		 * 根据传递的路径打开书
 		 */
 		try {
-			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+			pageFactory.openbook("/sdcard/dlna_log.txt");
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -422,6 +422,19 @@ public class ReadPager extends Activity implements OnClickListener,
 	private void setLight() {
 		try {
 			light = seekBar2.getProgress();
+			// 当进度小于80时，设置成80，防止太黑看不见的后果。  
+			if (light < 80) {
+				light = 80;
+			}
+            // 根据当前进度改变亮度  
+            Settings.System.putInt(getContentResolver(),  
+                    Settings.System.SCREEN_BRIGHTNESS, light);  
+            light = Settings.System.getInt(getContentResolver(),  
+                    Settings.System.SCREEN_BRIGHTNESS, -1);  
+           //设置亮度
+    		lp = getWindow().getAttributes();
+    		lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
+    		getWindow().setAttributes(lp);
 			editor.putInt("light", light);
 			if (isNight) {
 				editor.putBoolean("night", true);

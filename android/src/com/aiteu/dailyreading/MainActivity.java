@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -82,6 +83,17 @@ public class MainActivity extends FragmentActivity {
 		new Thread(testXmlParse).start();
 	}
 	
+//	final Runnable testApiRunnable = new Runnable() {
+//		
+//		@Override
+//		public void run() {
+//			JsonHttpFactory jsonFactory = new JsonHttpFactory();
+//			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
+//			//FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
+//			JSONObject json = jsonHandler.getJson("http://192.168.2.101:8080/reading-web/api/browse.json", null);
+//			System.out.println(json.toString());
+//		}
+//	};
 	final Runnable testXmlParse = new Runnable() {
 		
 		@Override
@@ -89,7 +101,7 @@ public class MainActivity extends FragmentActivity {
 			XmlHttpFactory xmlFactory = new XmlHttpFactory();
 			XmlHttpHandler xmlHandler = (XmlHttpHandler)xmlFactory.create();
 			try {
-				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("detail.xml"));
+				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("books.xml"));
 				System.out.println(xmlDoc.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
