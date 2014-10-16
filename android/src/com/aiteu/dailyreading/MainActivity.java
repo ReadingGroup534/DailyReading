@@ -6,6 +6,7 @@ import com.aiteu.http.factory.HttpFactory;
 import com.aiteu.http.factory.HttpHandler;
 import com.aiteu.http.factory.JsonHttpFactory;
 import com.aiteu.http.handler.JsonHttpHandler;
+import com.aiteu.http.util.NetWorkHelper;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -34,8 +35,10 @@ public class MainActivity extends FragmentActivity {
 	private RelativeLayout mLeftLayout;
 	private ListView mLeftListView;
 	private Boolean isNetworkOpen = false;
+	private Boolean isWifi, isMoblile;
 	private long exitTime = 0;
 	private ActionBar actionBar;
+	private NetWorkHelper netWorkHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +49,18 @@ public class MainActivity extends FragmentActivity {
 //		actionBar=getActionBar();
 //        actionBar.show();
 				
-		isNetworkOpen = isNetworkAvailable(getApplicationContext());
+		isNetworkOpen = netWorkHelper.isNetAvailable(getApplicationContext());
 		if (isNetworkOpen == false) {
 			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！", Toast.LENGTH_LONG).show();
+		}else {
+			isWifi = netWorkHelper.isWifi(getApplicationContext());
+			if (isWifi) {
+				Toast.makeText(getApplication(), "当前使用的是WIFI网络，尽情阅读吧！", Toast.LENGTH_SHORT).show();
+			}else {
+				Toast.makeText(getApplication(), "当前使用的是手机移动网络，请注意流量使用情况！", Toast.LENGTH_SHORT).show();
+			}
 		}
+		
 //		findViewById();
 //		mLeftListView.setAdapter(new ArrayAdapter<String>(this,
 //				android.R.layout.simple_expandable_list_item_1, TITLES));
@@ -62,7 +73,7 @@ public class MainActivity extends FragmentActivity {
 		ft.replace(R.id.fragment_layout, fragment);
 		ft.commit();
 		//FIXME 仅供测试使用
-		new Thread(testApiRunnable).run();
+//		new Thread(testApiRunnable).run();
 	}
 	
 	final Runnable testApiRunnable = new Runnable() {
@@ -72,7 +83,7 @@ public class MainActivity extends FragmentActivity {
 			JsonHttpFactory jsonFactory = new JsonHttpFactory();
 			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
 			//FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
-			JSONObject json = jsonHandler.getJson("http://192.168.1.192:8080/reading-web/api/browse.json", null);
+			JSONObject json = jsonHandler.getJson("http://192.168.2.101:8080/reading-web/api/browse.json", null);
 			System.out.println(json.toString());
 		}
 	};
@@ -121,18 +132,6 @@ public class MainActivity extends FragmentActivity {
 
 	}*/
 	
-	public static boolean isNetworkAvailable(Context context) { 
-        ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE); 
-        NetworkInfo[] info = mgr.getAllNetworkInfo(); 
-        if (info != null) { 
-            for (int i = 0; i < info.length; i++) { 
-                if (info[i].getState() == NetworkInfo.State.CONNECTED) { 
-                    return true; 
-                } 
-            } 
-        } 
-        return false; 
-    }
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

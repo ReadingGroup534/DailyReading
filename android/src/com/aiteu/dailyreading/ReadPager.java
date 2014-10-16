@@ -132,6 +132,11 @@ public class ReadPager extends Activity implements OnClickListener,
 		mNextCanvas = new Canvas(mNextPageBitmap);
 		
 //		pageFactory = new PageFactory(screenWidth, readHeight);
+		// 提取记录在sharedpreferences的各种状态
+		sp = getSharedPreferences("config", MODE_PRIVATE);
+		editor = sp.edit();
+		getSize();// 获取配置文件中的size大小
+		getLight();// 获取配置文件中的light值
 		
 		pageFactory = new PagerFactory(screenWidth, readHeight);
 		if (isNight) {
@@ -216,12 +221,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		});
 
 		setPop();
-		// 提取记录在sharedpreferences的各种状态
-		sp = getSharedPreferences("config", MODE_PRIVATE);
-		editor = sp.edit();
-		getSize();// 获取配置文件中的size大小
-		getLight();// 获取配置文件中的light值
-
+		
 		lp = getWindow().getAttributes();
 		lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
 		getWindow().setAttributes(lp);
