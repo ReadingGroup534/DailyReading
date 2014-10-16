@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
-import com.aiteu.http.factory.HttpHandler;
+
+import com.aiteu.http.inteface.HttpHandler;
 import com.aiteu.http.xml.XmlDocument;
 import com.aiteu.http.xml.XmlParser;
 

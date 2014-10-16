@@ -1,6 +1,7 @@
 package com.aiteu.http.factory;
 
 import com.aiteu.http.handler.XmlHttpHandler;
+import com.aiteu.http.inteface.HttpHandler;
 
 public class XmlHttpFactory extends HttpFactory{
 

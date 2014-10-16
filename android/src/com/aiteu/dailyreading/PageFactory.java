@@ -61,7 +61,7 @@ public class PageFactory {
 
 		mVisibleHeight = mHeight - marginHeight * 2;
 		mVisibleWidth = mWidth - marginWidth * 2;
-		mLineCount = (int) (mVisibleHeight / m_fontSize) ;//- 1; // 可显示的行数,-1是因为底部显示进度的位置容易被遮住
+		mLineCount = (int) (mVisibleHeight / m_fontSize) - 1; // 可显示的行数,-1是因为底部显示进度的位置容易被遮住
 	}
 
 	// 当前页

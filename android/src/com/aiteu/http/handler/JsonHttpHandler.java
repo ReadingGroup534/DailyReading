@@ -22,7 +22,7 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.aiteu.http.factory.HttpHandler;
+import com.aiteu.http.inteface.HttpHandler;
 import com.aiteu.http.util.ConvertUtil;
 
 public class JsonHttpHandler implements HttpHandler{

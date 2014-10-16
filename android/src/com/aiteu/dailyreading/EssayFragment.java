@@ -429,36 +429,36 @@ public class EssayFragment extends Fragment {
 		try {
 			// InputStream is = new FileInputStream(file);
 			InputStream is = am.open("books.xml");
-			SAXBookParser saxBookParser = new SAXBookParser();
-			try {
-				booklist = saxBookParser.readXML(is);
-				for (int i = 0; i < pageSize; i++) {
-					map = new HashMap<String, Object>();
+//			SAXBookParser saxBookParser = new SAXBookParser();
+//			try {
+//				booklist = saxBookParser.readXML(is);
+//				for (int i = 0; i < pageSize; i++) {
+//					map = new HashMap<String, Object>();
+//
+//					// for (int j = 0; j < booklist.size(); j++) {
+//					title1 = booklist.get(i).getTitle();
+//					abstracts = booklist.get(i).getAbstracts();
+//					author = booklist.get(i).getAuthor();
+//					create_time = booklist.get(i).getCreate_time();
+//					recommend_star = booklist.get(i).getRecommend_star();
+//					content = booklist.get(i).getContent();
+//					source = booklist.get(i).getSource();
+//					Log.i("lyc", "title:" + title1);
+//					Log.i("lyc", "content:" + content);
+//					Log.i("lyc", "abstracts:" + abstracts);
+//					Log.i("lyc", "author:" + author);
+//					Log.i("lyc", "recommend_star:" + recommend_star);
+//					Log.i("lyc","source:" + source);
 
-					// for (int j = 0; j < booklist.size(); j++) {
-					title1 = booklist.get(i).getTitle();
-					abstracts = booklist.get(i).getAbstracts();
-					author = booklist.get(i).getAuthor();
-					create_time = booklist.get(i).getCreate_time();
-					recommend_star = booklist.get(i).getRecommend_star();
-					content = booklist.get(i).getContent();
-					source = booklist.get(i).getSource();
-					Log.i("lyc", "title:" + title1);
-					Log.i("lyc", "content:" + content);
-					Log.i("lyc", "abstracts:" + abstracts);
-					Log.i("lyc", "author:" + author);
-					Log.i("lyc", "recommend_star:" + recommend_star);
-					Log.i("lyc","source:" + source);
-
-					map.put("title", title1);
-					map.put("text", content);
-					
-					list.add(map);
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//					map.put("title", title1);
+//					map.put("text", content);
+//					
+//					list.add(map);
+//				}
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

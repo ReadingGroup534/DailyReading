@@ -1,7 +1,10 @@
 <article>
     <title>这是一个测试xml解析的例子</title>
+    <abstract>这只是文章的摘要而已</abstract>
     <author>liwei</author>
     <time>2014-10-16 12:44</time>
+    <sharetime>5</sharetime>
+    <articletype>情感</articletype>
     <parts>
         <part>这是地一段，废话就不多说了</part>
         <part>这是第二段，解析得记清楚了</part>

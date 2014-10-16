@@ -5,11 +5,11 @@ import java.io.IOException;
 import org.json.JSONObject;
 
 import com.aiteu.http.factory.HttpFactory;
-import com.aiteu.http.factory.HttpHandler;
 import com.aiteu.http.factory.JsonHttpFactory;
 import com.aiteu.http.factory.XmlHttpFactory;
 import com.aiteu.http.handler.JsonHttpHandler;
 import com.aiteu.http.handler.XmlHttpHandler;
+import com.aiteu.http.inteface.HttpHandler;
 import com.aiteu.http.util.NetWorkHelper;
 import com.aiteu.http.xml.XmlDocument;
 

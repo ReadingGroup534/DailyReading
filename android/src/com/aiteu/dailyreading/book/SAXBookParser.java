@@ -6,13 +6,16 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.aiteu.http.inteface.ArticleParser;
+import com.aiteu.http.xml.XmlDocument;
 
-public class SAXBookParser implements BookParser {
+
+public class SAXBookParser implements ArticleParser {
 
 	@Override
-	public List<BookBean> readXML(InputStream is) throws Exception {
+	public XmlDocument readXML(InputStream is) throws Exception {
 		// TODO Auto-generated method stub
-		List<BookBean> books = null;
+		XmlDocument documents = null;
 		try {
 			// 取得SAXParserFactory实例
 			SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -24,9 +27,7 @@ public class SAXBookParser implements BookParser {
 			XMLContentHandler handler = new XMLContentHandler();
 			saxParser.parse(is, handler);
 			is.close();
-
-			books = handler.getBookBeans();
-			return books;
+			return documents;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,10 +36,12 @@ public class SAXBookParser implements BookParser {
 	}
 
 	@Override
-	public String serialize(List<BookBean> books) throws Exception {
+	public String serialize(List<XmlDocument> books) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 	
 
 }

@@ -14,8 +14,11 @@ import android.util.Log;
  * xml文件解析器：主要是把xml解析成想要的文档结构
  * <article>
  * <title></title>
+ * <abstract></abstract>
  * <author></author>
  * <time></time>
+ * <sharetime></sharetime>
+ * <articletype></articletype>
  * <parts>
  * <part></part>
  * ......
@@ -69,12 +72,21 @@ public class XmlParser {
 						if(tagName.equals("title")){
 							String title = safeNextText(xmlParser);
 							document.setTitle(title);
+						}else if (tagName.equals("abstract")) {
+							String abstractStr = safeNextText(xmlParser);
+							document.setAbstracts(abstractStr);
 						}else if(tagName.equals("author")){
 							String author = safeNextText(xmlParser);
 							document.setAuthor(author);
 						}else if(tagName.equals("time")){
 							String time = safeNextText(xmlParser);
 							document.setTime(time);
+						}else if (tagName.equals("sharetime")) {
+							int shareTime = Integer.parseInt(safeNextText(xmlParser));
+							document.setShare_times(shareTime);
+						}else if (tagName.equals("articletype")) {
+							String articletype = safeNextText(xmlParser);
+							document.setArticle_type(articletype);
 						}else if(tagName.equals("part")){
 							String partStr = safeNextText(xmlParser);
 							ArticlePart part = new ArticlePart(partStr);
