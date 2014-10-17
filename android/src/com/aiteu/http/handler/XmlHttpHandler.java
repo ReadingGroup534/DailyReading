@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.Map;
 
 import com.aiteu.http.inteface.HttpHandler;
-import com.aiteu.http.xml.SaxParser;
 import com.aiteu.http.xml.XmlDocument;
 import com.aiteu.http.xml.XmlParser;
 import com.aiteu.http.xml.XmlParser.ParserType;
@@ -61,7 +60,7 @@ public class XmlHttpHandler implements HttpHandler{
 		return parser.getDocument(in);
 	}
 	
-	public XmlDocument getSaXml(String url) {
+/*	public XmlDocument getSaXml(String url) {
 		XmlDocument document = null;
 		InputStream saxInputStream = doGet(url);
 		
@@ -91,5 +90,5 @@ public class XmlHttpHandler implements HttpHandler{
 			e.printStackTrace();
 		}
 		return document;
-	}
+	}*/
 }

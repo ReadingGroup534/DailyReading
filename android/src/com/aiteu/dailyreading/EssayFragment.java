@@ -11,7 +11,8 @@ import java.util.Map;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.book.SAXBookParser;
-import com.aiteu.http.xml.SaxParser;
+import com.aiteu.http.factory.XmlHttpFactory;
+import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
 
 import android.content.Context;
@@ -424,25 +425,24 @@ public class EssayFragment extends Fragment {
 		String source = null;
 		int recommend_star;
 		AssetManager am = mContext.getAssets();
-
 		// File file = new File("file:///android_asset/books.xml");
 		// if (!file.exists()) {
 		// Log.i("lyc","路徑不存在");
 		// }else {
 		try {
-			// InputStream is = new FileInputStream(file);
+//			InputStream is = new FileInputStream(file);
 			InputStream is = am.open("detail.xml");
-			SaxParser saxParser = new SaxParser();
-			try {
-				map = new HashMap<String, Object>();
-				document = saxParser.readXML(is);
-				map.put("content", document);
-				map.put("title", "第" + pageStart + "条会话");
-				System.out.println(document.toString());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			SaxParser saxParser = new SaxParser();
+//			try {
+//				map = new HashMap<String, Object>();
+//				document = saxParser.readXML(is);
+//				map.put("content", document);
+//				map.put("title", "第" + pageStart + "条会话");
+//				System.out.println(document.toString());
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 //			SAXBookParser saxBookParser = new SAXBookParser();
 //			try {
 //				booklist = saxBookParser.readXML(is);
@@ -473,9 +473,9 @@ public class EssayFragment extends Fragment {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
