@@ -9,6 +9,7 @@ import java.util.Map;
 import com.aiteu.http.inteface.HttpHandler;
 import com.aiteu.http.xml.XmlDocument;
 import com.aiteu.http.xml.XmlParser;
+import com.aiteu.http.xml.XmlParser.ParserType;
 
 public class XmlHttpHandler implements HttpHandler{
 
@@ -47,7 +48,7 @@ public class XmlHttpHandler implements HttpHandler{
 		if(xmlStream == null){
 			return null;
 		}
-		XmlParser parser = XmlParser.getParser();
+		XmlParser parser = XmlParser.getParser(ParserType.PULL_PARSER);
 		return parser.getDocument(xmlStream);
 	}
 	
@@ -55,7 +56,7 @@ public class XmlHttpHandler implements HttpHandler{
 		if(in == null){
 			return null;
 		}
-		XmlParser parser = XmlParser.getParser();
+		XmlParser parser = XmlParser.getParser(ParserType.SAX_PARSER);
 		return parser.getDocument(in);
 	}
 }

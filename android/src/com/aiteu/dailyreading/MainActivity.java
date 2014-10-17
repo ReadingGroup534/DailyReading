@@ -101,8 +101,8 @@ public class MainActivity extends FragmentActivity {
 			XmlHttpFactory xmlFactory = new XmlHttpFactory();
 			XmlHttpHandler xmlHandler = (XmlHttpHandler)xmlFactory.create();
 			try {
-				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("books.xml"));
-				System.out.println(xmlDoc.toString());
+				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("detail.xml"));
+				Log.d("test", xmlDoc.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
