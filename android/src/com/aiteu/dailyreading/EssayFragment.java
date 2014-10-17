@@ -11,6 +11,8 @@ import java.util.Map;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.book.SAXBookParser;
+import com.aiteu.http.xml.SaxParser;
+import com.aiteu.http.xml.XmlDocument;
 
 import android.content.Context;
 import android.content.Intent;
@@ -413,6 +415,7 @@ public class EssayFragment extends Fragment {
 		Map<String, Object> map;
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		List<BookBean> booklist = null;
+		XmlDocument document = null;
 		String title1 = null;
 		String content = null;
 		String author = null;
@@ -428,7 +431,18 @@ public class EssayFragment extends Fragment {
 		// }else {
 		try {
 			// InputStream is = new FileInputStream(file);
-			InputStream is = am.open("books.xml");
+			InputStream is = am.open("detail.xml");
+			SaxParser saxParser = new SaxParser();
+			try {
+				map = new HashMap<String, Object>();
+				document = saxParser.readXML(is);
+				map.put("content", document);
+				map.put("title", "第" + pageStart + "条会话");
+				System.out.println(document.toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 //			SAXBookParser saxBookParser = new SAXBookParser();
 //			try {
 //				booklist = saxBookParser.readXML(is);

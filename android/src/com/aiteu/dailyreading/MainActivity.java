@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity {
 		ft.commit();
 		//FIXME 仅供测试使用
 //		new Thread(testApiRunnable).start();
-		new Thread(testXmlParse).start();
+		new Thread(testSaxParser).start();
 	}
 	
 //	final Runnable testApiRunnable = new Runnable() {
@@ -94,6 +94,24 @@ public class MainActivity extends FragmentActivity {
 //			System.out.println(json.toString());
 //		}
 //	};
+	
+	final Runnable testSaxParser = new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
+			XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
+			try {
+				XmlDocument xmlDocument = xmlHttpHandler.getSaXml(getAssets().open("detail.xml"));
+				System.out.println(xmlDocument.toString());
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+	};
+	
 	final Runnable testXmlParse = new Runnable() {
 		
 		@Override
@@ -101,14 +119,20 @@ public class MainActivity extends FragmentActivity {
 			XmlHttpFactory xmlFactory = new XmlHttpFactory();
 			XmlHttpHandler xmlHandler = (XmlHttpHandler)xmlFactory.create();
 			try {
+<<<<<<< HEAD
 				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("detail.xml"));
 				Log.d("test", xmlDoc.toString());
+=======
+				XmlDocument xmlDoc = xmlHandler.getPullXml(getAssets().open("books.xml"));
+				System.out.println(xmlDoc.toString());
+>>>>>>> e33a480ec8b796889d255f6817c0f4d3c2e669d2
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	};
+	
 	final Runnable testApiRunnable = new Runnable() {
 		
 		@Override
