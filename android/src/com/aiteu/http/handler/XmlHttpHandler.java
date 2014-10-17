@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Map;
 
 import com.aiteu.http.inteface.HttpHandler;
+import com.aiteu.http.xml.SaxParser;
 import com.aiteu.http.xml.XmlDocument;
 import com.aiteu.http.xml.XmlParser;
 
@@ -42,7 +43,7 @@ public class XmlHttpHandler implements HttpHandler{
 		return null;
 	}
 	
-	public XmlDocument getXml(String url){
+	public XmlDocument getPullXml(String url){
 		InputStream xmlStream = doGet(url);
 		if(xmlStream == null){
 			return null;
@@ -51,11 +52,43 @@ public class XmlHttpHandler implements HttpHandler{
 		return parser.getDocument(xmlStream);
 	}
 	
-	public XmlDocument getXml(InputStream in){
+	public XmlDocument getPullXml(InputStream in){
 		if(in == null){
 			return null;
 		}
 		XmlParser parser = XmlParser.getParser();
 		return parser.getDocument(in);
+	}
+	
+	public XmlDocument getSaXml(String url) {
+		XmlDocument document = null;
+		InputStream saxInputStream = doGet(url);
+		
+		if (saxInputStream == null) {
+			return null;
+		}
+		SaxParser saxParser = new SaxParser();
+		try {
+			document = saxParser.readXML(saxInputStream);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return document;
+	}
+	
+	public XmlDocument getSaXml(InputStream in) {
+		XmlDocument document = null;
+		if (in == null) {
+			return null;
+		}
+		SaxParser saxParser = new SaxParser();
+		try {
+			document = saxParser.readXML(in);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return document;
 	}
 }

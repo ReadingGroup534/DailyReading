@@ -26,7 +26,7 @@ public class SaxParser implements ArticleParser{
 			// 从factory获取SAXParser实例
 			saxParser = saxParserFactory.newSAXParser();
 			 //设置解析器的相关特性，true表示开启命名空间特性 
-            saxParser.setProperty("http://xml.org/sax/features/namespaces",true);
+//            saxParser.setProperty("http://xml.org/sax/features/namespaces",true);
             //实例化自定义的Handler
             XmlDocumentHandler handler = new XmlDocumentHandler();
             saxParser.parse(is, handler);

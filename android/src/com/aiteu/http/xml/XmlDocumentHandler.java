@@ -6,9 +6,12 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlDocumentHandler extends DefaultHandler{
 	
-	private String tagName = null;
+	private String tagName = null;  	//当前解析元素的标签
 	private XmlDocument document = null;
 	
+	public XmlDocument getDocument(){
+		return document;
+	}
 
 	@Override
 	public void characters(char[] ch, int start, int length)
@@ -32,6 +35,7 @@ public class XmlDocumentHandler extends DefaultHandler{
 				ArticlePart part = new ArticlePart();
 				document.addArticlePart(part);
 			}
+			System.out.println(document.toString());
 		}
 	}
 
@@ -45,6 +49,7 @@ public class XmlDocumentHandler extends DefaultHandler{
 		// TODO Auto-generated method stub
 		 tagName= localName.length()!=0?localName:qName;
 		 tagName = tagName.toLowerCase().trim();
+		 System.out.println(tagName);
 	}
 
 	@Override
