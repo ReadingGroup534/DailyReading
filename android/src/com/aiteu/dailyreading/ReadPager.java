@@ -7,6 +7,8 @@ import java.util.Date;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
+import com.aiteu.http.xml.XmlDocument;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -72,7 +74,7 @@ public class ReadPager extends Activity implements OnClickListener,
 	private int light; // 亮度值
 	private Boolean isNight = false; // 亮度模式,白天和晚上
 	private PagerFactory pageFactory;
-	private BookBean bookBean;
+	private XmlDocument xmlDoc;
 	private TextView bookBtn1, bookBtn2, bookBtn3, bookBtn4;
 	private SeekBar seekBar1, seekBar2, seekBar3;
 	private SharedPreferences.Editor editor;
@@ -111,7 +113,7 @@ public class ReadPager extends Activity implements OnClickListener,
 //				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		mContext = getBaseContext();
-		bookBean = new BookBean();
+		xmlDoc = new XmlDocument();
 //		WindowManager manager = getWindowManager();
 //		Display display = manager.getDefaultDisplay();
 //		screenHeight = display.getHeight();
@@ -210,7 +212,7 @@ public class ReadPager extends Activity implements OnClickListener,
 									mNextPageBitmap);
 						}
 
-						editor.putInt(bookBean.getSource() + "begin", begin)
+						editor.putInt(xmlDoc.getContent().toString() + "begin", begin)
 								.commit();
 						ret = mPageWidget.doTouchEvent(event);
 						return ret;
@@ -230,14 +232,14 @@ public class ReadPager extends Activity implements OnClickListener,
 		 * 根据传递的路径打开书
 		 */
 		try {
-			pageFactory.openbook("/sdcard/dlna_log.txt");
+			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			Toast.makeText(this, "电子书不存在！请把电子书放到SDCard更目录下...", Toast.LENGTH_SHORT).show();
 		}
 		
-		begin = sp.getInt(bookBean.getSource() + "begin", 0);
+		begin = sp.getInt(xmlDoc.getContent().toString() + "begin", 0);
 	}
 
 	/**
@@ -266,7 +268,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			int percent = seekBar3.getProgress();
 			percenTextView.setText(percent + "%");
 			begin = (pageFactory.getM_mbBufLen()*percent) /100;
-			editor.putInt(bookBean.getSource()+"begin", begin).commit();
+			editor.putInt(xmlDoc.getContent().toString()+"begin", begin).commit();
 			pageFactory.setM_mbBufBegin(begin);
 			pageFactory.setM_mbBufEnd(begin);
 			try {

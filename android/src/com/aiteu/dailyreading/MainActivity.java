@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity {
 			XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
 			XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
 			try {
-				XmlDocument xmlDocument = xmlHttpHandler.getPullXml(getAssets().open("detail.xml"));
+				XmlDocument xmlDocument = xmlHttpHandler.getXml(getAssets().open("detail.xml"));
 				System.out.println(xmlDocument.toString());
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -121,7 +121,7 @@ public class MainActivity extends FragmentActivity {
 			try {
 //				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("detail.xml"));
 //				Log.d("test", xmlDoc.toString());
-				XmlDocument xmlDoc = xmlHandler.getPullXml(getAssets().open("books.xml"));
+				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("books.xml"));
 				System.out.println(xmlDoc.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

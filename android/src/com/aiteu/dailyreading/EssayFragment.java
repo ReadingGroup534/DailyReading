@@ -117,7 +117,7 @@ public class EssayFragment extends Fragment {
 		head_arrowImageView = (ImageView) headView
 				.findViewById(R.id.head_arrowImageView);
 
-		data = initValue(1, 15);
+		data = initValue(1, 8);
 		adapter = new SimpleAdapter(mFragmentActivity, data,
 				android.R.layout.simple_expandable_list_item_2, new String[] {
 						"title", "text" }, new int[] { android.R.id.text1,
@@ -429,64 +429,20 @@ public class EssayFragment extends Fragment {
 		// if (!file.exists()) {
 		// Log.i("lyc","路徑不存在");
 		// }else {
-		try {
-//			InputStream is = new FileInputStream(file);
-			InputStream is = am.open("detail.xml");
-//			SaxParser saxParser = new SaxParser();
-//			try {
-//				map = new HashMap<String, Object>();
-//				document = saxParser.readXML(is);
-//				map.put("content", document);
-//				map.put("title", "第" + pageStart + "条会话");
-//				System.out.println(document.toString());
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			SAXBookParser saxBookParser = new SAXBookParser();
-//			try {
-//				booklist = saxBookParser.readXML(is);
-//				for (int i = 0; i < pageSize; i++) {
-//					map = new HashMap<String, Object>();
-//
-//					// for (int j = 0; j < booklist.size(); j++) {
-//					title1 = booklist.get(i).getTitle();
-//					abstracts = booklist.get(i).getAbstracts();
-//					author = booklist.get(i).getAuthor();
-//					create_time = booklist.get(i).getCreate_time();
-//					recommend_star = booklist.get(i).getRecommend_star();
-//					content = booklist.get(i).getContent();
-//					source = booklist.get(i).getSource();
-//					Log.i("lyc", "title:" + title1);
-//					Log.i("lyc", "content:" + content);
-//					Log.i("lyc", "abstracts:" + abstracts);
-//					Log.i("lyc", "author:" + author);
-//					Log.i("lyc", "recommend_star:" + recommend_star);
-//					Log.i("lyc","source:" + source);
-
-//					map.put("title", title1);
-//					map.put("text", content);
-//					
-//					list.add(map);
-//				}
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-		} catch (IOException e1) {
+		for (int i = 0; i < pageSize; i++) {
+		 map = new HashMap<String, Object>();
+		 XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
+		 XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
+		 try {
+			XmlDocument doc = xmlHttpHandler.getXml(mContext.getAssets().open("detail.xml"));
+			map.put("text", doc.getAuthor().toString());
+			map.put("title", doc.getTitle().toString());
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
-
-		// map.put("text","定義會話列表");
-		// map.put("title", "第" + pageStart + "条会话");
-		// ++pageStart;
-
-		// }
-		// }
+		 list.add(map);
+		 }
 		return list;
 	}
 

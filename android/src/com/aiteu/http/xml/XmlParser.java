@@ -190,7 +190,7 @@ public class XmlParser {
 				e.printStackTrace();
 			}
 
-		}
+		} 
 		return document;
 	}
 
@@ -211,6 +211,7 @@ public class XmlParser {
 		public SaxHandler(XmlDocument doc) {
 			this.document = doc;
 		}
+	
 
 		@Override
 		public void startDocument() throws SAXException {

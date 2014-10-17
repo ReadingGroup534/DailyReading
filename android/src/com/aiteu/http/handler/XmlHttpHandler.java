@@ -43,7 +43,7 @@ public class XmlHttpHandler implements HttpHandler{
 		return null;
 	}
 	
-	public XmlDocument getPullXml(String url){
+	public XmlDocument getXml(String url){
 		InputStream xmlStream = doGet(url);
 		if(xmlStream == null){
 			return null;
@@ -52,7 +52,7 @@ public class XmlHttpHandler implements HttpHandler{
 		return parser.getDocument(xmlStream);
 	}
 	
-	public XmlDocument getPullXml(InputStream in){
+	public XmlDocument getXml(InputStream in){
 		if(in == null){
 			return null;
 		}
