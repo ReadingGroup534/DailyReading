@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.aiteu.reading.api.service.ApiService;
 import com.aiteu.reading.core.JsonConvertUtils;
@@ -25,9 +27,10 @@ public class ApiController {
 	private ApiService apiService;
 	
 	@RequestMapping("/api/browse")
-	public void apiBrowse(HttpServletRequest req, HttpServletResponse res){
+	public String apiBrowse(ModelMap modelMap){
 		Map<String, Object> data = apiService.getAllBrowses();
-		JsonConvertUtils.outJson(res, data);
+		modelMap.putAll(data);
+		return "/api/browse.json";
 	}
 	
 	@RequestMapping("/api/daily")

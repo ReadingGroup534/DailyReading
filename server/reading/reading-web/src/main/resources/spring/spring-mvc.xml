@@ -23,31 +23,24 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 	
-	<!-- freemarker的配置 -->  
-    <bean id="freemarkerConfigurer"  
-        class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
-        <property name="templateLoaderPath" value="/WEB-INF/page/" />  
-        <property name="defaultEncoding" value="UTF-8" />  
-        <property name="freemarkerSettings">  
-            <props>  
-                <prop key="template_update_delay">10</prop>  
-                <prop key="locale">zh_CN</prop>  
-                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>  
-                <prop key="date_format">yyyy-MM-dd</prop>  
-                <prop key="number_format">#.##</prop>  
-            </props>  
-        </property>  
-    </bean>  
 	
-    <bean id="viewResolver"  
-        class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">  
-        <property name="viewClass"  
-            value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />  
-        <property name="suffix" value=".ftl" />  
-        <property name="contentType" value="text/html;charset=utf8" />  
-        <property name="exposeRequestAttributes" value="true" />  
-        <property name="exposeSessionAttributes" value="true" />  
-        <property name="exposeSpringMacroHelpers" value="true" />  
-    </bean>
+	
+	<!-- 多视图 -->
+	<bean id="viewResolver" class="com.aiteu.reading.web.view.MultiViewResover">
+	    <!-- 设置最高优先级别 -->
+	    <property name="order" value="0" />
+	    <!-- 定义名字后缀和视图解析器的映射 -->
+	    <property name="resolvers">
+	        <map>
+	            <entry key="json">
+	                <bean class="com.aiteu.reading.web.view.JsonViewResolver">
+	                    <property name="jsonView">
+	                        <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+	                    </property>
+	                </bean>
+	            </entry>
+	        </map>
+	    </property>
+	</bean>
 	
 </beans>
