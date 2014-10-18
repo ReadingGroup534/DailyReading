@@ -43,15 +43,34 @@ public class XmlHttpHandler implements HttpHandler{
 		return null;
 	}
 	
+	/**
+	 * 默认使用sax解析
+	 * @param url
+	 * @return
+	 */
 	public XmlDocument getXml(String url){
 		InputStream xmlStream = doGet(url);
 		if(xmlStream == null){
 			return null;
 		}
-		XmlParser parser = XmlParser.getParser(ParserType.PULL_PARSER);
+		XmlParser parser = XmlParser.getParser(ParserType.SAX_PARSER);
 		return parser.getDocument(xmlStream);
 	}
 	
+	public XmlDocument getXml(String url, ParserType pt){
+		InputStream xmlStream = doGet(url);
+		if(xmlStream == null){
+			return null;
+		}
+		XmlParser parser = XmlParser.getParser(pt);
+		return parser.getDocument(xmlStream);
+	}
+	
+	/**
+	 * 默认使用sax解析
+	 * @param in
+	 * @return
+	 */
 	public XmlDocument getXml(InputStream in){
 		if(in == null){
 			return null;
@@ -60,35 +79,11 @@ public class XmlHttpHandler implements HttpHandler{
 		return parser.getDocument(in);
 	}
 	
-/*	public XmlDocument getSaXml(String url) {
-		XmlDocument document = null;
-		InputStream saxInputStream = doGet(url);
-		
-		if (saxInputStream == null) {
+	public XmlDocument getXml(InputStream in,ParserType pt){
+		if(in == null){
 			return null;
 		}
-		SaxParser saxParser = new SaxParser();
-		try {
-			document = saxParser.readXML(saxInputStream);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return document;
+		XmlParser parser = XmlParser.getParser(pt);
+		return parser.getDocument(in);
 	}
-	
-	public XmlDocument getSaXml(InputStream in) {
-		XmlDocument document = null;
-		if (in == null) {
-			return null;
-		}
-		SaxParser saxParser = new SaxParser();
-		try {
-			document = saxParser.readXML(in);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return document;
-	}*/
 }

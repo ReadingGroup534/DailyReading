@@ -12,6 +12,7 @@ import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.inteface.HttpHandler;
 import com.aiteu.http.util.NetWorkHelper;
 import com.aiteu.http.xml.XmlDocument;
+import com.aiteu.http.xml.XmlParser.ParserType;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -103,7 +104,7 @@ public class MainActivity extends FragmentActivity {
 			XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
 			XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
 			try {
-				XmlDocument xmlDocument = xmlHttpHandler.getXml(getAssets().open("detail.xml"));
+				XmlDocument xmlDocument = xmlHttpHandler.getXml(getAssets().open("detail.xml"), ParserType.SAX_PARSER);
 				System.out.println(xmlDocument.toString());
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -121,7 +122,7 @@ public class MainActivity extends FragmentActivity {
 			try {
 //				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("detail.xml"));
 //				Log.d("test", xmlDoc.toString());
-				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("books.xml"));
+				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("books.xml"), ParserType.PULL_PARSER);
 				System.out.println(xmlDoc.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
