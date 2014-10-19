@@ -14,6 +14,7 @@ import com.aiteu.dailyreading.book.SAXBookParser;
 import com.aiteu.http.factory.XmlHttpFactory;
 import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
+import com.aiteu.http.xml.XmlParser.ParserType;
 
 import android.content.Context;
 import android.content.Intent;
@@ -434,7 +435,7 @@ public class EssayFragment extends Fragment {
 		 XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
 		 XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
 		 try {
-			XmlDocument doc = xmlHttpHandler.getXml(mContext.getAssets().open("detail.xml"));
+			XmlDocument doc = xmlHttpHandler.getXml(mContext.getAssets().open("detail.xml"), ParserType.SAX_PARSER);
 			map.put("text", doc.getAuthor().toString());
 			map.put("title", doc.getTitle().toString());
 		} catch (IOException e) {
