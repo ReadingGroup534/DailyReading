@@ -1,27 +1,26 @@
 package com.aiteu.admin.core.home.controller;
 
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.aiteu.admin.core.home.service.HomeService;
+
 @Controller
 public class IndexController {
 	
-	@RequestMapping("/")
-	public String indexRoot(HttpServletResponse res) throws IOException{
-		res.sendRedirect("/index");
-		return "home/index";
-	}
+	@Autowired
+	private HomeService homeService;
 	
-	@RequestMapping("/index")
-	public String index(ModelMap modelMap, HttpServletRequest request){
-		modelMap.put("body", "Hello Freemaker");
-		modelMap.put("request", request);
-		return "home/index";
+	@RequestMapping("/index.htm")
+	public String index(ModelMap modelMap, HttpServletRequest req){
+		
+		modelMap.put("indexs", homeService.getIndexList());
+		modelMap.put("base_context", req.getContextPath());
+		return "index.htm";
 	}
 }

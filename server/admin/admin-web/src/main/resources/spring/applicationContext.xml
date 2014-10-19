@@ -7,20 +7,25 @@
     		http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 	default-autowire="byType" default-lazy-init="true">
 	
-    <!-- freemarker的配置 -->  
-    <bean id="freemarkerConfig"  
-        class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
-        <property name="templateLoaderPath" value="/WEB-INF/page/" />  
-        <property name="defaultEncoding" value="UTF-8" />  
-        <property name="freemarkerSettings">  
-            <props>  
-                <prop key="template_update_delay">10</prop>  
-                <prop key="locale">zh_CN</prop>  
-                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>  
-                <prop key="date_format">yyyy-MM-dd</prop>  
-                <prop key="number_format">#.##</prop>  
-            </props>  
-        </property>  
-    </bean>  
+    <bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/classes/config/jdbc.properties"/>
+	</bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${database.driverClassName}"/>
+		<property name="url" value="${database.url}" />
+		<property name="username" value="${database.username}" />
+		<property name="password" value="${database.password}" />
+		<property name="maxActive" value="${database.maxActive}" />
+		<property name="maxIdle" value="${database.maxIdle}" />
+		<property name="maxWait" value="${database.maxWait}" />
+		<property name="initialSize" value="${database.initialSize}" />
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	    <property name="dataSource">
+	        <ref local="dataSource"/>
+	    </property>
+	</bean>
     
 </beans>
