@@ -28,7 +28,7 @@ public class MultiViewResover extends AbstractCachingViewResolver implements Ord
 		if(null == fileExtension){
 			return null;
 		}
-		
+		//System.out.println("extension : "+fileExtension+", name: "+StringUtils.filePrefix(viewName));
 		ViewResolver resolver = resolvers.get(fileExtension);
 		return resolver == null ? null : resolver.resolveViewName(StringUtils.filePrefix(viewName), locale);
 	}

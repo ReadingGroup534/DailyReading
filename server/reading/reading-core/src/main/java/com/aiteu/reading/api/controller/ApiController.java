@@ -26,11 +26,20 @@ public class ApiController {
 	@Autowired
 	private ApiService apiService;
 	
-	@RequestMapping("/api/browse")
+	@RequestMapping("/api/browse.json")
 	public String apiBrowse(ModelMap modelMap){
 		Map<String, Object> data = apiService.getAllBrowses();
 		modelMap.putAll(data);
 		return "/api/browse.json";
+	}
+	
+	@RequestMapping("/api/browse.htm")
+	public String browse(ModelMap modelMap){
+		modelMap.put("name", "aiteu");
+		modelMap.put("age", 24);
+		modelMap.put("words", "Welcome visit!");
+		
+		return "browse.htm";
 	}
 	
 	@RequestMapping("/api/daily")
