@@ -1,7 +1,12 @@
 package com.aiteu.dailyreading;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -9,6 +14,10 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.Vector;
+
+import com.aiteu.dailyreading.exception.ReadingIOException;
+import com.aiteu.http.util.StreamUtils;
+import com.aiteu.http.xml.XmlDocument;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,9 +35,9 @@ public class PagerFactory {
 	private Bitmap m_article_bg = null;
 	private int m_fontSize = 20;
 	private boolean m_isfirstPage, m_islastPage;
-	
+
 	private Vector<String> m_lines = new Vector<String>();
-	
+
 	private MappedByteBuffer m_mbBuf = null;// 内存中的图书字符
 	private int m_mbBufBegin = 0;// 当前页起始位置
 	private int m_mbBufEnd = 0;// 当前页终点位置
@@ -37,7 +46,7 @@ public class PagerFactory {
 
 	private String m_strCharsetCode = "utf-8";
 
-	private int m_textColor = Color.BLACK;//rgb(28,28,28);
+	private int m_textColor = Color.BLACK;// rgb(28,28,28);
 
 	private int marginHeight = 15; // 上下与边缘的距离
 	private int marginWidth = 15; // 左右与边缘的距离
@@ -58,7 +67,7 @@ public class PagerFactory {
 		mPaint.setTextAlign(Align.LEFT);
 		mPaint.setTextSize(m_fontSize);
 		mPaint.setColor(m_textColor);
-		
+
 		mVisibleWidth = mWidth - marginWidth * 2;
 		mVisibleHeight = mHeight - marginHeight * 2;
 		mLineCount = (int) (mVisibleHeight / m_fontSize); // 可显示的行数
@@ -68,9 +77,19 @@ public class PagerFactory {
 		book_file = new File(strFilePath);
 		long lLen = book_file.length();
 		m_mbBufLen = (int) lLen;
-		m_mbBuf = new RandomAccessFile(book_file, "r").getChannel().map(FileChannel.MapMode.READ_ONLY, 0, lLen);
+		// 内存映射文件,getChannel.map(FileChannel.MapMode mode, long position, long
+		// size)将此通道的文件区域直接映射到内存中。
+		m_mbBuf = new RandomAccessFile(book_file, "r").getChannel().map(
+				FileChannel.MapMode.READ_ONLY, 0, lLen);
 	}
-	
+
+	public void openXmlDoc(XmlDocument doc) throws ReadingIOException {
+		long lLen = doc.toString().length();
+		m_mbBufLen = (int) lLen;
+		StreamUtils.String2InputStream(doc.toString());
+	}
+
+
 	protected byte[] readParagraphBack(int nFromPos) {
 		int nEnd = nFromPos;
 		int i;
@@ -120,12 +139,11 @@ public class PagerFactory {
 		return buf;
 	}
 
-
 	// 读取上一段落
 	protected byte[] readParagraphForward(int nFromPos) {
 		int nStart = nFromPos;
 		int i = nStart;
-		byte b0, b1; 	// 根据编码格式判断换行
+		byte b0, b1; // 根据编码格式判断换行
 		if (m_strCharsetCode.equals("UTF-16LE")) {
 			while (i < m_mbBufLen - 1) {
 				b0 = m_mbBuf.get(i++);
@@ -164,7 +182,7 @@ public class PagerFactory {
 		String strParagraph = "";
 		Vector<String> lines = new Vector<String>();
 		while (lines.size() < mLineCount && m_mbBufEnd < m_mbBufLen) {
-			byte[] paraBuf = readParagraphForward(m_mbBufEnd);	// 读取一个段落
+			byte[] paraBuf = readParagraphForward(m_mbBufEnd); // 读取一个段落
 			m_mbBufEnd += paraBuf.length;// 每次读取后，记录结束点位置，该位置是段落结束位置
 			try {
 				strParagraph = new String(paraBuf, m_strCharsetCode);
@@ -257,9 +275,10 @@ public class PagerFactory {
 	protected void prePage() throws IOException {
 		if (m_mbBufBegin <= 0) {
 			m_mbBufBegin = 0;
-			m_isfirstPage=true;
+			m_isfirstPage = true;
 			return;
-		}else m_isfirstPage=false;
+		} else
+			m_isfirstPage = false;
 		m_lines.clear();
 		pageUp();
 		m_lines = pageDown();
@@ -267,9 +286,10 @@ public class PagerFactory {
 
 	public void nextPage() throws IOException {
 		if (m_mbBufEnd >= m_mbBufLen) {
-			m_islastPage=true;
+			m_islastPage = true;
 			return;
-		}else m_islastPage=false;
+		} else
+			m_islastPage = false;
 		m_lines.clear();
 		m_mbBufBegin = m_mbBufEnd;
 		m_lines = pageDown();
@@ -299,14 +319,15 @@ public class PagerFactory {
 	public void setBgBitmap(Bitmap BG) {
 		m_article_bg = BG;
 	}
-	
+
 	public boolean isM_firstPage() {
 		return m_isfirstPage;
 	}
+
 	public boolean isM_lastPage() {
 		return m_islastPage;
 	}
-	
+
 	public void setM_fontSize(int m_fontSize) {
 		this.m_fontSize = m_fontSize;
 		mLineCount = (int) (mVisibleHeight / m_fontSize) - 1;
@@ -345,7 +366,7 @@ public class PagerFactory {
 	public int getM_mbBufEnd() {
 		return m_mbBufEnd;
 	}
-	
+
 	public int getM_fontSize() {
 		return m_fontSize;
 	}

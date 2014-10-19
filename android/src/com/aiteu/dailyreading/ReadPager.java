@@ -7,6 +7,8 @@ import java.util.Date;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
+import com.aiteu.http.factory.XmlHttpFactory;
+import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
 
 import android.app.Activity;
@@ -79,6 +81,7 @@ public class ReadPager extends Activity implements OnClickListener,
 	private SeekBar seekBar1, seekBar2, seekBar3;
 	private SharedPreferences.Editor editor;
 	private WindowManager.LayoutParams lp;
+	private XmlDocument doc;
 	
 	// 实例化Handler
 	public Handler myHandler = new Handler() {
@@ -227,12 +230,22 @@ public class ReadPager extends Activity implements OnClickListener,
 		lp = getWindow().getAttributes();
 		lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
 		getWindow().setAttributes(lp);
-
+		
+		
+		 XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
+		 XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
+		 try {
+			doc = xmlHttpHandler.getXml(mContext.getAssets().open("detail.xml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/**
 		 * 根据传递的路径打开书
 		 */
 		try {
-			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+//			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+			pageFactory.openbook(doc.toString());
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
