@@ -25,7 +25,7 @@ import android.widget.Scroller;
  */
 public class PageWidget extends View {
 
-	private static final String TAG= "Point";
+	private static final String TAG= "PageWidget";
 	private int mScreenWidth ; // = 480; // 默認屏幕宽
 	private int mScreenHeight ; //= 800; // 默认屏幕高
 	private int mCornerX = 1; // 拖拽点对应的页脚
