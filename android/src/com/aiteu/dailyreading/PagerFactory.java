@@ -26,6 +26,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.text.format.Time;
 import android.util.Log;
 
 public class PagerFactory {
@@ -59,9 +60,10 @@ public class PagerFactory {
 	private int mLineCount; // 每页可以显示的行数
 	private Paint mPaint;
 
-	private float mVisibleHeight; // 绘制内容的高
-	private float mVisibleWidth; // 绘制内容的宽
-
+	private int mVisibleHeight; // 绘制内容的高
+	private int mVisibleWidth; // 绘制内容的宽
+	private int lineHeight;	//每行的高度
+	
 	public PagerFactory(int w, int h) {
 		this.mWidth = w;
 		this.mHeight = h;
@@ -72,7 +74,9 @@ public class PagerFactory {
 
 		mVisibleWidth = mWidth - marginWidth * 2;
 		mVisibleHeight = mHeight - marginHeight * 2;
-		mLineCount = (int) (mVisibleHeight / m_fontSize) - 1; // 可显示的行数
+		lineHeight = m_fontSize + 6;
+//		mLineCount = (int) (mVisibleHeight / m_fontSize) - 2; // 可显示的行数
+		mLineCount = mVisibleHeight / lineHeight -2;
 		m_isfirstPage = true;
 		m_islastPage = false;
 	}
@@ -316,12 +320,23 @@ public class PagerFactory {
 		float fPercent = (float) (m_mbBufBegin * 1.0 / m_mbBufLen);
 		DecimalFormat df = new DecimalFormat("#0.0");
 		String strPercent = df.format(fPercent * 100) + "%";
-		int nPercentWidth = (int) mPaint.measureText("999.9%") + 1;
+		
+		Time time = new Time();
+		time.setToNow();
+		String timeString;
+		if (time.minute < 10) {
+			timeString = "" + time.hour + " : 0" + time.minute;
+		}else {
+			timeString = "" + time.hour + ": " + time.minute;
+		}
+		int nPercentWidth = (int) mPaint.measureText("999.9%") + 2;
+		
+		c.drawText(timeString, marginWidth/2, mHeight - 5, mPaint);
 		c.drawText(strPercent, mWidth - nPercentWidth, mHeight - 5, mPaint);
 	}
 
-	public void setBgBitmap(Bitmap BG ,int height, int width) {
-		
+	public void setBgBitmap(Bitmap BG) {
+		m_article_bg = Bitmap.createScaledBitmap(BG, mWidth, mHeight, true);
 	}
 
 	public boolean isM_firstPage() {
@@ -334,7 +349,7 @@ public class PagerFactory {
 
 	public void setM_fontSize(int m_fontSize) {
 		this.m_fontSize = m_fontSize;
-		mLineCount = (int) (mVisibleHeight / m_fontSize) - 1;
+		mLineCount = mVisibleHeight / lineHeight -2;
 	}
 
 	// 设置页面起始点

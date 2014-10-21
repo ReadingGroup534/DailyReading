@@ -147,11 +147,11 @@ public class ReadPager extends Activity implements OnClickListener,
 		pageFactory = new PagerFactory(screenWidth, readHeight);
 		if (isNight) {
 			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-					getResources(), R.drawable.night_bg),screenHeight,screenWidth);
+					getResources(), R.drawable.night_bg));
 			pageFactory.setM_textColor(Color.rgb(128, 128, 128));
 		} else {
 			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-					getResources(), R.drawable.day_bg),screenHeight,screenWidth);
+					getResources(), R.drawable.day_bg));
 			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
 		}
 		
@@ -250,8 +250,8 @@ public class ReadPager extends Activity implements OnClickListener,
 		 * 根据传递的路径打开书
 		 */
 		try {
-//			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
-			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
+			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+//			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
 //			pageFactory.openbook(doc.toString());
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
@@ -370,13 +370,13 @@ public class ReadPager extends Activity implements OnClickListener,
 				imageBtn2.setImageResource(R.drawable.off);
 				isNight = false;
 				pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-						getResources(), R.drawable.day_bg),screenHeight,screenWidth);
+						getResources(), R.drawable.day_bg));
 			} else {
 				pageFactory.setM_textColor(Color.rgb(128, 128, 128));
 				imageBtn2.setImageResource(R.drawable.on);
 				isNight = true;
 				pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-						getResources(), R.drawable.night_bg),screenHeight,screenWidth);
+						getResources(), R.drawable.night_bg));
 			}
 			setLight();
 			pageFactory.setM_mbBufBegin(begin);
@@ -649,9 +649,9 @@ public class ReadPager extends Activity implements OnClickListener,
 				seekBar2.setProgress(light);
 				
 				if(isNight){
-					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg),screenHeight,screenWidth);
+					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg));
 				}else {
-					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg),screenHeight,screenWidth);
+					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg));
 				}
 				
 				if (isNight) {
