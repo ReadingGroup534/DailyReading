@@ -68,6 +68,7 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 		
+		
 //		findViewById();
 //		mLeftListView.setAdapter(new ArrayAdapter<String>(this,
 //				android.R.layout.simple_expandable_list_item_1, TITLES));

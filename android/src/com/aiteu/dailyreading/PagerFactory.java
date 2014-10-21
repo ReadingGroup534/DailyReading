@@ -19,7 +19,9 @@ import com.aiteu.dailyreading.exception.ReadingIOException;
 import com.aiteu.http.util.StreamUtils;
 import com.aiteu.http.xml.XmlDocument;
 
+import android.R.integer;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -51,8 +53,8 @@ public class PagerFactory {
 	private int marginHeight = 15; // 上下与边缘的距离
 	private int marginWidth = 15; // 左右与边缘的距离
 
-	private int mHeight;
-	private int mWidth;
+	private int mHeight;	// 屏幕高度
+	private int mWidth;		// 屏幕宽度
 
 	private int mLineCount; // 每页可以显示的行数
 	private Paint mPaint;
@@ -61,8 +63,8 @@ public class PagerFactory {
 	private float mVisibleWidth; // 绘制内容的宽
 
 	public PagerFactory(int w, int h) {
-		mWidth = w;
-		mHeight = h;
+		this.mWidth = w;
+		this.mHeight = h;
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setTextAlign(Align.LEFT);
 		mPaint.setTextSize(m_fontSize);
@@ -70,7 +72,9 @@ public class PagerFactory {
 
 		mVisibleWidth = mWidth - marginWidth * 2;
 		mVisibleHeight = mHeight - marginHeight * 2;
-		mLineCount = (int) (mVisibleHeight / m_fontSize); // 可显示的行数
+		mLineCount = (int) (mVisibleHeight / m_fontSize) - 1; // 可显示的行数
+		m_isfirstPage = true;
+		m_islastPage = false;
 	}
 
 	public void openbook(String strFilePath) throws IOException {
@@ -86,7 +90,7 @@ public class PagerFactory {
 	public void openXmlDoc(XmlDocument doc) throws ReadingIOException {
 		long lLen = doc.toString().length();
 		m_mbBufLen = (int) lLen;
-		StreamUtils.String2InputStream(doc.toString());
+		System.out.println(StreamUtils.String2InputStream(doc.toString()));
 	}
 
 
@@ -316,8 +320,8 @@ public class PagerFactory {
 		c.drawText(strPercent, mWidth - nPercentWidth, mHeight - 5, mPaint);
 	}
 
-	public void setBgBitmap(Bitmap BG) {
-		m_article_bg = BG;
+	public void setBgBitmap(Bitmap BG ,int height, int width) {
+		
 	}
 
 	public boolean isM_firstPage() {

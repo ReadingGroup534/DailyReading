@@ -347,7 +347,7 @@ public class PageWidget extends View {
 		calcPoints();
 		drawCurrentPageArea(canvas, mCurPageBitmap, mPath0);
 		drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
-		//drawCurrentPageShadow(canvas);
+		drawCurrentPageShadow(canvas);
 		drawCurrentBackArea(canvas, mCurPageBitmap);
 	}
 
@@ -571,7 +571,7 @@ public class PageWidget extends View {
 			dx = (int) (mScreenWidth - mTouch.x + mScreenWidth);
 		}
 		if (mCornerY > 0) {
-			dy = (int) (mScreenHeight - mTouch.y);
+			dy = (int) (mScreenHeight - mTouch.y) - 1;  //防止下角翻页跳动
 		} else {
 			dy = (int) (1 - mTouch.y); // 防止mTouch.y最终变为0
 		}

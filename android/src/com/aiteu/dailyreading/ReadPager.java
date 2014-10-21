@@ -21,6 +21,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -146,13 +147,18 @@ public class ReadPager extends Activity implements OnClickListener,
 		pageFactory = new PagerFactory(screenWidth, readHeight);
 		if (isNight) {
 			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-					getResources(), R.drawable.night_bg));
+					getResources(), R.drawable.night_bg),screenHeight,screenWidth);
 			pageFactory.setM_textColor(Color.rgb(128, 128, 128));
 		} else {
 			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-					getResources(), R.drawable.day_bg));
+					getResources(), R.drawable.day_bg),screenHeight,screenWidth);
 			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
 		}
+		
+		//关闭GPU 渲染
+//		if (VERSION.SDK_INT >= 14) {
+//			mPageWidget.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//		}
 		
 		mPageWidget = new PageWidget(this, screenWidth, readHeight);// 页面
 		setContentView(R.layout.read_view);
@@ -245,7 +251,8 @@ public class ReadPager extends Activity implements OnClickListener,
 		 */
 		try {
 //			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
-			pageFactory.openbook(doc.toString());
+			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
+//			pageFactory.openbook(doc.toString());
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -363,13 +370,13 @@ public class ReadPager extends Activity implements OnClickListener,
 				imageBtn2.setImageResource(R.drawable.off);
 				isNight = false;
 				pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-						getResources(), R.drawable.day_bg));
+						getResources(), R.drawable.day_bg),screenHeight,screenWidth);
 			} else {
 				pageFactory.setM_textColor(Color.rgb(128, 128, 128));
 				imageBtn2.setImageResource(R.drawable.on);
 				isNight = true;
 				pageFactory.setBgBitmap(BitmapFactory.decodeResource(
-						getResources(), R.drawable.night_bg));
+						getResources(), R.drawable.night_bg),screenHeight,screenWidth);
 			}
 			setLight();
 			pageFactory.setM_mbBufBegin(begin);
@@ -642,9 +649,9 @@ public class ReadPager extends Activity implements OnClickListener,
 				seekBar2.setProgress(light);
 				
 				if(isNight){
-					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg));
+					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.day_bg),screenHeight,screenWidth);
 				}else {
-					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg));
+					pageFactory.setBgBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.night_bg),screenHeight,screenWidth);
 				}
 				
 				if (isNight) {
