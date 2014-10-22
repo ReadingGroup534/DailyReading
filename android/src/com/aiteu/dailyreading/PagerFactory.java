@@ -287,9 +287,9 @@ public class PagerFactory {
 			return;
 		} else
 			m_isfirstPage = false;
-		m_lines.clear();
-		pageUp();
-		m_lines = pageDown();
+			m_lines.clear();
+			pageUp();
+			m_lines = pageDown();
 	}
 
 	public void nextPage() throws IOException {
@@ -298,9 +298,9 @@ public class PagerFactory {
 			return;
 		} else
 			m_islastPage = false;
-		m_lines.clear();
-		m_mbBufBegin = m_mbBufEnd;
-		m_lines = pageDown();
+			m_lines.clear();
+			m_mbBufBegin = m_mbBufEnd;
+			m_lines = pageDown();
 	}
 
 	public void onDraw(Canvas c) {

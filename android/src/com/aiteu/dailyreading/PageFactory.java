@@ -8,8 +8,16 @@ import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Vector;
 
+import com.aiteu.http.factory.XmlHttpFactory;
+import com.aiteu.http.handler.XmlHttpHandler;
+import com.aiteu.http.xml.ArticlePart;
+import com.aiteu.http.xml.XmlDocument;
+
+import android.R.bool;
+import android.R.integer;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,22 +30,24 @@ public class PageFactory {
 	private final static String TAG = "pagefactory";
 	private URL article_url = null;
 	private File book_file = null;
-	private int m_backColor = 0xffff9e85; // 背景颜色
-	private Bitmap m_article_bg = null;
-	private int m_fontSize = 20;
+	private ArticlePart aPart; //需要处理的文档对象
+	private XmlDocument xmlDocument;
+	private int m_backColor ;  // 背景颜色
+	private Bitmap m_article_bg;
+	private int m_fontSize;
 	private boolean m_isfirstPage, m_islastPage;
 	
-	private Vector<String> m_lines = new Vector<String>();
-	
+	private Vector<String> m_lines ;
+	private int lineCount;	//一篇文章在当前配置下有多少行
 	private MappedByteBuffer m_mbBuf = null;// 内存中的图书字符
-	private int m_mbBufBegin = 0;// 当前页起始位置
-	private int m_mbBufEnd = 0;// 当前页终点位置
+	private int charBegin,charEnd;   //每一页中第一个字符与最后一个字符在文章中的位置
 
-	private int m_mbBufLen = 0; // 文章总长度
+	private int documentLength; // 文章总长度
+	private String content;
 
 	private String m_strCharsetCode = "utf-8";
 
-	private int m_textColor = Color.BLACK;//rgb(28,28,28);
+	private int m_textColor;//rgb(28,28,28);
 
 	private int marginHeight = 15; // 上下与边缘的距离
 	private int marginWidth = 15; // 左右与边缘的距离
@@ -50,273 +60,115 @@ public class PageFactory {
 
 	private float mVisibleHeight; // 绘制内容的高
 	private float mVisibleWidth; // 绘制内容的宽
-
-	public PageFactory(int h, int w) {
-		mHeight = h;
-		mWidth = w;
-		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG); // 画笔
-		mPaint.setTextAlign(Align.LEFT); // 设置左对齐
-		mPaint.setTextSize(m_fontSize);
-		mPaint.setColor(m_textColor);
-
-		mVisibleHeight = mHeight - marginHeight * 2;
-		mVisibleWidth = mWidth - marginWidth * 2;
-		mLineCount = (int) (mVisibleHeight / m_fontSize) - 1; // 可显示的行数,-1是因为底部显示进度的位置容易被遮住
-	}
-
-	// 当前页
-//	public void currentPage() throws IOException {
-//		m_lines.clear();
-//		m_lines = pageDown();
-//	}
-
-	// 下一页
-	public void nextPage() throws IOException {
-		if (m_mbBufEnd >= m_mbBufLen) {
-			m_islastPage = true;
-			return;
-		} else {
-			m_islastPage = false;
-			m_lines.clear();
-			m_mbBufBegin = m_mbBufEnd; // 当前页的结束位置即为下一页的起始位置
-			m_lines = pageDown();
-		}
-	}
+	private int mlineHeight ;  //每一行的高度
 	
-	public void onDraw(Canvas canvas) {
-		mPaint.setTextSize(m_fontSize);
-		mPaint.setColor(m_textColor);
-		if (m_lines.size() == 0) {
-			m_lines = pageDown();
-			if (m_lines.size() > 0) {
-				if (m_article_bg == null) {
-					canvas.drawColor(m_backColor);
-				}else {
-					canvas.drawBitmap(m_article_bg, 0, 0, null);
-				}
-				int y = marginHeight;
-				for (String strLine : m_lines) {
-					y += m_fontSize;
-					canvas.drawText(strLine, marginWidth, y, mPaint);
-				}
-			}
-		}
-		float fPercent = (float) ((m_mbBufBegin * 1.0) / m_mbBufLen); 
-		DecimalFormat dFormat = new DecimalFormat("#0.0");
-		String strPercent = dFormat.format(fPercent * 100) + "%";
-		int nPercentWidth = (int) mPaint.measureText("999.9%") + 1;
-		canvas.drawText(strPercent, mWidth - nPercentWidth, mHeight - 5, mPaint);
-	}
-
-	//打开书，实际的时候传入书的url路径
-	public void openbook(String strFilePath) throws IOException {
-		book_file = new File(strFilePath);
-		long lLen = book_file.length();
-		m_mbBufLen = (int) lLen;
-		m_mbBuf = new RandomAccessFile(book_file, "r").getChannel().map(
-				FileChannel.MapMode.READ_ONLY, 0, lLen);
-	}
+	private Vector<Vector<String>> page;
+	int pageNum;
 	
-	protected Vector<String> pageDown() {
-		mPaint.setTextSize(m_fontSize);
-		mPaint.setColor(m_textColor);
-		String strParagraph = "";
-		Vector<String> lines = new Vector<String>();
-		while (lines.size() < mLineCount && m_mbBufEnd < m_mbBufLen) {
-			byte[] paraBuf = readParagraphForward(m_mbBufEnd);	// 读取一个段落
-			m_mbBufEnd += paraBuf.length;// 每次读取后，记录结束点位置，该位置是段落结束位置
-			try {
-				strParagraph = new String(paraBuf, m_strCharsetCode);
-			} catch (UnsupportedEncodingException e) {
-				// TODO: handle exception
-				Log.e(TAG, "字符转换失败！");
-			}
-			String strReturn = "";
-			// 替换掉回车换行
-			if (strParagraph.indexOf("\r\n") != -1) {
-				strReturn = "\r\n";
-				strParagraph = strParagraph.replaceAll("\r\n", "");
-			} else if (strParagraph.indexOf("\n") != -1) {
-				strReturn = "\n";
-				strParagraph = strParagraph.replaceAll("\n", "");
-			}
-
-			if (strParagraph.length() == 0) {
-				lines.add(strParagraph);
-			}
-
-			while (strParagraph.length() > 0) {
-				// 画一行文字
-				int mLines = mPaint.breakText(strParagraph, true,
-						mVisibleWidth, null);
-				lines.add(strParagraph.substring(0, mLines));
-				// 得到剩余的文字
-				strParagraph = strParagraph.substring(mLines);
-				// 超出最大行数就不在话
-				if (lines.size() >= mLineCount) {
-					break;
-				}
-			}
-			// 如果该页最后一段只显示了一部分，则从新定位结束点位置
-			if (strParagraph.length() != 0) {
-				try {
-					m_mbBufEnd -= (strParagraph + strReturn)
-							.getBytes(m_strCharsetCode).length;
-				} catch (UnsupportedEncodingException e) {
-					Log.e(TAG, "pageDown->记录结束点位置失败", e);
-				}
-			}
-		}
-		return lines;
+	public PageFactory(int h, int w, XmlDocument document) {
+		this.mHeight = h;
+		this.mWidth = w;
+		this.xmlDocument = document;
+		initiate();
 	}
 
-	//向前翻页
-	protected void prePage() throws IOException{
-		if (m_mbBufBegin <= 0) {
-			m_mbBufBegin = 0;
-			m_isfirstPage = true;
-			return;
-		}else {
-			m_isfirstPage = false;
-			m_lines.clear();
-			pageUp();
-			m_lines = pageDown();
-		}
-	}
 	
-	protected void pageUp() {
+	protected void initiate() {
 		// TODO Auto-generated method stub
-		if (m_mbBufBegin < 0)
-			m_mbBufBegin = 0;
-		Vector<String> lines = new Vector<String>();
-		String strParagraph = "";
-		while (lines.size() < mLineCount && m_mbBufBegin > 0) {
-			Vector<String> paraLines = new Vector<String>();
-			byte[] paraBuf = readParagraphBack(m_mbBufBegin);
-			m_mbBufBegin -= paraBuf.length;// 每次读取一段后,记录开始点位置,是段首开始的位置
-			try {
-				strParagraph = new String(paraBuf, m_strCharsetCode);
-			} catch (UnsupportedEncodingException e) {
-				Log.e(TAG, "pageUp->转换编码失败", e);
-			}
-			strParagraph = strParagraph.replaceAll("\r\n", "");
-			strParagraph = strParagraph.replaceAll("\n", "");
-			// 如果是空白行，直接添加
-			if (strParagraph.length() == 0) {
-				paraLines.add(strParagraph);
-			}
-			while (strParagraph.length() > 0) {
-				// 画一行文字
-				int nSize = mPaint.breakText(strParagraph, true, mVisibleWidth,
-						null);
-				paraLines.add(strParagraph.substring(0, nSize));
-				strParagraph = strParagraph.substring(nSize);
-			}
-			lines.addAll(0, paraLines);
-		}
-
-		while (lines.size() > mLineCount) {
-			try {
-				m_mbBufBegin += lines.get(0).getBytes(m_strCharsetCode).length;
-				lines.remove(0);
-			} catch (UnsupportedEncodingException e) {
-				Log.e(TAG, "pageUp->记录起始点位置失败", e);
-			}
-		}
-		m_mbBufEnd = m_mbBufBegin;// 上上一页的结束点等于上一页的起始点
-		return;
+		m_backColor = 0xffff9e85;
+		m_article_bg = null;
+		m_fontSize = 20;
+		m_isfirstPage = true;
+		m_islastPage = false;
+		m_textColor = Color.BLACK;
+		content = xmlDocument.toString(); //提取文档的内容
+		documentLength = content.length();
+		
+		charBegin = 0;
+		charEnd = 0;
+		mlineHeight = m_fontSize + 8;
+		m_lines =  new Vector<String>();
+		
+		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mPaint.setTextAlign(Align.LEFT);
+		mPaint.setTextSize(m_fontSize);
+		mPaint.setColor(m_textColor);
+		
+		mVisibleWidth = mWidth - marginWidth * 2;
+		mVisibleHeight = mHeight - marginHeight * 2;
+		
+		page = new Vector<Vector<String>>();
+		pageNum = -1;
+	
+		pageDown();
+		
 	}
 
-	/**
-	 * 读取指定位置的上一个段落
-	 * 
-	 * @param nFromPos
-	 * @return byte[]
-	 */
-	protected byte[] readParagraphForward(int nFromPos) {
-		int nStart = nFromPos;
-		int i = nStart;
-		byte b0, b1; 
-		// 根据编码格式判断换行
-		if (m_strCharsetCode.equals("UTF-16LE")) {
-			while (i < m_mbBufLen - 1) {
-				b0 = m_mbBuf.get(i++);
-				b1 = m_mbBuf.get(i++);
-				if (b0 == 0x0a && b1 == 0x00) {
-					break;
+
+	protected void pageDown() {
+		mPaint.setColor(m_textColor);
+		mPaint.setTextSize(m_fontSize);
+		page.clear();
+		int curPos = 0;
+		while (curPos < documentLength) {
+			Vector<String> lines = new Vector<String>();
+			charBegin = curPos;
+			while (lines.size() < lineCount && curPos < documentLength) {
+				int i = content.indexOf("\n", curPos);
+				String paragraphString = content.substring(curPos, i);
+				if (curPos == i) {
+					lines.add("");
+				}
+				while (paragraphString.length() > 0) {
+					int horSize = mPaint.breakText(paragraphString, true, mVisibleWidth, null);
+					lines.add(paragraphString.substring(0, horSize));
+					paragraphString = paragraphString.substring(horSize);
+					curPos += horSize;
+					if (lines.size() > lineCount) {
+						break;
+					}
+					
+				}
+				// 如果是把一整段读取完的话，需要给当前位置加1
+				if (paragraphString.length() == 0) {
+					curPos += "\n".length();
 				}
 			}
-		} else if (m_strCharsetCode.equals("UTF-16BE")) {
-			while (i < m_mbBufLen - 1) {
-				b0 = m_mbBuf.get(i++);
-				b1 = m_mbBuf.get(i++);
-				if (b0 == 0x00 && b1 == 0x0a) {
-					break;
-				}
-			}
-		} else {
-			while (i < m_mbBufLen) {
-				b0 = m_mbBuf.get(i++);
-				if (b0 == 0x0a) {
-					break;
-				}
-			}
+			page.add(lines);
 		}
-		int nParaSize = i - nStart;
-		byte[] buf = new byte[nParaSize];
-		for (i = 0; i < nParaSize; i++) {
-			buf[i] = m_mbBuf.get(nFromPos + i);
-		}
-		return buf;
 	}
 	
-	protected byte[] readParagraphBack(int nFromPos) {
-		int nEnd = nFromPos;
-		int i;
-		byte b0, b1;
-		if (m_strCharsetCode.equals("UTF-16LE")) {
-			i = nEnd - 2;
-			while (i > 0) {
-				b0 = m_mbBuf.get(i);
-				b1 = m_mbBuf.get(i + 1);
-				if (b0 == 0x0a && b1 == 0x00 && i != nEnd - 2) {
-					i += 2;
-					break;
-				}
-				i--;
+	public boolean nextPage() {
+		if (isM_lastPage()) {
+			if (!nextArticlePart()) {
+				return false;
 			}
+		}
+		m_lines = page.get(++pageNum);
+		return true;
+	}
 
-		} else if (m_strCharsetCode.equals("UTF-16BE")) {
-			i = nEnd - 2;
-			while (i > 0) {
-				b0 = m_mbBuf.get(i);
-				b1 = m_mbBuf.get(i + 1);
-				if (b0 == 0x00 && b1 == 0x0a && i != nEnd - 2) {
-					i += 2;
-					break;
-				}
-				i--;
-			}
-		} else {
-			i = nEnd - 1;
-			while (i > 0) {
-				b0 = m_mbBuf.get(i);
-				if (b0 == 0x0a && i != nEnd - 1) {
-					i++;
-					break;
-				}
-				i--;
-			}
+
+	public boolean nextArticlePart() {
+		content = xmlDocument.toString();
+		if (content == null) {
+			return false;
 		}
-		if (i < 0)
-			i = 0;
-		int nParaSize = nEnd - i;
-		int j;
-		byte[] buf = new byte[nParaSize];
-		for (j = 0; j < nParaSize; j++) {
-			buf[j] = m_mbBuf.get(i + j);
+		content = xmlDocument.toString();
+		
+		documentLength = content.length();
+		charBegin = 0;
+		charEnd = 0;
+		pageDown();
+		pageNum = -1;
+		return true;
+	}
+
+
+	public void draw(Canvas canvas) {
+		if (m_lines.size() == 0) {
+			
 		}
-		return buf;
 	}
 	
 	public void setBgBitmap(Bitmap BG) {
@@ -336,20 +188,7 @@ public class PageFactory {
 		this.m_fontSize = m_fontSize;
 		mLineCount = (int) (mVisibleHeight / m_fontSize) - 1;
 	}
-
-	// 设置页面起始点
-	public void setM_mbBufBegin(int m_mbBufBegin) {
-		this.m_mbBufBegin = m_mbBufBegin;
-	}
-
-	// 设置页面结束点
-	public void setM_mbBufEnd(int m_mbBufEnd) {
-		this.m_mbBufEnd = m_mbBufEnd;
-	}
-
-	public int getM_mbBufBegin() {
-		return m_mbBufBegin;
-	}
+	
 
 	public String getFirstLineText() {
 		return m_lines.size() > 0 ? m_lines.get(0) : "";
@@ -363,13 +202,6 @@ public class PageFactory {
 		this.m_textColor = m_textColor;
 	}
 
-	public int getM_mbBufLen() {
-		return m_mbBufLen;
-	}
-
-	public int getM_mbBufEnd() {
-		return m_mbBufEnd;
-	}
 	
 	public int getM_fontSize() {
 		return m_fontSize;

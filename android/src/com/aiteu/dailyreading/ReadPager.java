@@ -21,6 +21,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
@@ -155,11 +156,6 @@ public class ReadPager extends Activity implements OnClickListener,
 			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
 		}
 		
-		//关闭GPU 渲染
-//		if (VERSION.SDK_INT >= 14) {
-//			mPageWidget.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//		}
-		
 		mPageWidget = new PageWidget(this, screenWidth, readHeight);// 页面
 		setContentView(R.layout.read_view);
 
@@ -167,7 +163,10 @@ public class ReadPager extends Activity implements OnClickListener,
 		rLayout.addView(mPageWidget);
 
 		mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
-		
+		//关闭GPU 渲染  防止在4.0以上真机翻页错乱
+		if (Build.VERSION.SDK_INT >= 14) {
+			mPageWidget.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		}
 		
 		mPageWidget.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -211,7 +210,7 @@ public class ReadPager extends Activity implements OnClickListener,
 								}
 								if (pageFactory.isM_lastPage()) {
 									Toast.makeText(getApplicationContext(),
-											"这已经是第最后一页了", Toast.LENGTH_SHORT)
+											"这已经是最后一页了", Toast.LENGTH_SHORT)
 											.show();
 									return false;
 								}
@@ -726,7 +725,17 @@ public class ReadPager extends Activity implements OnClickListener,
 				pop();
 			}
 		}
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+//			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//			Log.i("lyc", "click the keyback button");
+//			mPopupWindow.dismiss();
+//			popToolsDismiss();
+			clear();
+			Log.i("lyc", "click the keyback button");
+		}
 		return super.onKeyUp(keyCode, event);
 	}
+	
+	
 
 }
