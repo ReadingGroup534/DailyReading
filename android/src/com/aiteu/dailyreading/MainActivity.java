@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import com.aiteu.dailyreading.reader.BookPage;
+import com.aiteu.dailyreading.reader.LocalBookReader;
 import com.aiteu.http.factory.HttpFactory;
 import com.aiteu.http.factory.JsonHttpFactory;
 import com.aiteu.http.factory.XmlHttpFactory;
@@ -102,15 +104,23 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
-			XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
-			try {
-				XmlDocument xmlDocument = xmlHttpHandler.getXml(getAssets().open("detail.xml"), ParserType.SAX_PARSER);
-				System.out.println(xmlDocument.toString());
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
+//			XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
+//			XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
+//			try {
+//				XmlDocument xmlDocument = xmlHttpHandler.getXml(getAssets().open("detail.xml"), ParserType.SAX_PARSER);
+//				System.out.println(xmlDocument.toString());
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//				e.printStackTrace();
+//			}
+			LocalBookReader bookReader = new LocalBookReader();
+			bookReader.openbook("/sdcard/test_txt.txt");
+			BookPage page = bookReader.readNextPage();
+			Log.d("Reader page 1: ", page.toString());
+			page = bookReader.readNextPage();
+			Log.d("Reader page 2: ", page.toString());
+			page = bookReader.readPrevPage();
+			Log.d("Reader page 1: ", page.toString());
 		}
 	};
 	
