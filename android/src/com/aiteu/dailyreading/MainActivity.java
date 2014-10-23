@@ -114,13 +114,16 @@ public class MainActivity extends FragmentActivity {
 //				e.printStackTrace();
 //			}
 			LocalBookReader bookReader = new LocalBookReader();
-			bookReader.openbook("/sdcard/test_txt.txt");
+			bookReader.openbook("/data/data/test_txt.txt");
 			BookPage page = bookReader.readNextPage();
-			Log.d("Reader page 1: ", page.toString());
+			System.out.println(page.toString());
+			Log.d("Reader page1: ", page.toString());
 			page = bookReader.readNextPage();
-			Log.d("Reader page 2: ", page.toString());
+			System.out.println(page.toString());
+			Log.d("Reader page2: ", page.toString());
 			page = bookReader.readPrevPage();
-			Log.d("Reader page 1: ", page.toString());
+			System.out.println(page.toString());
+			Log.d("Reader page1: ", page.toString());
 		}
 	};
 	

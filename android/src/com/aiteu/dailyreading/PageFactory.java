@@ -70,6 +70,7 @@ public class PageFactory {
 		this.mWidth = w;
 		this.xmlDocument = document;
 		initiate();
+		System.out.println("PageFactory:" + xmlDocument.toString());
 	}
 
 	
@@ -165,7 +166,7 @@ public class PageFactory {
 	}
 
 
-	public void draw(Canvas canvas) {
+	public void onDraw(Canvas canvas) {
 		if (m_lines.size() == 0) {
 			
 		}
