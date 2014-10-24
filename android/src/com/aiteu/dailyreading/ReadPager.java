@@ -70,7 +70,7 @@ public class ReadPager extends Activity implements OnClickListener,
 
 	int screenHeight;
 	int screenWidth;
-	int readHeight; // 电子书显示高度
+//	int readHeight; // 电子书显示高度
 	int defaultSize = 0;
 	private Boolean show = false;// popwindow是否显示
 	private SharedPreferences sp;
@@ -78,6 +78,7 @@ public class ReadPager extends Activity implements OnClickListener,
 	private int light; // 亮度值
 	private Boolean isNight = false; // 亮度模式,白天和晚上
 	private PagerFactory pageFactory;
+	private PageFactory pageFactory2;
 	private XmlDocument xmlDoc;
 	private TextView bookBtn1, bookBtn2, bookBtn3, bookBtn4;
 	private SeekBar seekBar1, seekBar2, seekBar3;
@@ -129,8 +130,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		Log.i("lyc", "screenwidth:"+ screenWidth + "screenheight:"+ screenHeight);
 
 		defaultSize = (screenWidth * 20) / 320;
-		readHeight = screenHeight;
-		// setContentView(R.layout.read_view);
+//		readHeight = screenHeight;
 		mCurPageBitmap = Bitmap.createBitmap(screenWidth, screenHeight,
 				Config.ARGB_8888);
 		mNextPageBitmap = Bitmap.createBitmap(screenWidth, screenHeight,
@@ -145,7 +145,20 @@ public class ReadPager extends Activity implements OnClickListener,
 		getSize();// 获取配置文件中的size大小
 		getLight();// 获取配置文件中的light值
 		
-		pageFactory = new PagerFactory(screenWidth, readHeight);
+		 XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
+		 XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
+		 try {
+			doc = xmlHttpHandler.getXml(mContext.getAssets().open("detail.xml"));
+			System.out.println("Read XML:"+ doc.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+//		pageFactory2 = new PageFactory(screenHeight, screenWidth, doc);
+		 
+		
+		pageFactory = new PagerFactory(screenWidth, screenHeight);
 		if (isNight) {
 			pageFactory.setBgBitmap(BitmapFactory.decodeResource(
 					getResources(), R.drawable.night_bg));
@@ -156,12 +169,16 @@ public class ReadPager extends Activity implements OnClickListener,
 			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
 		}
 		
-		mPageWidget = new PageWidget(this, screenWidth, readHeight);// 页面
-		setContentView(R.layout.read_view);
+		pageFactory.onDraw(mCurCanvas);
+		
+		mPageWidget = new PageWidget(this, screenWidth, screenHeight);// 页面
+//		setContentView(R.layout.read_view);
+//		RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.readlayout);
+//		rLayout.addView(mPageWidget);
 
-		RelativeLayout rLayout = (RelativeLayout) findViewById(R.id.readlayout);
-		rLayout.addView(mPageWidget);
+		setContentView(mPageWidget);
 
+		
 		mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
 		//关闭GPU 渲染  防止在4.0以上真机翻页错乱
 		if (Build.VERSION.SDK_INT >= 14) {
@@ -176,7 +193,7 @@ public class ReadPager extends Activity implements OnClickListener,
 				if (v == mPageWidget) {
 					if (!show) {
 						if (event.getAction() == MotionEvent.ACTION_DOWN) {
-							if (event.getY() > readHeight) {
+							if (event.getY() > screenHeight) {
 								// 超出范围了，则不做翻页
 								return false;
 							}
@@ -237,14 +254,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		getWindow().setAttributes(lp);
 		
 		
-		 XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
-		 XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
-		 try {
-			doc = xmlHttpHandler.getXml(mContext.getAssets().open("detail.xml"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		/**
 		 * 根据传递的路径打开书
 		 */

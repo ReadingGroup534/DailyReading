@@ -24,9 +24,13 @@ public class BookPageFactory {
 		mTextPaint.setAntiAlias(true);
 	}
 	
-	public static synchronized BookPageFactory create(){
+	public static BookPageFactory create(){
 		if(mFactory == null){
-			mFactory = new BookPageFactory();
+			synchronized(BookPageFactory.class){
+				if (mFactory == null) {
+					mFactory = new BookPageFactory();
+				}
+			}
 		}
 		return mFactory;
 	}

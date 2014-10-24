@@ -8,6 +8,7 @@ import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
 import java.util.Vector;
 
+import com.aiteu.http.inteface.IBookReader;
 import com.aiteu.http.util.FileUtils;
 
 import android.util.Log;
@@ -48,7 +49,7 @@ public class LocalBookReader implements IBookReader{
 		try{
 			mFileHandler = new RandomAccessFile(filePath, "r");
 			fileLength = mFileHandler.length();
-			mMemBuffer = mFileHandler.getChannel().map(MapMode.READ_ONLY, 0, mFileHandler.length());
+			mMemBuffer = mFileHandler.getChannel().map(MapMode.READ_ONLY, 0, fileLength);
 			Charset.forName("utf-8").decode(mMemBuffer);
 			mMemBuffer.load();
 		}catch(IOException e){
