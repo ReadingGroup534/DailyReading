@@ -7,6 +7,8 @@ import java.util.Date;
 
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
+import com.aiteu.dailyreading.reader.BookPage;
+import com.aiteu.dailyreading.reader.LocalBookReader;
 import com.aiteu.http.factory.XmlHttpFactory;
 import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
@@ -267,6 +269,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			e1.printStackTrace();
 			Toast.makeText(this, "电子书不存在！请把电子书放到SDCard更目录下...", Toast.LENGTH_SHORT).show();
 		}
+		
 		
 		begin = sp.getInt(xmlDoc.getContent().toString() + "begin", 0);
 	}

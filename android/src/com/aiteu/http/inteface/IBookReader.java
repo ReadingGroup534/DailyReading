@@ -1,5 +1,7 @@
 package com.aiteu.http.inteface;
 
+import android.graphics.Bitmap;
+
 import com.aiteu.dailyreading.reader.BookPage;
 
 /**
@@ -31,4 +33,6 @@ public interface IBookReader {
 	 * 关闭书：清空资源
 	 */
 	public void closebook();
+	
+	public void setBgBitmap(Bitmap BG);
 }
