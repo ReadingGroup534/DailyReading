@@ -15,6 +15,7 @@ public class BookPageFactory {
 	private int mPageWidth = 100;
 	private float textSize = 24;
 	private int mTextColor = Color.rgb(0x43, 0x43, 0x43);
+	private int lines = 3; //每页包含的行数
 	
 	private BookPageFactory(){
 		mTextPaint = new Paint();
@@ -29,8 +30,6 @@ public class BookPageFactory {
 		}
 		return mFactory;
 	}
-	
-	private int lines = 3; //每页包含的行数
 	
 	public BookPage createPage(){
 		BookPage mPage = new BookPage();
