@@ -12,5 +12,5 @@ public interface ApiService {
 	//获得每日更新的文章
 	public Map<String, Object> getDailyAiticle(HttpServletRequest req);
 	//支持搜索
-	public Map<String, Object> getSearchResults(Map<String, Object> param);
+	public Map<String, Object> getSearchResults(Map<String, String> param);
 }

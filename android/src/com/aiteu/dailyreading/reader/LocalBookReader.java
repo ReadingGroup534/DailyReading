@@ -9,7 +9,6 @@ import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.Vector;
 
-import com.aiteu.http.inteface.IBookReader;
 import com.aiteu.http.util.FileUtils;
 
 import android.graphics.Bitmap;
@@ -366,7 +365,7 @@ public class LocalBookReader implements IBookReader{
 
 
 
-	@Override
+
 	public void setBgBitmap(Bitmap BG) {
 		// TODO Auto-generated method stub
 		m_article_bg = Bitmap.createScaledBitmap(BG, screenWidth, screenHeight, true);

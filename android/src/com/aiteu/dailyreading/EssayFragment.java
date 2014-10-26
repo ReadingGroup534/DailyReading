@@ -152,7 +152,7 @@ public class EssayFragment extends Fragment {
 						/**
 						 * 点击item后跳转到对应的Read界面 
 						 */
-						Intent intent = new Intent(mFragmentActivity, ReadLocalPager.class);
+						Intent intent = new Intent(mFragmentActivity, ReadPager.class);
 						startActivity(intent);
 						Log.i("lyc","TURN TO　READ PAGER!!");
 						Toast.makeText(mFragmentActivity, "你點擊了item", 1).show();

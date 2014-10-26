@@ -21,7 +21,7 @@ public class ArticleRowMapper implements RowMapper<Article>{
 		article.setPraiseTimes(rs.getInt("praise_times"));
 		article.setShareTimes(rs.getInt("share_times"));
 		article.setScanTimes(rs.getInt("scan_times"));
-		article.setDetailUrl(rs.getString("physical_path"));
+		article.setDetailUrl(rs.getString("url"));
 		
 		return article;
 	}

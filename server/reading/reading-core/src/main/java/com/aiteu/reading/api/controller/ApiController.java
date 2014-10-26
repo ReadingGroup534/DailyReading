@@ -1,7 +1,15 @@
 package com.aiteu.reading.api.controller;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+
+
+
+
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,12 +37,44 @@ public class ApiController {
 		return "/api/browse.json";
 	}
 	
-	@RequestMapping("/api/browse.htm")
-	public String browse(ModelMap modelMap){
-		modelMap.put("name", "aiteu");
-		modelMap.put("age", 24);
-		modelMap.put("words", "Welcome visit!");
+	@RequestMapping("/api/list.json")
+	public String articleList(ModelMap modelMap, HttpServletRequest req){
+		Map<String, String> form = initSharedForm(req);
+		Map<String, Object> results = apiService.getSearchResults(form);
+		modelMap.putAll(results);
+		return "/api/list.json";
+	}
+	
+	/**
+	 * 初始化公共参数
+	 * @return
+	 */
+	private Map<String, String> initSharedForm(HttpServletRequest req){
+		Map<String, String> form = new HashMap<String, String>();
+		@SuppressWarnings("unchecked")
+		Map<String, Object> params = req.getParameterMap();
+		Iterator<Map.Entry<String, Object>> entries = params.entrySet().iterator();
+		String name = "";
+		String value = "";
+		Map.Entry<String, Object> entry;
+		while(entries.hasNext()){
+			entry = entries.next();
+			name = entry.getKey();
+			Object valueObj = entry.getValue();
+			if(valueObj == null){
+				value = "";
+			}else if(valueObj instanceof String[]){
+				String[] values = (String[])valueObj;
+	            for(int i=0;i<values.length;i++){
+	                value = values[i] + ",";
+	            }
+	            value = value.substring(0, value.length()-1);
+			}else{
+				value = valueObj.toString();
+			}
+			form.put(name, value);
+		}
 		
-		return "browse.htm";
+		return form;
 	}
 }
