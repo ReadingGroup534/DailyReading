@@ -3,6 +3,7 @@ package com.aiteu.reading.api.service;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface ApiService {
 	//获得所有的类目
@@ -13,4 +14,6 @@ public interface ApiService {
 	public Map<String, Object> getDailyAiticle(HttpServletRequest req);
 	//支持搜索
 	public Map<String, Object> getSearchResults(Map<String, String> param);
+	//detail
+	public void getDetail(HttpServletResponse res, Map<String, String> form);
 }

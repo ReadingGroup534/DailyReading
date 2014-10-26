@@ -1,10 +1,12 @@
 package com.aiteu.reading.api.service.impl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,6 +91,19 @@ public class ApiServiceImpl implements ApiService{
 		results.put("count", total);
 		
 		return results;
+	}
+
+	public void getDetail(HttpServletResponse res, Map<String, String> form) {
+		String articleId = form.get("article_id");
+		if(null == articleId || articleId.equals("")){
+			System.out.println("parameter error");
+			return;
+		}
+		try{
+			res.sendRedirect(form.get("base_url")+"/detail/"+articleId+".txt");
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 	
 }

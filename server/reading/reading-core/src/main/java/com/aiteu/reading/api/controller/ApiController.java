@@ -9,7 +9,9 @@ import java.util.Map;
 
 
 
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +47,12 @@ public class ApiController {
 		return "/api/list.json";
 	}
 	
+	@RequestMapping("/api/detail.htm")
+	public void articleDetail(HttpServletRequest req, HttpServletResponse res){
+		Map<String, String> form = initSharedForm(req);
+		apiService.getDetail(res, form);
+	}
+	
 	/**
 	 * 初始化公共参数
 	 * @return
@@ -74,7 +82,7 @@ public class ApiController {
 			}
 			form.put(name, value);
 		}
-		
+		form.put("base_url", "http://"+req.getLocalName()+":"+req.getLocalPort()+req.getContextPath());
 		return form;
 	}
 }

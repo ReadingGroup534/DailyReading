@@ -32,7 +32,7 @@ public class ArticleDaoImpl extends BaseDaoImpl implements ArticleDao{
 				ps.setInt(3, Integer.parseInt(param.get("offset")+""));
 				return ps;
 			}
-		}, new ArticleRowMapper());
+		}, new ArticleRowMapper(param.get("base_url").toString()));
 		
 		return (null != articles && articles.size() > 0) ? articles : null;
 	}

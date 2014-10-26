@@ -8,6 +8,11 @@ import org.springframework.jdbc.core.RowMapper;
 import com.aiteu.reading.api.model.Article;
 
 public class ArticleRowMapper implements RowMapper<Article>{
+	
+	private String baseUrl = "";
+	public ArticleRowMapper(String baseUrl){
+		this.baseUrl = baseUrl;
+	}
 
 	public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
 		// TODO Auto-generated method stub
@@ -21,7 +26,7 @@ public class ArticleRowMapper implements RowMapper<Article>{
 		article.setPraiseTimes(rs.getInt("praise_times"));
 		article.setShareTimes(rs.getInt("share_times"));
 		article.setScanTimes(rs.getInt("scan_times"));
-		article.setDetailUrl(rs.getString("url"));
+		article.setDetailUrl(baseUrl+rs.getString("url"));
 		
 		return article;
 	}
