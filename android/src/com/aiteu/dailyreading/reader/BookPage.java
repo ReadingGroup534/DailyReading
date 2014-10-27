@@ -2,6 +2,8 @@ package com.aiteu.dailyreading.reader;
 
 import java.util.Vector;
 
+import android.graphics.Canvas;
+
 /**
  * 定义书本的页面
  * @author liwei
@@ -35,4 +37,5 @@ public class BookPage {
 		}
 		return sb.toString();
 	}
+
 }

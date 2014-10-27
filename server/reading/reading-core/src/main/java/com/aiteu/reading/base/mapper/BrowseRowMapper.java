@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.aiteu.reading.api.model.Article;
 import com.aiteu.reading.api.model.Browse;
 
 public class BrowseRowMapper implements RowMapper<Browse>{

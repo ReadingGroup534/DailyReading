@@ -6,11 +6,15 @@ import java.io.UnsupportedEncodingException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.util.Vector;
 
-import com.aiteu.http.inteface.IBookReader;
 import com.aiteu.http.util.FileUtils;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.text.format.Time;
 import android.util.Log;
 
 /**
@@ -25,6 +29,9 @@ public class LocalBookReader implements IBookReader{
 	private MappedByteBuffer mMemBuffer = null; // 内存都写缓冲区
 	private BookPageFactory mPageFactory = null;
 	private ReadingIndex mReadingIndex = null; //都写开始和结束的标致位
+	private BookPage page = null;
+	private Bitmap m_article_bg = null;
+	private int m_backColor = 0xffff9e85; // 背景颜色
 	
 	private long fileLength = 0;
 	private String charset = "utf-8";
@@ -32,11 +39,21 @@ public class LocalBookReader implements IBookReader{
 	private boolean isFirstPage = true;
 	private float mReadPercent = 0;
 	
+	private int screenWidth;
+	private int screenHeight;
 	
-	public LocalBookReader(){
-		mPageFactory = BookPageFactory.create();
+	private Paint mPaint;
+	
+	public LocalBookReader(int w, int h){
+		this.screenWidth = w;
+		this.screenHeight = h;
+		mPageFactory = BookPageFactory.create(screenWidth,screenHeight);
 		mReadingIndex = new ReadingIndex();
+		page = new BookPage();
+		mPaint = new Paint();
 	}
+	
+	
 
 	@Override
 	public boolean openbook(String filePath) {
@@ -190,6 +207,40 @@ public class LocalBookReader implements IBookReader{
 			e.printStackTrace();
 		}
 	}
+	
+	public void onDraw(Canvas c) {
+		if (mPageFactory.getLines() == 0) {
+			page = this.readNextPage();
+		}
+		if (mPageFactory.getLines() > 0) {
+			if (m_article_bg == null) {
+				c.drawColor(m_backColor);
+			}else {
+				c.drawBitmap(m_article_bg, 0, 0, mPaint);
+			}
+			int y = mPageFactory.getMarginHeight();
+			for (String lineText : page.getPageContent()) {
+				y += mPageFactory.getTextSize();
+				c.drawText(lineText, mPageFactory.getMarginWidth(), y, mPaint);
+			}
+		}
+		
+		DecimalFormat dFormat = new DecimalFormat("#0.0");
+		String percent = dFormat.format(this.getCurrentReadPercent() * 100) + "%";
+		
+		Time time = new Time();
+		time.setToNow();
+		String timeString;
+		if (time.minute < 10) {
+			timeString = "" + time.hour + " : 0" + time.minute;
+		}else {
+			timeString = "" + time.hour + ": " + time.minute;
+		}
+		int nPercentWidth = (int) mPaint.measureText("999.9%") + 2;
+		
+		c.drawText(timeString, mPageFactory.getMarginWidth()/2, mPageFactory.getMarginHeight() - 5, mPaint);
+		c.drawText(percent, mPageFactory.getMarginWidth() - nPercentWidth, mPageFactory.getMarginHeight() - 5, mPaint);
+	}
 
 	class ReadingIndex{
 		int start;
@@ -310,5 +361,13 @@ public class LocalBookReader implements IBookReader{
 	
 	public float getCurrentReadPercent(){
 		return this.mReadPercent;
+	}
+
+
+
+
+	public void setBgBitmap(Bitmap BG) {
+		// TODO Auto-generated method stub
+		m_article_bg = Bitmap.createScaledBitmap(BG, screenWidth, screenHeight, true);
 	}
 }

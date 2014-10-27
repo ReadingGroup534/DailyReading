@@ -1,14 +1,17 @@
 package com.aiteu.reading.api.service.impl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aiteu.reading.api.dao.ApiDao;
 import com.aiteu.reading.api.dao.ArticleDao;
 import com.aiteu.reading.api.dao.BrowseDao;
 import com.aiteu.reading.api.model.Article;
@@ -22,6 +25,8 @@ public class ApiServiceImpl implements ApiService{
 	private BrowseDao browseDao;
 	@Autowired
 	private ArticleDao articleDao;
+	@Autowired
+	private ApiDao apiDao;
 	
 	public Map<String, Object> getAllBrowses() {
 		// TODO Auto-generated method stub
@@ -67,9 +72,38 @@ public class ApiServiceImpl implements ApiService{
 		return results;
 	}
 
-	public Map<String, Object> getSearchResults(Map<String, Object> param) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> getSearchResults(Map<String, String> param) {
+		if(param.get("limit") == null || param.get("limit").equals("")){
+			param.put("limit", "5");
+		}
+		if(param.get("offset") == null || param.get("offset").equals("")){
+			param.put("offset", "0");
+		}
+		if(param.get("order") == null || param.get("order").equals("")){
+			param.put("order", "show_time desc");
+		}
+		
+		List<Article> articles = apiDao.search(param);
+		int total = apiDao.totalCount(param);
+		
+		Map<String, Object> results = new HashMap<String, Object>();
+		results.put("list", articles);
+		results.put("count", total);
+		
+		return results;
+	}
+
+	public void getDetail(HttpServletResponse res, Map<String, String> form) {
+		String articleId = form.get("article_id");
+		if(null == articleId || articleId.equals("")){
+			System.out.println("parameter error");
+			return;
+		}
+		try{
+			res.sendRedirect(form.get("base_url")+"/detail/"+articleId+".txt");
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 	
 }

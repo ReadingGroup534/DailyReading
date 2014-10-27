@@ -39,6 +39,11 @@
             android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SettingActivity" 
             android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".ReadLocalPager"
+             android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            
     </application>
 
 </manifest>

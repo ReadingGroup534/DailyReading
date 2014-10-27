@@ -15,7 +15,7 @@ create table article(
     praise_times	  int unsigned		  default 0   not null,	
     share_times		  int unsigned		  default 0   not null,
     scan_times            int unsigned            default 0   not null,   
-    physical_path         varchar(255)            default '' not null,
+    url         	  varchar(255)            default '' not null,
     primary key (article_id)
 )engine=innodb;
 
@@ -66,3 +66,8 @@ create table crawler_source(
 	primary key (id),
 	unique natural_key (url)
 );
+
+/**
+* 修改表字段名字
+*/
+alter table article change physical_path url varchar(255) not null;

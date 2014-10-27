@@ -113,17 +113,17 @@ public class MainActivity extends FragmentActivity {
 //				// TODO: handle exception
 //				e.printStackTrace();
 //			}
-			LocalBookReader bookReader = new LocalBookReader();
-			bookReader.openbook("/data/data/test_txt.txt");
-			BookPage page = bookReader.readNextPage();
-			System.out.println(page.toString());
-			Log.d("Reader page1: ", page.toString());
-			page = bookReader.readNextPage();
-			System.out.println(page.toString());
-			Log.d("Reader page2: ", page.toString());
-			page = bookReader.readPrevPage();
-			System.out.println(page.toString());
-			Log.d("Reader page1: ", page.toString());
+//			LocalBookReader bookReader = new LocalBookReader();
+//			bookReader.openbook("/data/data/test_txt.txt");
+//			BookPage page = bookReader.readNextPage();
+//			System.out.println(page.toString());
+//			Log.d("Reader page1: ", page.toString());
+//			page = bookReader.readNextPage();
+//			System.out.println(page.toString());
+//			Log.d("Reader page2: ", page.toString());
+//			page = bookReader.readPrevPage();
+//			System.out.println(page.toString());
+//			Log.d("Reader page1: ", page.toString());
 		}
 	};
 	

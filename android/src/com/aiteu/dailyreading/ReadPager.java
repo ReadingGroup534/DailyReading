@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.db.MyStoreHelper;
+import com.aiteu.dailyreading.reader.BookPage;
+import com.aiteu.dailyreading.reader.LocalBookReader;
 import com.aiteu.http.factory.XmlHttpFactory;
 import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -47,6 +48,7 @@ import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
+@SuppressLint("WrongCall")
 public class ReadPager extends Activity implements OnClickListener,
 		OnSeekBarChangeListener {
 
@@ -108,6 +110,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		}
 	};
 
+	@SuppressLint("WrongCall")
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -259,7 +262,8 @@ public class ReadPager extends Activity implements OnClickListener,
 		 * 根据传递的路径打开书
 		 */
 		try {
-			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+			pageFactory.openbook("/sdcard/test.txt");
+			//pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 //			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
 //			pageFactory.openbook(doc.toString());
 			pageFactory.onDraw(mCurCanvas);
@@ -267,6 +271,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			e1.printStackTrace();
 			Toast.makeText(this, "电子书不存在！请把电子书放到SDCard更目录下...", Toast.LENGTH_SHORT).show();
 		}
+		
 		
 		begin = sp.getInt(xmlDoc.getContent().toString() + "begin", 0);
 	}
