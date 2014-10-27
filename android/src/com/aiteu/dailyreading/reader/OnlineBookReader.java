@@ -1,5 +1,9 @@
 package com.aiteu.dailyreading.reader;
 
+import android.graphics.Bitmap;
+
+import com.aiteu.http.inteface.IBookReader;
+
 /**
  * 在线书籍阅读器
  * @author liwei
@@ -27,6 +31,12 @@ public class OnlineBookReader implements IBookReader{
 
 	@Override
 	public void closebook() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBgBitmap(Bitmap BG) {
 		// TODO Auto-generated method stub
 		
 	}
