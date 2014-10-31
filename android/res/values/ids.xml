@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="md__drawer" type="id" />
+    <item name="md__menu" type="id" />
+    <item name="md__content" type="id" />
+    <item name="mdMenu" type="id" />
+    <item name="mdContent" type="id" />
+    <item name="mdActiveViewPosition" type="id" />
+    <item name="main_container" type="id" />
+    <item name="article_listview" type="id" />
+    <item name="welcome_lay_id" type="id" />
+</resources>

@@ -1,41 +1,13 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <FrameLayout
-        android:id="@+id/fragment_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </FrameLayout>
+    <com.aiteu.dailyreading.view.drawer.SlidingDrawer
+        android:id="@+id/drawer_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <!-- 内容层 -->
+    <include layout="@layout/welcome_lay"/>
 
-   <!--  <RelativeLayout
-        android:id="@+id/menu_layout_left"
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:background="#FFFFFF" >
-
-        <ListView
-            android:id="@+id/menu_listView_l"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
-    </RelativeLayout> -->
-
-   <!--  <RelativeLayout
-        android:id="@+id/menu_layout_right"
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:background="#ff333333" >
-
-        <ListView
-            android:id="@+id/menu_listView_r"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
-    </RelativeLayout> -->
-
-</android.support.v4.widget.DrawerLayout>
+</FrameLayout>

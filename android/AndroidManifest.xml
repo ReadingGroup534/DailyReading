@@ -7,11 +7,12 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="14" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
@@ -19,31 +20,45 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme" 
+        android:name="com.aiteu.dailyreading.BaseApplication">
         <activity
             android:name="com.aiteu.dailyreading.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".setting.SendSuggestActivity" 
-             android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".setting.AboutActivity" 
-             android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".ReadPager" 
+        <activity
+            android:name=".setting.SendSuggestActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".setting.AboutActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ReadPager"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".SettingActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".ReadLocalPager"
-             android:configChanges="orientation"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ReadLocalPager"
+            android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
-            
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>
