@@ -69,5 +69,5 @@ create table crawler_source(
 
 /**
 * 修改表字段名字
-*/
 alter table article change physical_path url varchar(255) not null;
+*/

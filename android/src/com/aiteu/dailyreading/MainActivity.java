@@ -6,8 +6,6 @@ import java.util.TimerTask;
 import com.aiteu.dailyreading.dealer.HomeDealer;
 import com.aiteu.dailyreading.handler.HomeHandler;
 import com.aiteu.dailyreading.view.drawer.MenuDrawer;
-import com.aiteu.dailyreading.view.drawer.Position;
-import com.aiteu.dailyreading.view.drawer.MenuDrawer.Type;
 import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
 
 import android.os.Bundle;
@@ -36,6 +34,7 @@ public class MainActivity extends BaseActivity {
 		mHomeDealer.loadDailyData();
 		mHomeDealer.checkUpdate();
 		initViews();
+		
 	}
 	
 	private void initViews(){
