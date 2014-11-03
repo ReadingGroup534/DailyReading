@@ -20,7 +20,7 @@ public class ArticleRowMapper implements RowMapper<Article>{
 		
 		article.setTitle(rs.getString("title"));
 		article.setAuthor(rs.getString("author"));
-		article.setArticleType(rs.getString("article_type"));
+		article.setArticleType(rs.getString("browse_value"));
 		article.setAbstracts(rs.getString("abstracts"));
 		article.setRecommendStar(rs.getInt("recommend_star"));
 		article.setPraiseTimes(rs.getInt("praise_times"));
