@@ -31,10 +31,9 @@ public class MainActivity extends BaseActivity {
 		setContentView(R.layout.activity_main);
 		mHomeHandler = new HomeHandler(this);
 		mHomeDealer = new HomeDealer(this, mHomeHandler);		
-		mHomeDealer.loadDailyData();
 		mHomeDealer.checkUpdate();
 		initViews();
-		
+		mHomeDealer.loadDailyData();
 	}
 	
 	private void initViews(){

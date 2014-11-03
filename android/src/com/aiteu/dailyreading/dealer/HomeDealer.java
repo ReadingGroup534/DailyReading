@@ -28,15 +28,7 @@ public class HomeDealer {
 	 * 加载当天的数据
 	 */
 	public void loadDailyData(){
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				JsonHttpHandler handler = (JsonHttpHandler)new JsonHttpFactory().create();
-				JSONObject json = handler.getJson("http://192.168.1.192:8080/reading-web/api/list.json", null);
-				Log.d(TAG, json.toString());
-			}
-		}).start();
+		
 	}
 	
 	/**
@@ -55,4 +47,6 @@ public class HomeDealer {
 		//check self update
 		
 	}
+	
+	
 }
