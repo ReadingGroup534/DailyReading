@@ -24,6 +24,16 @@
         android:id="@id/article_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:cacheColorHint="@color/transparent"
+        android:dividerHeight="@dimen/list_divider_height"
+        android:divider="@color/bg_color"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:scrollingCache="true"
+        android:background="@color/bg_color"
+        android:paddingLeft="@dimen/padding_normal"
+        android:paddingRight="@dimen/padding_normal"
+        android:scrollbarStyle="outsideOverlay"
         />
     
 </LinearLayout>

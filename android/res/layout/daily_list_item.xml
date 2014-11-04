@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:daily="http://schemas.android.com/apk/res/com.aiteu.dailyreading"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_selector"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_normal" >
+
+    <TextView
+        android:id="@id/item_title"
+        style="@style/listItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="@dimen/item_title_size"
+        android:textStyle="bold" />
+
+    <View style="@style/horizontalLine" />
+
+    <com.aiteu.dailyreading.view.EllipsizingTextView
+        android:id="@id/item_abstract"
+        style="@style/listItemSubStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="4" />
+
+    <View style="@style/horizontalLine" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.aiteu.dailyreading.view.PrefixView
+            android:id="@id/item_scan"
+            style="@style/listItemSubStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal" 
+            daily:prefix="@string/item_prefix_scan"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,4 +9,8 @@
     <item name="main_container" type="id" />
     <item name="article_listview" type="id" />
     <item name="welcome_lay_id" type="id" />
+    <item name="item_title" type="id" />
+    <item name="item_abstract" type="id" />
+    <item name="item_scan" type="id" />
+    <item name="item_praise" type="id" />
 </resources>

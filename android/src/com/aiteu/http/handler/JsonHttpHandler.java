@@ -36,11 +36,9 @@ public class JsonHttpHandler implements HttpHandler{
 		// TODO Auto-generated method stub
 		InputStream in = null;
 		HttpGet getRequest = new HttpGet(url);
-		getRequest.setHeader("accept", "*/*");
-		getRequest.setHeader("accept-language", "zh-CN");
-		getRequest.setHeader("accept-encoding", "utf-8, deflate");
+		getRequest.addHeader("charset", HTTP.UTF_8);
 		HttpClient client = new DefaultHttpClient();
-		client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);
+		client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 6000);
 		client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 8000);
 		HttpResponse response = null;
 		try {

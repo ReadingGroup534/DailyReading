@@ -65,4 +65,14 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/title_size</item>
     </style>
+    
+    <style name="listItemStyle" parent="@style/Text">
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    
+    <style name="listItemSubStyle" parent="@style/Text">
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:textColor">@color/black_sub</item>
+    </style>
 </resources>

@@ -8,4 +8,7 @@
     <dimen name="title_size">22.0sp</dimen>
 	<dimen name="shadow_width">8dip</dimen>
 	<dimen name="slidingmenu_offset">210.0dip</dimen>
+	<dimen name="text_size_normal">18.0sp</dimen>
+	<dimen name="item_title_size">20.0sp</dimen>
+	<dimen name="list_divider_height">10.0dip</dimen>
 </resources>

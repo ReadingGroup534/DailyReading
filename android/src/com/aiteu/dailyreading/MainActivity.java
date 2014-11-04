@@ -3,12 +3,17 @@ package com.aiteu.dailyreading;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.aiteu.dailyreading.dealer.HomeDealer;
+import com.aiteu.dailyreading.book.PageSplitor;
+import com.aiteu.dailyreading.dealer.LoadDailyDataTask;
 import com.aiteu.dailyreading.handler.HomeHandler;
+import com.aiteu.dailyreading.update.AppUpdate;
 import com.aiteu.dailyreading.view.drawer.MenuDrawer;
 import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
+import com.aiteu.dailyreading.view.list.XListView;
 
 import android.os.Bundle;
+import android.os.HandlerThread;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +23,15 @@ public class MainActivity extends BaseActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 	
 	private HomeHandler mHomeHandler = null;
-	private HomeDealer mHomeDealer = null;
+	private HandlerThread mHandlerThread = null;
+	private AppUpdate mAppUpdate = null;
 	private SlidingDrawer mMenuDrawer = null;
 	private View mMenuView = null;
 	private View mContentView = null;
+	private XListView mListView = null;
+	private DailyAdapter mAdapter = null;
+	private LoadDailyDataTask mDailyDataTask = null;
+	private PageSplitor mPageSplitor = null;
 	
 	private boolean isDoubleClick = false; //点击两次返回键推出程序
 
@@ -29,11 +39,14 @@ public class MainActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		mHomeHandler = new HomeHandler(this);
-		mHomeDealer = new HomeDealer(this, mHomeHandler);		
-		mHomeDealer.checkUpdate();
+		mHandlerThread = new HandlerThread("homeHandler");
+		mHomeHandler = new HomeHandler(this, mHandlerThread.getLooper());
 		initViews();
-		mHomeDealer.loadDailyData();
+		mAppUpdate = new AppUpdate(this);
+		mAppUpdate.check();
+		mPageSplitor = new PageSplitor();
+		mDailyDataTask = new LoadDailyDataTask(this);
+		mDailyDataTask.execute(mPageSplitor);
 	}
 	
 	private void initViews(){
@@ -52,6 +65,18 @@ public class MainActivity extends BaseActivity {
 		mMenuDrawer.setMenuSize((int) getResources().getDimension(
 				R.dimen.slidingmenu_offset));
 		mMenuDrawer.setTouchBezelSize(50);
+		mListView = (XListView)mContentView.findViewById(R.id.article_listview);
+		mListView.setPullRefreshEnable(true);
+		mListView.setPullLoadEnable(true);
+		mAdapter = new DailyAdapter(this);
+		mListView.setAdapter(mAdapter);
+		
+	}
+	
+	public void showDailyList(PageSplitor pageSplitor){
+		this.mPageSplitor = pageSplitor;
+		mAdapter.setData(mPageSplitor.getDailyList());
+		mAdapter.notifyDataSetChanged();
 	}
 	
 	
