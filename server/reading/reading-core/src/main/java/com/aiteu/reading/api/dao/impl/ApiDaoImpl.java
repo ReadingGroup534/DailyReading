@@ -27,7 +27,7 @@ public class ApiDaoImpl extends BaseDaoImpl implements ApiDao{
 
 	public List<Article> search(final Map<String, String> param) {
 		// TODO Auto-generated method stub
-		final String sql = "select * from article where active = 'y' and show_time < now()  order by "+ param.get("order")+" limit ?,?";
+		final String sql = "select a.*,b.browse_value from article a, browse b where a.browse_id = b.browse_id and a.active = 'y' and show_time < now()  order by "+ param.get("order")+" limit ?,?";
 		List<Article> articles = this.getTemplate().query(new PreparedStatementCreator() {
 			
 			public PreparedStatement createPreparedStatement(Connection conn)

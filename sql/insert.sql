@@ -22,12 +22,3 @@ insert into browse
 (browse_id, browse_value, description, dt_created, dt_updated)
 values
 (4,'幽默笑话','经典的笑话收录', now(), now());
-
-
-/**
-*	crawler sead
-*/
-insert into crawler_source
-(url)
-values
-('http://zaodula.com/archives/10098.html');

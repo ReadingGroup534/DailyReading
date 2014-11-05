@@ -1,6 +1,5 @@
 package com.aiteu.dailyreading;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -9,9 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.aiteu.dailyreading.book.BookBean;
-import com.aiteu.dailyreading.book.SAXBookParser;
+import com.aiteu.http.factory.JsonHttpFactory;
 import com.aiteu.http.factory.XmlHttpFactory;
+import com.aiteu.http.handler.JsonHttpHandler;
 import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
 import com.aiteu.http.xml.XmlParser.ParserType;
@@ -77,7 +81,8 @@ public class EssayFragment extends Fragment {
 	private ImageView head_arrowImageView;
 	/** 旋转动画 */
 	private RotateAnimation animation, reverseAnimation;
-
+	
+	private final static String URL_PATH = "http://localhost:8080/reading-web/api/list.json?limit=3&offset=0";
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -118,7 +123,13 @@ public class EssayFragment extends Fragment {
 		head_arrowImageView = (ImageView) headView
 				.findViewById(R.id.head_arrowImageView);
 
-		data = initValue(1, 8);
+		try {
+			data = initValue(1, 8);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		adapter = new SimpleAdapter(mFragmentActivity, data,
 				android.R.layout.simple_expandable_list_item_2, new String[] {
 						"title", "text" }, new int[] { android.R.id.text1,
@@ -152,7 +163,8 @@ public class EssayFragment extends Fragment {
 						/**
 						 * 点击item后跳转到对应的Read界面 
 						 */
-						Intent intent = new Intent(mFragmentActivity, ReadPager.class);
+//						Intent intent = new Intent(mFragmentActivity, ReadPager.class);
+						Intent intent = new Intent(mFragmentActivity,ReadLocalPager.class);
 						startActivity(intent);
 						Log.i("lyc","TURN TO　READ PAGER!!");
 						Toast.makeText(mFragmentActivity, "你點擊了item", 1).show();
@@ -372,8 +384,9 @@ public class EssayFragment extends Fragment {
 	 * 
 	 * @param pageStart
 	 * @param pageSize
+	 * @throws JSONException 
 	 */
-	private void chageListView(int pageStart, int pageSize) {
+	private void chageListView(int pageStart, int pageSize) throws JSONException {
 		List<Map<String, Object>> data = initValue(pageStart, pageSize);
 		for (Map<String, Object> map : data) {
 			this.data.add(map);
@@ -411,41 +424,77 @@ public class EssayFragment extends Fragment {
 	 * @param pageSize
 	 *            每页显示数目 這裡可以傳入文章title和content摘要
 	 * @return
+	 * @throws JSONException 
 	 */
 	public static List<Map<String, Object>> initValue(int pageStart,
-			int pageSize) {
+			int pageSize) throws JSONException {
 		Map<String, Object> map;
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		List<BookBean> booklist = null;
 		XmlDocument document = null;
-		String title1 = null;
-		String content = null;
-		String author = null;
-		String abstracts = null;
-		String create_time = null;
-		String source = null;
-		int recommend_star;
 		AssetManager am = mContext.getAssets();
 		// File file = new File("file:///android_asset/books.xml");
 		// if (!file.exists()) {
 		// Log.i("lyc","路徑不存在");
 		// }else {
-		for (int i = 0; i < pageSize; i++) {
-		 map = new HashMap<String, Object>();
-		 XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
-		 XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
-		 try {
-			XmlDocument doc = xmlHttpHandler.getXml(mContext.getAssets().open("detail.xml"), ParserType.SAX_PARSER);
-			map.put("text", doc.getAuthor().toString());
-			map.put("title", doc.getTitle().toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
+//		for (int i = 0; i < pageSize; i++) {
+//			map = new HashMap<String, Object>();
+//			XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory
+//					.create();
+//			try {
+//				XmlDocument doc = xmlHttpHandler.getXml(mContext.getAssets()
+//						.open("detail.xml"), ParserType.SAX_PARSER);
+//				map.put("text", doc.getAuthor().toString());
+//				map.put("title", doc.getTitle().toString());
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			list.add(map);
+//		}
+		JsonHttpFactory jsonFactory = new JsonHttpFactory();
+		JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
+		JSONObject json = jsonHandler.getJson("http://192.168.2.103:8080/reading-web/api/list.json?limit=3&offset=0", null).getJSONObject("count");
+		Log.i("json",json.toString() + " ");
+		JSONArray array = json.getJSONArray("list");
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject jsonObject2 = (JSONObject) array.opt(i);
+			map = new HashMap<String, Object>();
+			map.put("text", jsonObject2.get("abstracts"));
+			map.put("title", jsonObject2.get("title"));
+			Log.i("json", jsonObject2.get("abstracts").toString());
+			Log.i("json", jsonObject2.get("title").toString());
+			list.add(map);
 		}
-		 list.add(map);
-		 }
 		return list;
 	}
+	
+	final Runnable getJson = new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			Map<String, Object> map;
+			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+			JsonHttpHandler jsonHttpHandler = new JsonHttpHandler();
+			JSONObject jsonObject = jsonHttpHandler.getJson(URL_PATH, null);
+			Log.i("json",jsonObject.toString() + " ");
+			String title = null ;
+			String abstracts = null;
+			for (int i = 0; i < pageSize; i++) {
+				map = new HashMap<String, Object>();
+				try {
+					map.put("text", jsonObject.get(abstracts));
+					map.put("title", jsonObject.get(title));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				list.add(map);
+			}
+			
+		}
+	};
 
 	class refreshTask extends AsyncTask<Void, Void, Void> {
 
@@ -462,7 +511,12 @@ public class EssayFragment extends Fragment {
 			}
 
 			// 加载模拟数据：下一页数据， 在正常情况下，上面的休眠是不需要，直接使用下面这句代码加载相关数据
-			chageListView(data.size() + 1, pageSize);
+			try {
+				chageListView(data.size() + 1, pageSize);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return null;
 		}
 

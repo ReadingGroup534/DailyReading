@@ -1,5 +1,6 @@
 ﻿/**
 *    最终显示给用户的数据
+*    add browse_id
 */
 drop table if exists article;
 
@@ -9,7 +10,7 @@ create table article(
     show_time             datetime                default '0000-00-00 00:00:00' not null,
     title                 varchar(255)            default '' not null,
     author                varchar(255)            default '' not null,
-    article_type          enum('sanwen','gushi','lizhi','other')    default 'other' not null,
+    browse_id             int                     default 0  not null,           
     abstracts             varchar(255)            default '' not null, 
     recommend_star        smallint unsigned       default 0   not null,
     praise_times	  int unsigned		  default 0   not null,	
@@ -69,5 +70,5 @@ create table crawler_source(
 
 /**
 * 修改表字段名字
-*/
 alter table article change physical_path url varchar(255) not null;
+*/

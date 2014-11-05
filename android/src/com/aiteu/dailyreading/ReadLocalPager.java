@@ -58,6 +58,7 @@ public class ReadLocalPager extends Activity{
 		
 		localBookReader.onDraw(mCurCanvas);
 		
+		mPageWidget = new PageWidget(this, screenWidth, screenHeight);// 页面
 		mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
 		
 		//关闭GPU 渲染  防止在4.0以上真机翻页错乱
@@ -80,6 +81,7 @@ public class ReadLocalPager extends Activity{
 						localBookReader.onDraw(mCurCanvas);
 						if (mPageWidget.DragToRight()) {
 							page = localBookReader.readNextPage();
+							System.out.println(page.toString());
 							if (localBookReader.isLastPage()) {
 								Toast.makeText(getApplicationContext(),
 										"这已经是最后一页了", Toast.LENGTH_SHORT)
