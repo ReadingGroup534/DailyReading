@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity {
 	private HomeHandler mHomeHandler = null;
 	private HandlerThread mHandlerThread = null;
 	private AppUpdate mAppUpdate = null;
-	private SlidingDrawer mMenuDrawer = null;
+//	private SlidingDrawer mMenuDrawer = null;
 	private View mMenuView = null;
 	private View mContentView = null;
 	private XListView mListView = null;
@@ -48,17 +48,15 @@ public class MainActivity extends BaseActivity {
 	private Boolean isNetworkOpen = false;
 	private NetWorkHelper netWorkHelper;
 	
-	private Boolean isWifi, isMoblile;
+	private Boolean isWifi;
 	private boolean isDoubleClick = false; //点击两次返回键推出程序
 
+	@SuppressWarnings("static-access")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main);
 		
-		//set ActionBar's back action
-//		actionBar=getActionBar();
-//        actionBar.show();
 				
 		isNetworkOpen = netWorkHelper.isNetAvailable(getApplicationContext());
 		if (isNetworkOpen == false) {
@@ -80,10 +78,10 @@ public class MainActivity extends BaseActivity {
 		// 监听菜单 左
 //		mLeftListView.setOnItemClickListener(new DrawerItemClickListenerLeft());
 		
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		Fragment fragment = new EssayFragment();
-		ft.replace(R.id.fragment_layout, fragment);
-		ft.commit();
+//		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//		Fragment fragment = new EssayFragment();
+//		ft.replace(R.id.fragment_layout, fragment);
+//		ft.commit();
 		//FIXME 仅供测试使用
 //		new Thread(testApiRunnable).start();
 		new Thread(testApiRunnable).start();
@@ -98,22 +96,22 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	private void initViews(){
-		LayoutInflater mInflater = getLayoutInflater();
-		mMenuView = mInflater.inflate(R.layout.main_menu, null);
-		mContentView = mInflater.inflate(R.layout.main_content, null);
-		mMenuDrawer = (SlidingDrawer)findViewById(R.id.drawer_menu);
-		mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
-		mMenuDrawer.setContentView(mContentView);
-		mMenuDrawer.setMenuView(mMenuView);
-		mMenuDrawer.setDropShadow(R.drawable.shadow);
-		mMenuDrawer.setDropShadowSize((int) getResources().getDimension(
-				R.dimen.shadow_width));
-		mMenuDrawer.setMaxAnimationDuration(3000);
-		mMenuDrawer.setHardwareLayerEnabled(false);
-		mMenuDrawer.setMenuSize((int) getResources().getDimension(
-				R.dimen.slidingmenu_offset));
-		mMenuDrawer.setTouchBezelSize(50);
-		mListView = (XListView)mContentView.findViewById(R.id.article_listview);
+//		LayoutInflater mInflater = getLayoutInflater();
+//		mMenuView = mInflater.inflate(R.layout.main_menu, null);
+//		mContentView = mInflater.inflate(R.layout.main_content, null);
+//		mMenuDrawer = (SlidingDrawer)findViewById(R.id.drawer_menu);
+//		mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+//		mMenuDrawer.setContentView(mContentView);
+//		mMenuDrawer.setMenuView(mMenuView);
+//		mMenuDrawer.setDropShadow(R.drawable.shadow);
+//		mMenuDrawer.setDropShadowSize((int) getResources().getDimension(
+//				R.dimen.shadow_width));
+//		mMenuDrawer.setMaxAnimationDuration(3000);
+//		mMenuDrawer.setHardwareLayerEnabled(false);
+//		mMenuDrawer.setMenuSize((int) getResources().getDimension(
+//				R.dimen.slidingmenu_offset));
+//		mMenuDrawer.setTouchBezelSize(50);
+		mListView = (XListView)findViewById(R.id.article_listview);
 		mListView.setPullRefreshEnable(true);
 		mListView.setPullLoadEnable(true);
 		mAdapter = new DailyAdapter(this);
