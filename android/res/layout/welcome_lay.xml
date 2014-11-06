@@ -6,13 +6,12 @@
     android:background="@drawable/splash_bg"
     android:gravity="center"
     android:id="@id/welcome_lay_id"
-    android:visibility="visible"
-    >
+    android:visibility="gone">
     
 	<TextView 
 	    style="@style/sentenceStyle"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="@string/welcome_sens"
-	    android:visibility="visible"/>
+	    android:visibility="invisible"/>
 </LinearLayout>

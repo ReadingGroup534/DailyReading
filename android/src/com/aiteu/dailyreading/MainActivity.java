@@ -18,12 +18,12 @@ import com.aiteu.dailyreading.update.AppUpdate;
 import com.aiteu.dailyreading.view.drawer.MenuDrawer;
 import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
 import com.aiteu.dailyreading.view.list.XListView;
-import com.aiteu.http.factory.JsonHttpFactory;
-import com.aiteu.http.handler.JsonHttpHandler;
-import com.aiteu.http.util.NetWorkHelper;
 
 import android.os.Bundle;
 import android.os.HandlerThread;
+import com.aiteu.http.factory.JsonHttpFactory;
+import com.aiteu.http.handler.JsonHttpHandler;
+import com.aiteu.http.util.NetWorkHelper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity {
 	private HomeHandler mHomeHandler = null;
 	private HandlerThread mHandlerThread = null;
 	private AppUpdate mAppUpdate = null;
-//	private SlidingDrawer mMenuDrawer = null;
+	private SlidingDrawer mMenuDrawer = null;
 	private View mMenuView = null;
 	private View mContentView = null;
 	private XListView mListView = null;
@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//setContentView(R.layout.activity_main);
 		setContentView(R.layout.main);
 		
 				
@@ -84,10 +85,10 @@ public class MainActivity extends BaseActivity {
 //		ft.commit();
 		//FIXME 仅供测试使用
 //		new Thread(testApiRunnable).start();
-		new Thread(testApiRunnable).start();
+		//new Thread(testApiRunnable).start();
 		mHandlerThread = new HandlerThread("homeHandler");
 		mHomeHandler = new HomeHandler(this, mHandlerThread.getLooper());
-		initViews();
+		//initViews();
 		mAppUpdate = new AppUpdate(this);
 		mAppUpdate.check();
 		mPageSplitor = new PageSplitor();
@@ -96,6 +97,23 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	private void initViews(){
+
+		LayoutInflater mInflater = getLayoutInflater();
+		mMenuView = mInflater.inflate(R.layout.main_menu, null);
+		mContentView = mInflater.inflate(R.layout.main_content, null);
+		mMenuDrawer = (SlidingDrawer)findViewById(R.id.drawer_menu);
+		mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+		mMenuDrawer.setContentView(mContentView);
+		mMenuDrawer.setMenuView(mMenuView);
+		mMenuDrawer.setDropShadow(R.drawable.shadow);
+		mMenuDrawer.setDropShadowSize((int) getResources().getDimension(
+				R.dimen.shadow_width));
+		mMenuDrawer.setMaxAnimationDuration(3000);
+		mMenuDrawer.setHardwareLayerEnabled(false);
+		mMenuDrawer.setMenuSize((int) getResources().getDimension(
+				R.dimen.slidingmenu_offset));
+		mMenuDrawer.setTouchBezelSize(50);
+		mListView = (XListView)mContentView.findViewById(R.id.article_listview);
 //		LayoutInflater mInflater = getLayoutInflater();
 //		mMenuView = mInflater.inflate(R.layout.main_menu, null);
 //		mContentView = mInflater.inflate(R.layout.main_content, null);
@@ -116,13 +134,12 @@ public class MainActivity extends BaseActivity {
 		mListView.setPullLoadEnable(true);
 		mAdapter = new DailyAdapter(this);
 		mListView.setAdapter(mAdapter);
-		
 	}
 	
 	public void showDailyList(PageSplitor pageSplitor){
-		this.mPageSplitor = pageSplitor;
-		mAdapter.setData(mPageSplitor.getDailyList());
-		mAdapter.notifyDataSetChanged();
+//		this.mPageSplitor = pageSplitor;
+//		mAdapter.setData(mPageSplitor.getDailyList());
+//		mAdapter.notifyDataSetChanged();
 	}
 	
 	final Runnable testApiRunnable = new Runnable() {
@@ -156,49 +173,6 @@ public class MainActivity extends BaseActivity {
 		}
 	};
 
-	/*private void findViewById() {
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mLeftLayout = (RelativeLayout) findViewById(R.id.menu_layout_left);
-		mLeftListView = (ListView) findViewById(R.id.menu_listView_l);
-	}*/
-
-	/**
-	 * the clicklistener in left side
-	 * 
-	 * @author liyangchao
-	 * 
-	 */
-	/*public class DrawerItemClickListenerLeft implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			// TODO Auto-generated method stub
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			Fragment fragment = null;
-			
-			//according to the click row number decide to start which fragment;
-			switch (position) {
-			case 0:
-				fragment = new EmotionalFragment();
-				break;
-			case 1:
-				fragment = new EssayFragment();
-				break;
-			case 2:
-			case 3:
-			case 4:
-				fragment = new SettingActivity();
-				break;
-			default:
-				break;
-			}
-			ft.replace(R.id.fragment_layout, fragment);
-			ft.commit();
-			mDrawerLayout.closeDrawer(mLeftLayout);
-		}
-
-	}*/
 	
 	Timer mQuitTimer =  new Timer();
 
