@@ -29,11 +29,21 @@
     <string name="item_prefix_scan">浏览:</string>
     <string name="item_sufix_scan">%d次</string>
     
+    <!-- 菜单 -->
     <string name="sanwen">经典散文</string>
     <string name="qinggan">情感治愈</string>
     <string name="jitang">心灵鸡汤</string>
     <string name="xiaohua">幽默笑话</string>
     <string name="other">其	       他</string>
+    
+    <!-- update -->
+    <string name="no_update">当前已是最新版本，无需更新!</string>
+    <string name="soft_update_title">软件更新</string>
+    <string name="soft_update_info">检测到新版本，立即更新吗</string>
+    <string name="soft_update_updatebtn">更新</string>
+    <string name="soft_update_later">稍后更新</string>
+    <string name="soft_updating">正在更新</string>
+    <string name="soft_update_cancel">取消</string>
     
 
 </resources>

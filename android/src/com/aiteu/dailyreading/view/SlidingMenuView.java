@@ -31,7 +31,7 @@ public class SlidingMenuView extends HorizontalScrollView {
 	
 	private int screenWidth;
 	private int mMenuWidth;
-	private int mMenuPaddingRight = 100;
+	private int mMenuPaddingRight = 150;
 	private float velocityX;
 	
 	private boolean once;
