@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	
-    <attr name="menuDrawerStyle" format="reference" />
+   <attr name="menuDrawerStyle" format="reference" /> 
+   <attr name="rightPadding" format="dimension" />
+  
     
     <declare-styleable name="MenuDrawer"> <!-- Drawable to use for the background of the content. -->
         <attr name="mdContentBackground" format="reference" /> <!-- Drawable to use for the background of the menu. -->
@@ -32,5 +34,13 @@
     <declare-styleable name="PrefixView">
         <attr name="prefix" format="string|reference"></attr>
     </declare-styleable>
+<<<<<<< HEAD
 
+=======
+    
+    <declare-styleable name="SlidingMenuView">
+       <attr name="rightPadding"></attr> 
+   </declare-styleable>
+    
+>>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
 </resources>
