@@ -8,12 +8,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-<<<<<<< HEAD
-=======
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
 import com.aiteu.dailyreading.book.PageSplitor;
 import com.aiteu.dailyreading.dealer.LoadDailyDataTask;
 import com.aiteu.dailyreading.handler.HomeHandler;
@@ -21,20 +18,14 @@ import com.aiteu.dailyreading.update.AppUpdate;
 import com.aiteu.dailyreading.view.drawer.MenuDrawer;
 import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
 import com.aiteu.dailyreading.view.list.XListView;
-<<<<<<< HEAD
 
 import android.os.Bundle;
 import android.os.HandlerThread;
-=======
 import com.aiteu.http.factory.JsonHttpFactory;
 import com.aiteu.http.handler.JsonHttpHandler;
 import com.aiteu.http.util.NetWorkHelper;
-
-import android.os.Bundle;
-import android.os.HandlerThread;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,22 +38,15 @@ public class MainActivity extends BaseActivity {
 	private HomeHandler mHomeHandler = null;
 	private HandlerThread mHandlerThread = null;
 	private AppUpdate mAppUpdate = null;
-<<<<<<< HEAD
 	private SlidingDrawer mMenuDrawer = null;
-=======
-//	private SlidingDrawer mMenuDrawer = null;
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
 	private View mMenuView = null;
 	private View mContentView = null;
 	private XListView mListView = null;
 	private DailyAdapter mAdapter = null;
 	private LoadDailyDataTask mDailyDataTask = null;
 	private PageSplitor mPageSplitor = null;
-<<<<<<< HEAD
-=======
 	private Boolean isNetworkOpen = false;
 	private NetWorkHelper netWorkHelper;
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
 	
 	private Boolean isWifi;
 	private boolean isDoubleClick = false; //点击两次返回键推出程序
@@ -71,9 +55,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-<<<<<<< HEAD
-		setContentView(R.layout.activity_main);
-=======
+		//setContentView(R.layout.activity_main);
 		setContentView(R.layout.main);
 		
 				
@@ -103,11 +85,10 @@ public class MainActivity extends BaseActivity {
 //		ft.commit();
 		//FIXME 仅供测试使用
 //		new Thread(testApiRunnable).start();
-		new Thread(testApiRunnable).start();
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
+		//new Thread(testApiRunnable).start();
 		mHandlerThread = new HandlerThread("homeHandler");
 		mHomeHandler = new HomeHandler(this, mHandlerThread.getLooper());
-		initViews();
+		//initViews();
 		mAppUpdate = new AppUpdate(this);
 		mAppUpdate.check();
 		mPageSplitor = new PageSplitor();
@@ -116,7 +97,7 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	private void initViews(){
-<<<<<<< HEAD
+
 		LayoutInflater mInflater = getLayoutInflater();
 		mMenuView = mInflater.inflate(R.layout.main_menu, null);
 		mContentView = mInflater.inflate(R.layout.main_content, null);
@@ -133,7 +114,6 @@ public class MainActivity extends BaseActivity {
 				R.dimen.slidingmenu_offset));
 		mMenuDrawer.setTouchBezelSize(50);
 		mListView = (XListView)mContentView.findViewById(R.id.article_listview);
-=======
 //		LayoutInflater mInflater = getLayoutInflater();
 //		mMenuView = mInflater.inflate(R.layout.main_menu, null);
 //		mContentView = mInflater.inflate(R.layout.main_content, null);
@@ -150,27 +130,16 @@ public class MainActivity extends BaseActivity {
 //				R.dimen.slidingmenu_offset));
 //		mMenuDrawer.setTouchBezelSize(50);
 		mListView = (XListView)findViewById(R.id.article_listview);
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
 		mListView.setPullRefreshEnable(true);
 		mListView.setPullLoadEnable(true);
 		mAdapter = new DailyAdapter(this);
 		mListView.setAdapter(mAdapter);
-		
-<<<<<<< HEAD
 	}
 	
 	public void showDailyList(PageSplitor pageSplitor){
-		this.mPageSplitor = pageSplitor;
-		mAdapter.setData(mPageSplitor.getDailyList());
-		mAdapter.notifyDataSetChanged();
-=======
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
-	}
-	
-	public void showDailyList(PageSplitor pageSplitor){
-		this.mPageSplitor = pageSplitor;
-		mAdapter.setData(mPageSplitor.getDailyList());
-		mAdapter.notifyDataSetChanged();
+//		this.mPageSplitor = pageSplitor;
+//		mAdapter.setData(mPageSplitor.getDailyList());
+//		mAdapter.notifyDataSetChanged();
 	}
 	
 	final Runnable testApiRunnable = new Runnable() {
@@ -204,49 +173,6 @@ public class MainActivity extends BaseActivity {
 		}
 	};
 
-	/*private void findViewById() {
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mLeftLayout = (RelativeLayout) findViewById(R.id.menu_layout_left);
-		mLeftListView = (ListView) findViewById(R.id.menu_listView_l);
-	}*/
-
-	/**
-	 * the clicklistener in left side
-	 * 
-	 * @author liyangchao
-	 * 
-	 */
-	/*public class DrawerItemClickListenerLeft implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			// TODO Auto-generated method stub
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			Fragment fragment = null;
-			
-			//according to the click row number decide to start which fragment;
-			switch (position) {
-			case 0:
-				fragment = new EmotionalFragment();
-				break;
-			case 1:
-				fragment = new EssayFragment();
-				break;
-			case 2:
-			case 3:
-			case 4:
-				fragment = new SettingActivity();
-				break;
-			default:
-				break;
-			}
-			ft.replace(R.id.fragment_layout, fragment);
-			ft.commit();
-			mDrawerLayout.closeDrawer(mLeftLayout);
-		}
-
-	}*/
 	
 	Timer mQuitTimer =  new Timer();
 

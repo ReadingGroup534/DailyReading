@@ -27,9 +27,6 @@
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     <string name="item_prefix_scan">浏览:</string>
-<<<<<<< HEAD
-    <string name="item_sufix_scan">%d次</string>
-=======
     <string name="item_sufix_scan">%d次</string>
     
     <string name="sanwen">经典散文</string>
@@ -38,6 +35,5 @@
     <string name="xiaohua">幽默笑话</string>
     <string name="other">其	       他</string>
     
->>>>>>> b247e53249246f29378f2dd3970093aac5dc55c4
 
 </resources>
