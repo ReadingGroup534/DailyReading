@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
 
 		// FIXME 仅供测试使用
 		// new Thread(testApiRunnable).start();
-		// new Thread(testApiRunnable).start();
+		new Thread(testApiRunnable).start();
 		mHandlerThread = new HandlerThread("homeHandler");
 		mHomeHandler = new HomeHandler(this, mHandlerThread.getLooper());
 		initViews();
@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity {
 			// FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
 			JSONObject json = jsonHandler
 					.getJson(
-							"http://localhost:8080/reading-web/api/list.json?limit=3&offset=0",
+							"http://192.168.2.103:8080/reading-web/api/list.json?limit=3&offset=0",
 							null);
 			System.out.println(json.toString());
 			Log.i("json", json.toString() + " ");

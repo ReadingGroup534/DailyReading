@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/night_bg"
+    android:background="@drawable/splash_bg"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -42,7 +42,8 @@
         android:layout_below="@+id/suggest_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18dp"
-        android:text="发送您的建议给我们，我们将会做的更好！" />
+        android:textColor="@color/black"
+        android:text="@string/send_suggest_text"/>
 
     <EditText
         android:id="@+id/suggest_et"
@@ -65,6 +66,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="22dp"
-        android:text="发送" />
+        android:text="@string/send" />
 
 </RelativeLayout>
