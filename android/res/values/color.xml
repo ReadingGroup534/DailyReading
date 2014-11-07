@@ -6,7 +6,7 @@
     <color name="green">#669900</color>
     <color name="yellow">#ffbb33</color>
     <color name="blue">#6131B5E5</color>
-    <color name="black">#ff111111</color>
+    <color name="black">#ff353535</color>
     <color name="black_sub">#ff656565</color>
     <color name="light_blue">#6133b5e5</color>
     <color name="gray">#838B83</color>
@@ -15,8 +15,8 @@
     <color name="titlebar_bg">#ff232332</color>
     <color name="horizontalLineColor">#ffeeeeee</color>
     <color name="transparent">#00000000</color>
-    <color name="list_item_border">#ffe6e6e6</color>
-    <color name="list_item_select">#ffe3e3e3</color>
+    <color name="list_item_border">#ffd2d3d3</color>
+    <color name="list_item_select">#ffe2e3e3</color>
  
 
 </resources>

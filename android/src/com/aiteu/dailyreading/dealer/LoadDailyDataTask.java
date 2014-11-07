@@ -57,7 +57,7 @@ public class LoadDailyDataTask extends AsyncTask<PageSplitor, Integer, PageSplit
 	protected void onPostExecute(PageSplitor result) {
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
-		mainActivity.showDailyList(result);
+		//mainActivity.showDailyList(result);
 	}
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PageSplitor {
 	
-	public static final int LIMIT = 4;
+	public static final int LIMIT = 2;
 	private int start = 0;
 	private int totalPage = -1;
 	private int count = 0;

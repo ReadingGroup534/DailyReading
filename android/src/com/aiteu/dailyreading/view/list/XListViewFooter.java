@@ -25,6 +25,11 @@ public class XListViewFooter extends LinearLayout {
 	private View mContentView;
 	private View mProgressBar;
 	private TextView mHintView;
+	private boolean isHidden = true;
+	
+	public boolean isHidden(){
+		return isHidden;
+	}
 	
 	public XListViewFooter(Context context) {
 		super(context);
@@ -70,6 +75,8 @@ public class XListViewFooter extends LinearLayout {
 	public void normal() {
 		mHintView.setVisibility(View.VISIBLE);
 		mProgressBar.setVisibility(View.GONE);
+		isHidden = true;
+		mContentView.setVisibility(View.GONE);
 	}
 	
 	
@@ -79,15 +86,20 @@ public class XListViewFooter extends LinearLayout {
 	public void loading() {
 		mHintView.setVisibility(View.GONE);
 		mProgressBar.setVisibility(View.VISIBLE);
+		mContentView.setVisibility(View.VISIBLE);
+		isHidden = false;
+		
 	}
 	
 	/**
 	 * hide footer when disable pull load more
 	 */
 	public void hide() {
+		isHidden = true;
 		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContentView.getLayoutParams();
 		lp.height = 0;
 		mContentView.setLayoutParams(lp);
+		mContentView.setVisibility(View.GONE);
 	}
 	
 	/**
@@ -97,6 +109,8 @@ public class XListViewFooter extends LinearLayout {
 		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mContentView.getLayoutParams();
 		lp.height = LayoutParams.WRAP_CONTENT;
 		mContentView.setLayoutParams(lp);
+		mContentView.setVisibility(View.VISIBLE);
+		isHidden = false;
 	}
 	
 	private void initView(Context context) {
@@ -108,6 +122,7 @@ public class XListViewFooter extends LinearLayout {
 		mContentView = moreView.findViewById(R.id.xlistview_footer_content);
 		mProgressBar = moreView.findViewById(R.id.xlistview_footer_progressbar);
 		mHintView = (TextView)moreView.findViewById(R.id.xlistview_footer_hint_textview);
+		mContentView.setVisibility(View.GONE);
 	}
 	
 	
