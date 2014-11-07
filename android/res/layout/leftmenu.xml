@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -10,7 +10,7 @@
         android:orientation="vertical" >
 
         <RelativeLayout
-            android:id="@+id/relativeLayout1"
+            android:id="@+id/sanwenLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
@@ -34,9 +34,9 @@
                 android:textSize="20sp" >
             </TextView>
         </RelativeLayout>
-        
-         <RelativeLayout
-             android:id="@+id/relativeLayout2"
+
+        <RelativeLayout
+            android:id="@+id/qingganLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
@@ -60,8 +60,9 @@
                 android:textSize="20sp" >
             </TextView>
         </RelativeLayout>
-        
-          <RelativeLayout
+
+        <RelativeLayout
+            android:id="@+id/xiaohualayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
@@ -85,8 +86,9 @@
                 android:textSize="20sp" >
             </TextView>
         </RelativeLayout>
-        
-           <RelativeLayout
+
+        <RelativeLayout
+            android:id="@+id/otherlayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
@@ -105,13 +107,14 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@id/id_img4"
-                android:text="@string/jitang"
+                android:text="@string/other"
                 android:textColor="#ffffff"
                 android:textSize="20sp" >
             </TextView>
         </RelativeLayout>
-        
-            <RelativeLayout
+
+        <RelativeLayout
+            android:id="@+id/settinglayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
@@ -130,7 +133,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@id/id_img5"
-                android:text="@string/other"
+                android:text="@string/setting"
                 android:textColor="#ffffff"
                 android:textSize="20sp" >
             </TextView>

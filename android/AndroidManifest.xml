@@ -25,7 +25,7 @@
         <activity
             android:name="com.aiteu.dailyreading.SplashActivity"
             android:label="@string/app_name" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden">
@@ -53,7 +53,7 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name="com.aiteu.dailyreading.setting.SettingActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity

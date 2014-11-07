@@ -4,7 +4,7 @@ public class UpdataInfo {
 
 	private int versionCode;  
     private String url;  
-    private String description;
+    private String name;
     
 	public int getVersion() {
 		return versionCode;
@@ -18,11 +18,11 @@ public class UpdataInfo {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescription(String name) {
+		this.name = name;
 	} 
     
     

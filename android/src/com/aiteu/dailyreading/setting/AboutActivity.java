@@ -23,7 +23,7 @@ public class AboutActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				finish();
+				AboutActivity.this.finish();
 			}
 		});
 	}

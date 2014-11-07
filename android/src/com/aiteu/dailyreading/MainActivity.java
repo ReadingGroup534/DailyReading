@@ -14,27 +14,28 @@ import org.json.JSONObject;
 import com.aiteu.dailyreading.book.PageSplitor;
 import com.aiteu.dailyreading.dealer.LoadDailyDataTask;
 import com.aiteu.dailyreading.handler.HomeHandler;
+import com.aiteu.dailyreading.setting.SettingActivity;
 import com.aiteu.dailyreading.update.AppUpdate;
 import com.aiteu.dailyreading.view.drawer.MenuDrawer;
 import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
 import com.aiteu.dailyreading.view.list.XListView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import com.aiteu.http.factory.JsonHttpFactory;
 import com.aiteu.http.handler.JsonHttpHandler;
 import com.aiteu.http.util.NetWorkHelper;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends BaseActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
-	
+
 	private HomeHandler mHomeHandler = null;
 	private HandlerThread mHandlerThread = null;
 	private AppUpdate mAppUpdate = null;
@@ -47,113 +48,113 @@ public class MainActivity extends BaseActivity {
 	private PageSplitor mPageSplitor = null;
 	private Boolean isNetworkOpen = false;
 	private NetWorkHelper netWorkHelper;
-	
+
 	private Boolean isWifi;
-	private boolean isDoubleClick = false; //点击两次返回键推出程序
+	private boolean isDoubleClick = false; // 点击两次返回键推出程序
+
+	private RelativeLayout sanwenLayout, qingganLayout, xiaohuaLayout,
+			otherLayout, settingLayout;
 
 	@SuppressWarnings("static-access")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_main);
+		// setContentView(R.layout.activity_main);
 		setContentView(R.layout.main);
-		
-				
+
 		isNetworkOpen = netWorkHelper.isNetAvailable(getApplicationContext());
 		if (isNetworkOpen == false) {
-			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！", Toast.LENGTH_LONG).show();
-		}else {
+			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！",
+					Toast.LENGTH_LONG).show();
+		} else {
 			isWifi = netWorkHelper.isWifi(getApplicationContext());
 			if (isWifi) {
-				Toast.makeText(getApplication(), "当前使用的是WIFI网络，尽情阅读吧！", Toast.LENGTH_SHORT).show();
-			}else {
-				Toast.makeText(getApplication(), "当前使用的是手机移动网络，请注意流量使用情况！", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplication(), "当前使用的是WIFI网络，尽情阅读吧！",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplication(), "当前使用的是手机移动网络，请注意流量使用情况！",
+						Toast.LENGTH_SHORT).show();
 			}
+			// 更新要在有网的情况下
+//			mAppUpdate = new AppUpdate(this);
+//			mAppUpdate.check();
 		}
-		
-		
-//		findViewById();
-//		mLeftListView.setAdapter(new ArrayAdapter<String>(this,
-//				android.R.layout.simple_expandable_list_item_1, TITLES));
 
-		// 监听菜单 左
-//		mLeftListView.setOnItemClickListener(new DrawerItemClickListenerLeft());
-		
-//		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//		Fragment fragment = new EssayFragment();
-//		ft.replace(R.id.fragment_layout, fragment);
-//		ft.commit();
-		//FIXME 仅供测试使用
-//		new Thread(testApiRunnable).start();
-		//new Thread(testApiRunnable).start();
+		// FIXME 仅供测试使用
+		// new Thread(testApiRunnable).start();
+		// new Thread(testApiRunnable).start();
 		mHandlerThread = new HandlerThread("homeHandler");
 		mHomeHandler = new HomeHandler(this, mHandlerThread.getLooper());
-		//initViews();
-		mAppUpdate = new AppUpdate(this);
-		mAppUpdate.check();
+		initViews();
+
 		mPageSplitor = new PageSplitor();
 		mDailyDataTask = new LoadDailyDataTask(this);
 		mDailyDataTask.execute(mPageSplitor);
-	}
-	
-	private void initViews(){
 
-		LayoutInflater mInflater = getLayoutInflater();
-		mMenuView = mInflater.inflate(R.layout.main_menu, null);
-		mContentView = mInflater.inflate(R.layout.main_content, null);
-		mMenuDrawer = (SlidingDrawer)findViewById(R.id.drawer_menu);
-		mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
-		mMenuDrawer.setContentView(mContentView);
-		mMenuDrawer.setMenuView(mMenuView);
-		mMenuDrawer.setDropShadow(R.drawable.shadow);
-		mMenuDrawer.setDropShadowSize((int) getResources().getDimension(
-				R.dimen.shadow_width));
-		mMenuDrawer.setMaxAnimationDuration(3000);
-		mMenuDrawer.setHardwareLayerEnabled(false);
-		mMenuDrawer.setMenuSize((int) getResources().getDimension(
-				R.dimen.slidingmenu_offset));
-		mMenuDrawer.setTouchBezelSize(50);
-		mListView = (XListView)mContentView.findViewById(R.id.article_listview);
-//		LayoutInflater mInflater = getLayoutInflater();
-//		mMenuView = mInflater.inflate(R.layout.main_menu, null);
-//		mContentView = mInflater.inflate(R.layout.main_content, null);
-//		mMenuDrawer = (SlidingDrawer)findViewById(R.id.drawer_menu);
-//		mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
-//		mMenuDrawer.setContentView(mContentView);
-//		mMenuDrawer.setMenuView(mMenuView);
-//		mMenuDrawer.setDropShadow(R.drawable.shadow);
-//		mMenuDrawer.setDropShadowSize((int) getResources().getDimension(
-//				R.dimen.shadow_width));
-//		mMenuDrawer.setMaxAnimationDuration(3000);
-//		mMenuDrawer.setHardwareLayerEnabled(false);
-//		mMenuDrawer.setMenuSize((int) getResources().getDimension(
-//				R.dimen.slidingmenu_offset));
-//		mMenuDrawer.setTouchBezelSize(50);
-		mListView = (XListView)findViewById(R.id.article_listview);
+		settingLayout.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MainActivity.this,
+						SettingActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
+
+	private void initViews() {
+
+		// LayoutInflater mInflater = getLayoutInflater();
+		// mMenuView = mInflater.inflate(R.layout.main_menu, null);
+		// mContentView = mInflater.inflate(R.layout.main_content, null);
+		// mMenuDrawer = (SlidingDrawer)findViewById(R.id.drawer_menu);
+		// mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+		// mMenuDrawer.setContentView(mContentView);
+		// mMenuDrawer.setMenuView(mMenuView);
+		// mMenuDrawer.setDropShadow(R.drawable.shadow);
+		// mMenuDrawer.setDropShadowSize((int) getResources().getDimension(
+		// R.dimen.shadow_width));
+		// mMenuDrawer.setMaxAnimationDuration(3000);
+		// mMenuDrawer.setHardwareLayerEnabled(false);
+		// mMenuDrawer.setMenuSize((int) getResources().getDimension(
+		// R.dimen.slidingmenu_offset));
+		// mMenuDrawer.setTouchBezelSize(50);
+
+		sanwenLayout = (RelativeLayout) findViewById(R.id.sanwenLayout);
+		qingganLayout = (RelativeLayout) findViewById(R.id.qingganLayout);
+		xiaohuaLayout = (RelativeLayout) findViewById(R.id.xiaohualayout);
+		otherLayout = (RelativeLayout) findViewById(R.id.otherlayout);
+		settingLayout = (RelativeLayout) findViewById(R.id.settinglayout);
+		mListView = (XListView) findViewById(R.id.article_listview);
 		mListView.setPullRefreshEnable(true);
 		mListView.setPullLoadEnable(true);
 		mAdapter = new DailyAdapter(this);
 		mListView.setAdapter(mAdapter);
 	}
-	
-	public void showDailyList(PageSplitor pageSplitor){
-//		this.mPageSplitor = pageSplitor;
-//		mAdapter.setData(mPageSplitor.getDailyList());
-//		mAdapter.notifyDataSetChanged();
+
+	public void showDailyList(PageSplitor pageSplitor) {
+		this.mPageSplitor = pageSplitor;
+		mAdapter.setData(mPageSplitor.getDailyList());
+		mAdapter.notifyDataSetChanged();
 	}
-	
+
 	final Runnable testApiRunnable = new Runnable() {
-		
+
 		@Override
 		public void run() {
 			Map<String, Object> map;
 			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 			JsonHttpFactory jsonFactory = new JsonHttpFactory();
-			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
-			//FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
-			JSONObject json = jsonHandler.getJson("http://localhost:8080/reading-web/api/list.json?limit=3&offset=0", null);
+			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory
+					.create();
+			// FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
+			JSONObject json = jsonHandler
+					.getJson(
+							"http://localhost:8080/reading-web/api/list.json?limit=3&offset=0",
+							null);
 			System.out.println(json.toString());
-			Log.i("json",json.toString() + " ");
+			Log.i("json", json.toString() + " ");
 			JSONArray array;
 			try {
 				array = json.getJSONArray("list");
@@ -173,26 +174,26 @@ public class MainActivity extends BaseActivity {
 		}
 	};
 
-	
-	Timer mQuitTimer =  new Timer();
+	Timer mQuitTimer = new Timer();
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		if(event.getAction() == KeyEvent.ACTION_DOWN){
-			if(keyCode == KeyEvent.KEYCODE_BACK){
-				if(!isDoubleClick){
+		if (event.getAction() == KeyEvent.ACTION_DOWN) {
+			if (keyCode == KeyEvent.KEYCODE_BACK) {
+				if (!isDoubleClick) {
 					isDoubleClick = true;
-					Toast.makeText(this, getText(R.string.msg_quit), Toast.LENGTH_LONG).show();
+					Toast.makeText(this, getText(R.string.msg_quit),
+							Toast.LENGTH_LONG).show();
 					mQuitTimer.schedule(new TimerTask() {
-						
+
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
 							isDoubleClick = false;
 						}
 					}, 1500);
-				}else{
+				} else {
 					exit();
 				}
 				return true;

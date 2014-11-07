@@ -17,8 +17,7 @@
     <string name="send_suggest">发送建议</string>
     <string name="back">返回</string>
     <!-- about.xml -->
-     <string name="title_activity_about">今日阅读</string> 
-    <string name="setting">设置</string>
+    <string name="title_activity_about">今日阅读</string> 
     
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
@@ -35,6 +34,7 @@
     <string name="jitang">心灵鸡汤</string>
     <string name="xiaohua">幽默笑话</string>
     <string name="other">其	       他</string>
+    <string name="setting">设	置</string>
     
     <!-- update -->
     <string name="no_update">当前已是最新版本，无需更新!</string>

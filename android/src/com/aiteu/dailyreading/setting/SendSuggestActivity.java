@@ -41,7 +41,7 @@ public class SendSuggestActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				finish();
+				SendSuggestActivity.this.finish();
 			}
 		});
 	}
