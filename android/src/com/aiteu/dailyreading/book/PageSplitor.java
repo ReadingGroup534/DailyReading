@@ -9,20 +9,25 @@ import java.util.List;
  *
  */
 public class PageSplitor {
-	
+	public static final int LOAD_TYPE_REFRESH = 0x01;
+	public static final int LOAD_DATA_MORE = 0x02;
 	public static final int LIMIT = 2;
 	private int start = 0;
 	private int totalPage = -1;
 	private int count = 0;
 	private List<ItemDaily> dailyList = null;
+	private int currentPage = 1;
+	private int loadType = LOAD_DATA_MORE;
 	
 	public PageSplitor(){
 		this.init();
 	}
 	
-	private void init(){
+	public void init(){
 		this.start = 0;
+		this.currentPage = 1;
 		this.totalPage = -1;
+		this.loadType = LOAD_DATA_MORE;
 		if(dailyList != null){
 			dailyList.clear();
 		}else{
@@ -53,7 +58,11 @@ public class PageSplitor {
 	}
 
 	public void addDailyList(List<ItemDaily> dailyList) {
-		this.dailyList.addAll(0, dailyList);
+		if(loadType == LOAD_TYPE_REFRESH){
+			this.dailyList.addAll(0, dailyList);
+		}else{
+			this.dailyList.addAll(dailyList);
+		}
 	}
 
 	public int getCount() {
@@ -72,4 +81,21 @@ public class PageSplitor {
 		int pages = this.count / LIMIT;
 		this.totalPage = ((this.count % LIMIT) == 0) ? pages : pages+1;
 	}
+	
+	public boolean hasNextPage(){
+		if(totalPage > currentPage){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public int getLoadType() {
+		return loadType;
+	}
+
+	public void setLoadType(int loadType) {
+		this.loadType = loadType;
+	}
+	
 }

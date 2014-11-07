@@ -26,7 +26,7 @@ public class DataParser {
 	public static final List<ItemDaily> parseDailyData(JSONObject json) {
 		List<ItemDaily> data = new ArrayList<ItemDaily>();
 		try {
-			if (!json.has("list")) {
+			if (!json.has("list") || json.getString("list").equals("null")) {
 				return data;
 			}
 			JSONArray listJson = json.getJSONArray("list");

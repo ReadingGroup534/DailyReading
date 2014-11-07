@@ -15,6 +15,7 @@ import android.os.Handler;
 
 import com.aiteu.http.util.NetWorkHelper;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -111,15 +112,21 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	}
 	
 	public void showEmpty(){
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
 		splashLay.setVisibility(View.GONE);
 	}
 	
 	public void showError(){
 		Toast.makeText(this, this.getText(R.string.msg_unknown_error), Toast.LENGTH_SHORT).show();
 		splashLay.setVisibility(View.GONE);
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
 	}
 
 	public void showDailyList() {
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
 		splashLay.setVisibility(View.GONE);
 		mAdapter.setData(mPageSplitor.getDailyList());
 		mAdapter.notifyDataSetChanged();
@@ -128,13 +135,18 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	//加载最新的数据
 	@Override
 	public void onRefresh() {
-		
+		Log.d(TAG, "onRefresh");
+		mPageSplitor.setLoadType(PageSplitor.LOAD_TYPE_REFRESH);
+		mPageSplitor.setStart(0);
+		mHandler.initData();
 	}
 	
 	//加载更早的数据
 	@Override
 	public void onLoadMore() {
-		
+		Log.d(TAG, "onLoadMore");
+		mPageSplitor.setLoadType(PageSplitor.LOAD_DATA_MORE);
+		mHandler.initData();
 	}
 	
 
