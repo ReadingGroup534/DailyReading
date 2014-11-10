@@ -1,52 +1,38 @@
 package com.aiteu.dailyreading;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import com.aiteu.dailyreading.book.PageSplitor;
-import com.aiteu.dailyreading.dealer.LoadDailyDataTask;
-import com.aiteu.dailyreading.handler.HomeHandler;
-import com.aiteu.dailyreading.setting.SettingActivity;
+import com.aiteu.dailyreading.handler.MainHandler;
 import com.aiteu.dailyreading.update.AppUpdate;
-import com.aiteu.dailyreading.view.drawer.MenuDrawer;
 import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
 import com.aiteu.dailyreading.view.list.XListView;
+import com.aiteu.dailyreading.view.list.XListView.IXListViewListener;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.HandlerThread;
-import com.aiteu.http.factory.JsonHttpFactory;
-import com.aiteu.http.handler.JsonHttpHandler;
+import android.os.Handler;
+
 import com.aiteu.http.util.NetWorkHelper;
+
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IXListViewListener{
 	private static final String TAG = MainActivity.class.getSimpleName();
-
-	private HomeHandler mHomeHandler = null;
-	private HandlerThread mHandlerThread = null;
+	
 	private AppUpdate mAppUpdate = null;
 	private SlidingDrawer mMenuDrawer = null;
 	private View mMenuView = null;
 	private View mContentView = null;
+	private View splashLay = null;
 	private XListView mListView = null;
 	private DailyAdapter mAdapter = null;
-	private LoadDailyDataTask mDailyDataTask = null;
+	//private LoadDailyDataTask mDailyDataTask = null;
 	private PageSplitor mPageSplitor = null;
-	private Boolean isNetworkOpen = false;
 	private NetWorkHelper netWorkHelper;
 
 	private Boolean isWifi;
@@ -54,56 +40,48 @@ public class MainActivity extends BaseActivity {
 
 	private RelativeLayout sanwenLayout, qingganLayout, xiaohuaLayout,
 			otherLayout, settingLayout;
-
-	@SuppressWarnings("static-access")
+	
+	//定义数据处理逻辑
+	private MainHandler mHandler = null;
+	
+	
+	public Handler getHandler(){
+		return mHandler;
+	}
+	
+	public PageSplitor getPageSplitor(){
+		return mPageSplitor;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_main);
-		setContentView(R.layout.main);
-
-		isNetworkOpen = netWorkHelper.isNetAvailable(getApplicationContext());
-		if (isNetworkOpen == false) {
-			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！",
-					Toast.LENGTH_LONG).show();
-		} else {
-			isWifi = netWorkHelper.isWifi(getApplicationContext());
-			if (isWifi) {
-				Toast.makeText(getApplication(), "当前使用的是WIFI网络，尽情阅读吧！",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(getApplication(), "当前使用的是手机移动网络，请注意流量使用情况！",
-						Toast.LENGTH_SHORT).show();
-			}
-			// 更新要在有网的情况下
-//			mAppUpdate = new AppUpdate(this);
-//			mAppUpdate.check();
-		}
-
-		// FIXME 仅供测试使用
-		// new Thread(testApiRunnable).start();
-		new Thread(testApiRunnable).start();
-		mHandlerThread = new HandlerThread("homeHandler");
-		mHomeHandler = new HomeHandler(this, mHandlerThread.getLooper());
-		initViews();
-
+		setContentView(R.layout.activity_main);
+		initViews(); //初始化控件
 		mPageSplitor = new PageSplitor();
-		mDailyDataTask = new LoadDailyDataTask(this);
-		mDailyDataTask.execute(mPageSplitor);
+		mHandler = new MainHandler(this);
+		mHandler.initData(); //初始化数据
 
-		settingLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this,
-						SettingActivity.class);
-				startActivity(intent);
-			}
-		});
+//		settingLayout.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				Intent intent = new Intent(MainActivity.this,
+//						SettingActivity.class);
+//				startActivity(intent);
+//			}
+//		});
 	}
 
 	private void initViews() {
+		splashLay = findViewById(R.id.welcome_lay_id);
+		mListView = (XListView) findViewById(R.id.article_listview);
+		mListView.setXListViewListener(this);
+		mListView.setPullRefreshEnable(true);
+		mListView.setPullLoadEnable(true);
+		mAdapter = new DailyAdapter(this);
+		mListView.setAdapter(mAdapter);
 
 		// LayoutInflater mInflater = getLayoutInflater();
 		// mMenuView = mInflater.inflate(R.layout.main_menu, null);
@@ -121,58 +99,54 @@ public class MainActivity extends BaseActivity {
 		// R.dimen.slidingmenu_offset));
 		// mMenuDrawer.setTouchBezelSize(50);
 
-		sanwenLayout = (RelativeLayout) findViewById(R.id.sanwenLayout);
-		qingganLayout = (RelativeLayout) findViewById(R.id.qingganLayout);
-		xiaohuaLayout = (RelativeLayout) findViewById(R.id.xiaohualayout);
-		otherLayout = (RelativeLayout) findViewById(R.id.otherlayout);
-		settingLayout = (RelativeLayout) findViewById(R.id.settinglayout);
-		mListView = (XListView) findViewById(R.id.article_listview);
-		mListView.setPullRefreshEnable(true);
-		mListView.setPullLoadEnable(true);
-		mAdapter = new DailyAdapter(this);
-		mListView.setAdapter(mAdapter);
+//		sanwenLayout = (RelativeLayout) findViewById(R.id.sanwenLayout);
+//		qingganLayout = (RelativeLayout) findViewById(R.id.qingganLayout);
+//		xiaohuaLayout = (RelativeLayout) findViewById(R.id.xiaohualayout);
+//		otherLayout = (RelativeLayout) findViewById(R.id.otherlayout);
+//		settingLayout = (RelativeLayout) findViewById(R.id.settinglayout);
+	}
+	
+	public void showNetworkUnavailable(){
+		splashLay.setVisibility(View.GONE);
+	}
+	
+	public void showEmpty(){
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
+		splashLay.setVisibility(View.GONE);
+	}
+	
+	public void showError(){
+		Toast.makeText(this, this.getText(R.string.msg_unknown_error), Toast.LENGTH_SHORT).show();
+		splashLay.setVisibility(View.GONE);
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
 	}
 
-	public void showDailyList(PageSplitor pageSplitor) {
-		this.mPageSplitor = pageSplitor;
+	public void showDailyList() {
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
+		splashLay.setVisibility(View.GONE);
 		mAdapter.setData(mPageSplitor.getDailyList());
 		mAdapter.notifyDataSetChanged();
 	}
-
-	final Runnable testApiRunnable = new Runnable() {
-
-		@Override
-		public void run() {
-			Map<String, Object> map;
-			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-			JsonHttpFactory jsonFactory = new JsonHttpFactory();
-			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory
-					.create();
-			// FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
-			JSONObject json = jsonHandler
-					.getJson(
-							"http://192.168.2.103:8080/reading-web/api/list.json?limit=3&offset=0",
-							null);
-			System.out.println(json.toString());
-			Log.i("json", json.toString() + " ");
-			JSONArray array;
-			try {
-				array = json.getJSONArray("list");
-				for (int i = 0; i < array.length(); i++) {
-					JSONObject jsonObject2 = (JSONObject) array.opt(i);
-					map = new HashMap<String, Object>();
-					map.put("text", jsonObject2.get("abstracts"));
-					map.put("title", jsonObject2.get("title"));
-					Log.i("json", jsonObject2.get("abstracts").toString());
-					Log.i("json", jsonObject2.get("title").toString());
-					list.add(map);
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	};
+	
+	//加载最新的数据
+	@Override
+	public void onRefresh() {
+		Log.d(TAG, "onRefresh");
+		mPageSplitor.setLoadType(PageSplitor.LOAD_TYPE_REFRESH);
+		mPageSplitor.setStart(0);
+		mHandler.initData();
+	}
+	
+	//加载更早的数据
+	@Override
+	public void onLoadMore() {
+		Log.d(TAG, "onLoadMore");
+		mPageSplitor.setLoadType(PageSplitor.LOAD_DATA_MORE);
+		mHandler.initData();
+	}
 
 	Timer mQuitTimer = new Timer();
 

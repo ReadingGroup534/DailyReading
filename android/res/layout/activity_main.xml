@@ -2,12 +2,16 @@
     android:id="@id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
+	
+    <!-- not use now -->
+<!-- 
     <com.aiteu.dailyreading.view.drawer.SlidingDrawer
         android:id="@+id/drawer_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+-->
+	<include layout="@layout/main_content"/>
     <!-- 内容层 -->
-    <include layout="@layout/welcome_lay"/>
+    <include layout="@layout/welcome_lay" />
 
 </FrameLayout>
