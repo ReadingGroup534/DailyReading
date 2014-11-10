@@ -3,9 +3,11 @@ package com.aiteu.dailyreading.dealer;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -44,7 +46,12 @@ public class LoadDataThread extends Thread{
 					Looper.myLooper().quit();
 					break;
 				case R.id.msg_load:
-					loadData();
+					try {
+						loadData();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				}
 			}
@@ -63,7 +70,7 @@ public class LoadDataThread extends Thread{
 		return loadHandler;
 	}
 	
-	public void loadData(){
+	public void loadData() throws JSONException{
 		PageSplitor pageSplitor = activity.getPageSplitor();
 		String url = "http://192.168.1.192:8080/reading-web/api/list.json?limit="
 				+ PageSplitor.LIMIT + "&offset=" + pageSplitor.getStart();
@@ -74,9 +81,13 @@ public class LoadDataThread extends Thread{
 		JsonHttpHandler mHandler = (JsonHttpHandler) new JsonHttpFactory()
 				.create();
 		JSONObject json = mHandler.getJson(url, null);
-		if (json == null) {
+		if (json.has("status")) {
 			Message errorMsg = activity.getHandler().obtainMessage();
 			errorMsg.what = R.id.msg_error;
+			Bundle data = new Bundle();
+			data.putString("status", json.getString("status"));
+			data.putString("message", json.getString("message"));
+			errorMsg.setData(data);
 			errorMsg.sendToTarget();
 			return;
 		}

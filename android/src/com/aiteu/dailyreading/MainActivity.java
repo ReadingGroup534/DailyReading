@@ -117,7 +117,6 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	}
 	
 	public void showError(){
-		Toast.makeText(this, this.getText(R.string.msg_unknown_error), Toast.LENGTH_SHORT).show();
 		splashLay.setVisibility(View.GONE);
 		mListView.stopRefresh();
 		mListView.stopLoadMore();

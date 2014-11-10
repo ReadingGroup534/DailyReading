@@ -5,6 +5,7 @@ import com.aiteu.dailyreading.R;
 import com.aiteu.dailyreading.dealer.LoadDataThread;
 import com.aiteu.dailyreading.helper.NetworkHelper;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
@@ -32,6 +33,8 @@ public class MainHandler extends Handler{
 			activity.showDailyList();
 			break;
 		case R.id.msg_error:
+			Bundle d = msg.getData();
+			Toast.makeText(activity, activity.getString(R.string.msg_error, d.getString("status")+","+d.getString("message")), Toast.LENGTH_SHORT).show();
 			activity.showError();
 			break;
 		case R.id.msg_empty:

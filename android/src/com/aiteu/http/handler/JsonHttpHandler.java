@@ -103,7 +103,7 @@ public class JsonHttpHandler implements HttpHandler{
 			in = doPost(url, params);
 		}
 		if(in == null){
-			json = ConvertUtil.convert2Json("error", "network inavailable");
+			json = ConvertUtil.convert2Json("0x10", "connect failed");
 			return json;
 		}
 		String jsonStr = ConvertUtil.convertStream2String(in);
@@ -112,7 +112,7 @@ public class JsonHttpHandler implements HttpHandler{
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			json = ConvertUtil.convert2Json("error", "build json error");
+			json = ConvertUtil.convert2Json("0x11", "build json error");
 		}
 		return json;
 	}
