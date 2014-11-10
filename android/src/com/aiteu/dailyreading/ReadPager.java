@@ -76,7 +76,7 @@ public class ReadPager extends Activity implements OnClickListener,
 	int defaultSize = 0;
 	private Boolean show = false;// popwindow是否显示
 	private SharedPreferences sp;
-	private int size = 30; // 字体大小
+	private int size = 25; // 字体大小
 	private int light; // 亮度值
 	private Boolean isNight = false; // 亮度模式,白天和晚上
 	private PagerFactory pageFactory;
@@ -172,7 +172,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			pageFactory.setM_textColor(Color.rgb(28, 28, 28));
 		}
 		
-		pageFactory.onDraw(mCurCanvas);
+//		pageFactory.onDraw(mCurCanvas);
 		
 		mPageWidget = new PageWidget(this, screenWidth, screenHeight);// 页面
 //		setContentView(R.layout.read_view);
@@ -262,8 +262,8 @@ public class ReadPager extends Activity implements OnClickListener,
 		 * 根据传递的路径打开书
 		 */
 		try {
-			pageFactory.openbook("/sdcard/test.txt");
-			//pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+//			pageFactory.openbook("/sdcard/test.txt");
+			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 //			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
 //			pageFactory.openbook(doc.toString());
 			pageFactory.onDraw(mCurCanvas);

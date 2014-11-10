@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="md__drawer" type="id" />
+    <item name="md__menu" type="id" />
+    <item name="md__content" type="id" />
+    <item name="mdMenu" type="id" />
+    <item name="mdContent" type="id" />
+    <item name="mdActiveViewPosition" type="id" />
+    <item name="main_container" type="id" />
+    <item name="article_listview" type="id" />
+    <item name="welcome_lay_id" type="id" />
+    <item name="main_content_lay" type="id" />
+    <item name="empty_lay" type="id" />
+    <item name="error_lay" type="id" />
+    <item name="item_title" type="id" />
+    <item name="item_abstract" type="id" />
+    <item name="item_scan" type="id" />
+    <item name="item_praise" type="id" />
+    <item name="msg_quit" type="id" />
+    <item name="msg_load" type="id" />
+    <item name="msg_show" type="id" />
+    <item name="msg_empty" type="id" />
+    <item name="msg_error" type="id" />
+</resources>

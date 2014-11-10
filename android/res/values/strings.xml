@@ -4,6 +4,12 @@
     <string name="app_name">"今日阅读"</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="msg_quit">再按一次退出</string>
+    <string name="msg_net_unavailable">网络不可用</string>
+    <string name="msg_not_wifi">正在非wifi网络中使用，请注意数据流量</string>
+  	<string name="msg_unknown_error">未知错误</string>
+  	<string name="msg_error">错误代码：%s</string>
+    <string name="welcome_sens">读书使人进步\n今天你阅读了吗？</string>
      <!-- bookpop.xml -->
     <string name="bookpop_size">字体</string>
     <string name="bookpop_light">亮度/夜间</string>
@@ -11,9 +17,37 @@
     <string name="bookpop_send">跳转</string>
     <!-- sendSuggest.xml -->
     <string name="send_suggest">发送建议</string>
+    <string name="send_suggest_text">发送您的建议给我们，我们将会做的更好!</string>
     <string name="back">返回</string>
+    <string name="send">发送</string>
     <!-- about.xml -->
-     <string name="title_activity_about">今日阅读</string> 
-    <string name="setting">设置</string>
+    <string name="title_activity_about">今日阅读</string> 
+    
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="item_prefix_scan">浏览:</string>
+    <string name="item_sufix_scan">%d次</string>
+    
+    <!-- 菜单 -->
+    <string name="sanwen">经典散文</string>
+    <string name="qinggan">情感治愈</string>
+    <string name="jitang">心灵鸡汤</string>
+    <string name="xiaohua">幽默笑话</string>
+    <string name="other">其	       他</string>
+    <string name="setting">设	置</string>
+    
+    <!-- update -->
+    <string name="no_update">当前已是最新版本，无需更新!</string>
+    <string name="soft_update_title">软件更新</string>
+    <string name="soft_update_info">检测到新版本，立即更新吗</string>
+    <string name="soft_update_updatebtn">更新</string>
+    <string name="soft_update_later">稍后更新</string>
+    <string name="soft_updating">正在更新</string>
+    <string name="soft_update_cancel">取消</string>
+    
 
 </resources>

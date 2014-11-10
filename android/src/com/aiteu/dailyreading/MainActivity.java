@@ -1,223 +1,180 @@
 package com.aiteu.dailyreading;
 
-import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import org.json.JSONObject;
+import com.aiteu.dailyreading.book.PageSplitor;
+import com.aiteu.dailyreading.handler.MainHandler;
+import com.aiteu.dailyreading.update.AppUpdate;
+import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
+import com.aiteu.dailyreading.view.list.XListView;
+import com.aiteu.dailyreading.view.list.XListView.IXListViewListener;
 
-import com.aiteu.dailyreading.reader.BookPage;
-import com.aiteu.dailyreading.reader.LocalBookReader;
-import com.aiteu.http.factory.HttpFactory;
-import com.aiteu.http.factory.JsonHttpFactory;
-import com.aiteu.http.factory.XmlHttpFactory;
-import com.aiteu.http.handler.JsonHttpHandler;
-import com.aiteu.http.handler.XmlHttpHandler;
-import com.aiteu.http.inteface.HttpHandler;
-import com.aiteu.http.util.NetWorkHelper;
-import com.aiteu.http.xml.XmlDocument;
-import com.aiteu.http.xml.XmlParser.ParserType;
-
-import android.app.ActionBar;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Handler;
+
+import com.aiteu.http.util.NetWorkHelper;
+import com.aiteu.http.util.PreferenceUtil;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity {
-
-	//"情感治愈" ,"经典散文" ,"联系我们", 
-	public static final String[] TITLES = {"情感治愈" ,"经典散文","每日一文", "心灵鸡汤", "帮助"};
-	private DrawerLayout mDrawerLayout;
-	private RelativeLayout mLeftLayout;
-	private ListView mLeftListView;
-	private Boolean isNetworkOpen = false;
-	private Boolean isWifi, isMoblile;
-	private long exitTime = 0;
-	private ActionBar actionBar;
+public class MainActivity extends BaseActivity implements IXListViewListener{
+	private static final String TAG = MainActivity.class.getSimpleName();
+	
+	private AppUpdate mAppUpdate = null;
+	private SlidingDrawer mMenuDrawer = null;
+	private View mMenuView = null;
+	private View mContentView = null;
+	private View splashLay = null;
+	private XListView mListView = null;
+	private DailyAdapter mAdapter = null;
+	//private LoadDailyDataTask mDailyDataTask = null;
+	private PageSplitor mPageSplitor = null;
 	private NetWorkHelper netWorkHelper;
 
+	private Boolean isWifi;
+	private boolean isDoubleClick = false; // 点击两次返回键推出程序
+
+	private RelativeLayout sanwenLayout, qingganLayout, xiaohuaLayout,
+			otherLayout, settingLayout;
+	
+	//定义数据处理逻辑
+	private MainHandler mHandler = null;
+	
+	
+	public Handler getHandler(){
+		return mHandler;
+	}
+	
+	public PageSplitor getPageSplitor(){
+		return mPageSplitor;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		//set ActionBar's back action
-//		actionBar=getActionBar();
-//        actionBar.show();
-				
-		isNetworkOpen = netWorkHelper.isNetAvailable(getApplicationContext());
-		if (isNetworkOpen == false) {
-			Toast.makeText(getApplication(), "网络没有打开，请先打开您的网络！", Toast.LENGTH_LONG).show();
-		}else {
-			isWifi = netWorkHelper.isWifi(getApplicationContext());
-			if (isWifi) {
-				Toast.makeText(getApplication(), "当前使用的是WIFI网络，尽情阅读吧！", Toast.LENGTH_SHORT).show();
-			}else {
-				Toast.makeText(getApplication(), "当前使用的是手机移动网络，请注意流量使用情况！", Toast.LENGTH_SHORT).show();
-			}
-		}
-		
-		
-//		findViewById();
-//		mLeftListView.setAdapter(new ArrayAdapter<String>(this,
-//				android.R.layout.simple_expandable_list_item_1, TITLES));
+		initViews(); //初始化控件
+		mPageSplitor = new PageSplitor();
+		mHandler = new MainHandler(this);
+		mHandler.initData(); //初始化数据
 
-		// 监听菜单 左
-//		mLeftListView.setOnItemClickListener(new DrawerItemClickListenerLeft());
-		
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		Fragment fragment = new EssayFragment();
-		ft.replace(R.id.fragment_layout, fragment);
-		ft.commit();
-		//FIXME 仅供测试使用
-//		new Thread(testApiRunnable).start();
-		new Thread(testSaxParser).start();
+//		settingLayout.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				Intent intent = new Intent(MainActivity.this,
+//						SettingActivity.class);
+//				startActivity(intent);
+//			}
+//		});
+	}
+
+	private void initViews() {
+		splashLay = findViewById(R.id.welcome_lay_id);
+		mListView = (XListView) findViewById(R.id.article_listview);
+		mListView.setXListViewListener(this);
+		mListView.setPullRefreshEnable(true);
+		mListView.setPullLoadEnable(true);
+		mAdapter = new DailyAdapter(this);
+		mListView.setAdapter(mAdapter);
+
+		// LayoutInflater mInflater = getLayoutInflater();
+		// mMenuView = mInflater.inflate(R.layout.main_menu, null);
+		// mContentView = mInflater.inflate(R.layout.main_content, null);
+		// mMenuDrawer = (SlidingDrawer)findViewById(R.id.drawer_menu);
+		// mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+		// mMenuDrawer.setContentView(mContentView);
+		// mMenuDrawer.setMenuView(mMenuView);
+		// mMenuDrawer.setDropShadow(R.drawable.shadow);
+		// mMenuDrawer.setDropShadowSize((int) getResources().getDimension(
+		// R.dimen.shadow_width));
+		// mMenuDrawer.setMaxAnimationDuration(3000);
+		// mMenuDrawer.setHardwareLayerEnabled(false);
+		// mMenuDrawer.setMenuSize((int) getResources().getDimension(
+		// R.dimen.slidingmenu_offset));
+		// mMenuDrawer.setTouchBezelSize(50);
+
+//		sanwenLayout = (RelativeLayout) findViewById(R.id.sanwenLayout);
+//		qingganLayout = (RelativeLayout) findViewById(R.id.qingganLayout);
+//		xiaohuaLayout = (RelativeLayout) findViewById(R.id.xiaohualayout);
+//		otherLayout = (RelativeLayout) findViewById(R.id.otherlayout);
+//		settingLayout = (RelativeLayout) findViewById(R.id.settinglayout);
 	}
 	
-//	final Runnable testApiRunnable = new Runnable() {
-//		
-//		@Override
-//		public void run() {
-//			JsonHttpFactory jsonFactory = new JsonHttpFactory();
-//			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
-//			//FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
-//			JSONObject json = jsonHandler.getJson("http://192.168.2.101:8080/reading-web/api/browse.json", null);
-//			System.out.println(json.toString());
-//		}
-//	};
+	public void showNetworkUnavailable(){
+		splashLay.setVisibility(View.GONE);
+	}
 	
-	final Runnable testSaxParser = new Runnable() {
-		
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-//			XmlHttpFactory xmlHttpFactory = new XmlHttpFactory();
-//			XmlHttpHandler xmlHttpHandler = (XmlHttpHandler) xmlHttpFactory.create();
-//			try {
-//				XmlDocument xmlDocument = xmlHttpHandler.getXml(getAssets().open("detail.xml"), ParserType.SAX_PARSER);
-//				System.out.println(xmlDocument.toString());
-//			} catch (Exception e) {
-//				// TODO: handle exception
-//				e.printStackTrace();
-//			}
-//			LocalBookReader bookReader = new LocalBookReader();
-//			bookReader.openbook("/data/data/test_txt.txt");
-//			BookPage page = bookReader.readNextPage();
-//			System.out.println(page.toString());
-//			Log.d("Reader page1: ", page.toString());
-//			page = bookReader.readNextPage();
-//			System.out.println(page.toString());
-//			Log.d("Reader page2: ", page.toString());
-//			page = bookReader.readPrevPage();
-//			System.out.println(page.toString());
-//			Log.d("Reader page1: ", page.toString());
-		}
-	};
+	public void showEmpty(){
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
+		splashLay.setVisibility(View.GONE);
+	}
 	
-	final Runnable testXmlParse = new Runnable() {
-		
-		@Override
-		public void run() {
-			XmlHttpFactory xmlFactory = new XmlHttpFactory();
-			XmlHttpHandler xmlHandler = (XmlHttpHandler)xmlFactory.create();
-			try {
-//				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("detail.xml"));
-//				Log.d("test", xmlDoc.toString());
-				XmlDocument xmlDoc = xmlHandler.getXml(getAssets().open("books.xml"), ParserType.PULL_PARSER);
-				System.out.println(xmlDoc.toString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	};
+	public void showError(){
+		splashLay.setVisibility(View.GONE);
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
+	}
+
+	public void showDailyList() {
+		mListView.stopRefresh();
+		mListView.stopLoadMore();
+		splashLay.setVisibility(View.GONE);
+		mAdapter.setData(mPageSplitor.getDailyList());
+		mAdapter.notifyDataSetChanged();
+	}
 	
-	final Runnable testApiRunnable = new Runnable() {
-		
-		@Override
-		public void run() {
-			JsonHttpFactory jsonFactory = new JsonHttpFactory();
-			JsonHttpHandler jsonHandler = (JsonHttpHandler) jsonFactory.create();
-			//FIXME :替换成自己本机的ip,json就是返回的数据，根据对应的数据格式
-			JSONObject json = jsonHandler.getJson("http://192.168.2.101:8080/reading-web/api/browse.json", null);
-			System.out.println(json.toString());
-		}
-	};
-
-	/*private void findViewById() {
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mLeftLayout = (RelativeLayout) findViewById(R.id.menu_layout_left);
-		mLeftListView = (ListView) findViewById(R.id.menu_listView_l);
-	}*/
-
-	/**
-	 * the clicklistener in left side
-	 * 
-	 * @author liyangchao
-	 * 
-	 */
-	/*public class DrawerItemClickListenerLeft implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			// TODO Auto-generated method stub
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			Fragment fragment = null;
-			
-			//according to the click row number decide to start which fragment;
-			switch (position) {
-			case 0:
-				fragment = new EmotionalFragment();
-				break;
-			case 1:
-				fragment = new EssayFragment();
-				break;
-			case 2:
-			case 3:
-			case 4:
-				fragment = new SettingActivity();
-				break;
-			default:
-				break;
-			}
-			ft.replace(R.id.fragment_layout, fragment);
-			ft.commit();
-			mDrawerLayout.closeDrawer(mLeftLayout);
-		}
-
-	}*/
+	//加载最新的数据
+	@Override
+	public void onRefresh() {
+		Log.d(TAG, "onRefresh");
+		mPageSplitor.setLastRefreshTime(PreferenceUtil.getLastRefreshTime(this));
+		PreferenceUtil.setLastRefreshTime(this, System.currentTimeMillis());
+		mPageSplitor.setLoadType(PageSplitor.LOAD_TYPE_REFRESH);
+		mPageSplitor.setStart(0);
+		mHandler.initData();
+	}
 	
+	//加载更早的数据
+	@Override
+	public void onLoadMore() {
+		Log.d(TAG, "onLoadMore");
+		mPageSplitor.setLoadType(PageSplitor.LOAD_DATA_MORE);
+		mHandler.initData();
+	}
+
+	Timer mQuitTimer = new Timer();
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-			if ((System.currentTimeMillis() - exitTime) > 2000) {
-				Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_LONG).show();
-				exitTime = System.currentTimeMillis();
-			}else {
-				finish();
-				System.exit(0);
+		if (event.getAction() == KeyEvent.ACTION_DOWN) {
+			if (keyCode == KeyEvent.KEYCODE_BACK) {
+				if (!isDoubleClick) {
+					isDoubleClick = true;
+					Toast.makeText(this, getText(R.string.msg_quit),
+							Toast.LENGTH_LONG).show();
+					mQuitTimer.schedule(new TimerTask() {
+
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							isDoubleClick = false;
+						}
+					}, 1500);
+				} else {
+					exit();
+				}
+				return true;
 			}
-			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
-	
-
 }

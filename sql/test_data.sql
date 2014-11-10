@@ -1,106 +1,106 @@
 delete from article;
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
-('reading123456789000001','³ÏĞÅÊÇ½ğ','ÓñÁ¼Çå·ç','sanwen','Ê÷ÎŞ¸ù¾¥£¬ÔòÎŞÒÔÉú¡£ÈËÎŞ³ÏĞÅ£¬ÔòÎŞÒÔÁ¢¡£ÎªÈËÓĞĞÅ£¬¹ÊÄÜ±ê·çÁ¢µÂ¡£¾Ó¹ÙÓĞĞÅ£¬¹ÊÄÜÊØÁ®×ÔºÃ¡£ĞĞÉÌÓĞĞÅ£¬¹ÊÄÜ¹ãÒµĞË¼Ò¡£³ÏĞÅ£¬ºÎÎª³Ï£¿³ÏÕß£¬ÎŞÆÛÒ²¡£ºÎÎªĞÅ£¿ĞÅÕß£¬ÊØÅµÒ²¡£´ıÈËÎŞÆÛ£¬ÑÔ³öÊØÅµ£¬¿ÉÎ½Ö®³ÏĞÅ¡£ÓÃËÄ¸ö×Ö¼òµ¥µÄÀ´Ëµ£¬¡°Ò»ÅµÇ§½ğ¡±£¬±ãÊÇ¶Ô³ÏĞÅµÄ×îºÃÚ¹ÊÍ£¡', 4, 10, 5, 100, '/api/detail.htm?article_id=reading123456789000001');
+('reading123456789000001','è¯šä¿¡æ˜¯é‡‘','ç‰è‰¯æ¸…é£',2,'æ ‘æ— æ ¹èŒï¼Œåˆ™æ— ä»¥ç”Ÿã€‚äººæ— è¯šä¿¡ï¼Œåˆ™æ— ä»¥ç«‹ã€‚ä¸ºäººæœ‰ä¿¡ï¼Œæ•…èƒ½æ ‡é£ç«‹å¾·ã€‚å±…å®˜æœ‰ä¿¡ï¼Œæ•…èƒ½å®ˆå»‰è‡ªå¥½ã€‚è¡Œå•†æœ‰ä¿¡ï¼Œæ•…èƒ½å¹¿ä¸šå…´å®¶ã€‚è¯šä¿¡ï¼Œä½•ä¸ºè¯šï¼Ÿè¯šè€…ï¼Œæ— æ¬ºä¹Ÿã€‚ä½•ä¸ºä¿¡ï¼Ÿä¿¡è€…ï¼Œå®ˆè¯ºä¹Ÿã€‚å¾…äººæ— æ¬ºï¼Œè¨€å‡ºå®ˆè¯ºï¼Œå¯è°“ä¹‹è¯šä¿¡ã€‚ç”¨å››ä¸ªå­—ç®€å•çš„æ¥è¯´ï¼Œâ€œä¸€è¯ºåƒé‡‘â€ï¼Œä¾¿æ˜¯å¯¹è¯šä¿¡çš„æœ€å¥½è¯ é‡Šï¼', 4, 10, 5, 100, '/api/detail.htm?article_id=reading123456789000001');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
-('reading123456789000002','°ËÔÂÈıÊ®Ò»','»¨Îã','sanwen','ÔÂ°ë±ßÒşÄäÔÚÉ½¼â£¬ëüëÊÔÚÒ¹É«Àï£¬´°ÍâÇÅÍ·ÓĞ³ËÁ¹µÄÈË¸÷×Ô»¶Óä£¬ÉùÒôÏ¡ÊèÃ÷ÀÊ£¬°ËÔÂ»¹Î´Ñë¡£', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000002');
+('reading123456789000002','å…«æœˆä¸‰åä¸€','èŠ±æ¯‹',2,'æœˆåŠè¾¹éšåŒ¿åœ¨å±±å°–ï¼Œæœ¦èƒ§åœ¨å¤œè‰²é‡Œï¼Œçª—å¤–æ¡¥å¤´æœ‰ä¹˜å‡‰çš„äººå„è‡ªæ¬¢æ„‰ï¼Œå£°éŸ³ç¨€ç–æ˜æœ—ï¼Œå…«æœˆè¿˜æœªå¤®ã€‚', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000002');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
-('reading123456789000003','»éÒö¸ĞÎò','ĞÀÔÃ','sanwen','¹ØÓÚ»éÒöµÄ¸ĞÎò£¬Ã¿¸öÈËÒ²Ğí¶¼³ÖÓĞ²»Í¬µÄ¸ĞÎò°É¡£ÎÒÈÏÎª»éÒöÊÇĞÔºÍ°®½»Ö¯ÔÚÒ»ÆğµÄÇé¸ĞÉú»î£¬ÓĞÃ¿ÌìµÄ²ñÃ×ÓÍÑÎ½´´×µÄĞèÒª£¬»¹ÓĞ¼ĞÔÓÉú»îÖĞ¸÷ÖÖ·±ËöÊÂ¼şµÄÃæ¶ÔºÍ½â¾ö¡£ĞÔ·½Ãæ»ò°®Çé·½Ãæ»¹ÓĞÉú»î·½Ãæ³öÏÖ²»Ğ­µ÷£¬»éÒö¾Í»á³öÏÖÁÑ·ì£¬ÓĞµÄ³öÏÖÆÆÁÑ¡£', 4, 10, 8, 105, '/api/detail.htm?article_id=reading123456789000003');
+('reading123456789000003','å©šå§»æ„Ÿæ‚Ÿ','æ¬£æ‚¦',3,'å…³äºå©šå§»çš„æ„Ÿæ‚Ÿï¼Œæ¯ä¸ªäººä¹Ÿè®¸éƒ½æŒæœ‰ä¸åŒçš„æ„Ÿæ‚Ÿå§ã€‚æˆ‘è®¤ä¸ºå©šå§»æ˜¯æ€§å’Œçˆ±äº¤ç»‡åœ¨ä¸€èµ·çš„æƒ…æ„Ÿç”Ÿæ´»ï¼Œæœ‰æ¯å¤©çš„æŸ´ç±³æ²¹ç›é…±é†‹çš„éœ€è¦ï¼Œè¿˜æœ‰å¤¹æ‚ç”Ÿæ´»ä¸­å„ç§ç¹çäº‹ä»¶çš„é¢å¯¹å’Œè§£å†³ã€‚æ€§æ–¹é¢æˆ–çˆ±æƒ…æ–¹é¢è¿˜æœ‰ç”Ÿæ´»æ–¹é¢å‡ºç°ä¸åè°ƒï¼Œå©šå§»å°±ä¼šå‡ºç°è£‚ç¼ï¼Œæœ‰çš„å‡ºç°ç ´è£‚ã€‚', 4, 10, 8, 105, '/api/detail.htm?article_id=reading123456789000003');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
-('reading123456789000004','Ö»ÎªÊØ»¤ĞÄÖĞµÄÄÇÒ»Ä¨ÂÌÉ«','×ÏÊ÷','sanwen','ÎÒÃ»ÓĞÏëµ½ÎÒµÄÇà´º»áÓëÄãÓĞ¹Ø£¬Ò²Ã»ÓĞÏëµ½Äã»á³äÂúÎÒµÄÏÖÔÚ»òĞíÒÔºóµÄÈËÉú¡£À´µ½ÕâÀï£¬²»ÎªÓ®µÃÏÊ»¨Èë»³Åã°é£¬Ö»ÎªÊØ»¤ĞÄÖĞµÄÄÇÒ»Ä¨ÂÌÉ«', 3, 15, 8, 199, '/api/detail.htm?article_id=reading123456789000004');
+('reading123456789000004','åªä¸ºå®ˆæŠ¤å¿ƒä¸­çš„é‚£ä¸€æŠ¹ç»¿è‰²','ç´«æ ‘',2,'æˆ‘æ²¡æœ‰æƒ³åˆ°æˆ‘çš„é’æ˜¥ä¼šä¸ä½ æœ‰å…³ï¼Œä¹Ÿæ²¡æœ‰æƒ³åˆ°ä½ ä¼šå……æ»¡æˆ‘çš„ç°åœ¨æˆ–è®¸ä»¥åçš„äººç”Ÿã€‚æ¥åˆ°è¿™é‡Œï¼Œä¸ä¸ºèµ¢å¾—é²œèŠ±å…¥æ€€é™ªä¼´ï¼Œåªä¸ºå®ˆæŠ¤å¿ƒä¸­çš„é‚£ä¸€æŠ¹ç»¿è‰²', 3, 15, 8, 199, '/api/detail.htm?article_id=reading123456789000004');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
-('reading123456789000005','´åÍ·ÄÇÁ½¿Å°®ÇéÊ÷','ÓíÎ¢ÑÔ','sanwen','Ëæ×ÅÄêËêÔö³¤£¬¶ùÊ±µÄ¼ÇÒä´ó¶àÄ£ºıÁËÈ¥£¬¶øÉîÓ¡ĞÄÖĞµÄÒ»Ğ©ÃÀºÃ£¬È´Èç×òÈÕ»¨Ïã£¬Ê±ôÁÉíÅÔ¡£', 3, 32, 8, 101, '/api/detail.htm?article_id=reading123456789000005');
+('reading123456789000005','æ‘å¤´é‚£ä¸¤é¢—çˆ±æƒ…æ ‘','ç¦¹å¾®è¨€',2,'éšç€å¹´å²å¢é•¿ï¼Œå„¿æ—¶çš„è®°å¿†å¤§å¤šæ¨¡ç³Šäº†å»ï¼Œè€Œæ·±å°å¿ƒä¸­çš„ä¸€äº›ç¾å¥½ï¼Œå´å¦‚æ˜¨æ—¥èŠ±é¦™ï¼Œæ—¶è¢…èº«æ—ã€‚', 3, 32, 8, 101, '/api/detail.htm?article_id=reading123456789000005');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000006','test6','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000006');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000007','test7','test','other','test api ok', 3, 10, 8, 132, '/api/detail.htm?article_id=reading123456789000007');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000008','test8','test','other','test api ok', 3, 10, 8, 111, '/api/detail.htm?article_id=reading123456789000008');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000009','test9','test','other','test api ok', 2, 10, 12, 101, '/api/detail.htm?article_id=reading123456789000009');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000010','test10','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000010');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000011','test11','test','other','test api ok', 3, 15, 8, 101, '/api/detail.htm?article_id=reading123456789000011');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000012','test12','test','other','test api ok', 3, 19, 8, 101, '/api/detail.htm?article_id=reading123456789000012');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000013','test13','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000013');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000014','test14','test','other','test api ok', 3, 10, 20, 101, '/api/detail.htm?article_id=reading123456789000014');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000015','test15','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000015');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000016','test16','test','other','test api ok', 3, 18, 8, 101, '/api/detail.htm?article_id=reading123456789000016');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000017','test17','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000017');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000018','test18','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000018');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000019','test19','test','other','test api ok', 3, 10, 8, 13232, '/api/detail.htm?article_id=reading123456789000019');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000020','test20','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000020');
 
 insert into article
-(article_id, title, author, article_type, abstracts, recommend_star, praise_times, share_times, scan_times, url)
+(article_id, title, author, browse_id, abstracts, recommend_star, praise_times, share_times, scan_times, url)
 values
 ('reading123456789000021','test21','test','other','test api ok', 3, 10, 8, 101, '/api/detail.htm?article_id=reading123456789000021');

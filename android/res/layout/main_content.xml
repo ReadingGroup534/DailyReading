@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical" 
+    android:id="@id/main_content_lay">
+
+    <RelativeLayout
+        style="@style/titleBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/titlebar_height" >
+
+        <TextView
+            style="@style/titleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name" 
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    
+    <View style="@style/horizontalLine"/> 
+	
+    <!-- daily list -->
+    <com.aiteu.dailyreading.view.list.XListView 
+        android:id="@id/article_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@color/transparent"
+        android:dividerHeight="@dimen/list_divider_height"
+        android:divider="@color/bg_color"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:scrollingCache="true"
+        android:background="@color/bg_color"
+        android:paddingLeft="@dimen/padding_normal"
+        android:paddingRight="@dimen/padding_normal"
+        android:scrollbarStyle="outsideOverlay"
+        />
+    
+</LinearLayout>

@@ -39,19 +39,6 @@ public class NetWorkHelper {
 		}
 		return false;
 	}
-
-//	public static boolean isNetworkAvailable(Context context) { 
-//      ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE); 
-//      NetworkInfo[] info = mgr.getAllNetworkInfo(); 
-//      if (info != null) { 
-//          for (int i = 0; i < info.length; i++) { 
-//              if (info[i].getState() == NetworkInfo.State.CONNECTED) { 
-//                  return true; 
-//              } 
-//          } 
-//      } 
-//      return false; 
-//  }
 	
 	/**
 	 * 获取当前网络状态 返回2代表wifi,1代表2G/3G

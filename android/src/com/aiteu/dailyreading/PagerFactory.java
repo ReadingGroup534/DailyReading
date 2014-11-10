@@ -36,7 +36,7 @@ public class PagerFactory {
 	private File book_file = null;
 	private int m_backColor = 0xffff9e85; // 背景颜色
 	private Bitmap m_article_bg = null;
-	private int m_fontSize = 20;
+	private int m_fontSize = 24;
 	private boolean m_isfirstPage, m_islastPage;
 
 	private Vector<String> m_lines = new Vector<String>();
@@ -75,8 +75,8 @@ public class PagerFactory {
 		mVisibleWidth = mWidth - marginWidth * 2;
 		mVisibleHeight = mHeight - marginHeight * 2;
 		lineHeight = m_fontSize + 6;
-//		mLineCount = (int) (mVisibleHeight / m_fontSize) - 2; // 可显示的行数
-		mLineCount = mVisibleHeight / lineHeight -2;
+		mLineCount = mVisibleHeight / m_fontSize - 1; // 可显示的行数
+//		mLineCount = mVisibleHeight / lineHeight ;
 		m_isfirstPage = true;
 		m_islastPage = false;
 	}
@@ -331,8 +331,8 @@ public class PagerFactory {
 		}
 		int nPercentWidth = (int) mPaint.measureText("999.9%") + 2;
 		
-		c.drawText(timeString, marginWidth/2, mHeight - 5, mPaint);
-		c.drawText(strPercent, mWidth - nPercentWidth, mHeight - 5, mPaint);
+		c.drawText(timeString, marginWidth/2, mHeight - 2, mPaint);
+		c.drawText(strPercent, mWidth - nPercentWidth, mHeight - 2, mPaint);
 	}
 
 	public void setBgBitmap(Bitmap BG) {
@@ -349,7 +349,7 @@ public class PagerFactory {
 
 	public void setM_fontSize(int m_fontSize) {
 		this.m_fontSize = m_fontSize;
-		mLineCount = mVisibleHeight / lineHeight -2;
+		mLineCount = mVisibleHeight / m_fontSize - 1;
 	}
 
 	// 设置页面起始点

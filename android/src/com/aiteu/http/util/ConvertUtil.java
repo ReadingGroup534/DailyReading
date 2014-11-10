@@ -1,5 +1,6 @@
 package com.aiteu.http.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -9,17 +10,19 @@ import org.json.JSONObject;
 public class ConvertUtil {
 	
 	public static String convertStream2String(InputStream in){
-		StringBuffer buff = new StringBuffer();
+		String content = "";
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		byte[] bytes = new byte[1024];
 		int ch = -1;
 		try{
 			while((ch = in.read(bytes)) != -1){
-				buff.append(new String(bytes, 0, ch));
+				bos.write(bytes, 0, ch);
 			}
+			content = bos.toString("utf8");
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		return buff.toString();
+		return content;
 	}
 	
 	public static JSONObject convert2Json(String status, String message){

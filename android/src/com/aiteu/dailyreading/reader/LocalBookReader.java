@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.Vector;
 
+import com.aiteu.http.inteface.IBookReader;
 import com.aiteu.http.util.FileUtils;
 
 import android.graphics.Bitmap;
