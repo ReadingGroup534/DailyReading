@@ -76,6 +76,10 @@ public class LoadDataThread extends Thread{
 				+ PageSplitor.LIMIT + "&offset=" + pageSplitor.getStart();
 		if(pageSplitor.getLoadType() == PageSplitor.LOAD_TYPE_REFRESH){
 			url += "&refresh=1";
+			url += "&last_refresh="+pageSplitor.getLastRefreshTime();
+		}else{
+			url += "&refresh=0";
+			url += "&last_refresh=0";
 		}
 		Log.d(TAG, url);
 		JsonHttpHandler mHandler = (JsonHttpHandler) new JsonHttpFactory()

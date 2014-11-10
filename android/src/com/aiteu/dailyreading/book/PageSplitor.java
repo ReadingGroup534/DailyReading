@@ -18,6 +18,7 @@ public class PageSplitor {
 	private List<ItemDaily> dailyList = null;
 	private int currentPage = 1;
 	private int loadType = LOAD_DATA_MORE;
+	private long lastRefreshTime = 0;
 	
 	public PageSplitor(){
 		this.init();
@@ -96,6 +97,14 @@ public class PageSplitor {
 
 	public void setLoadType(int loadType) {
 		this.loadType = loadType;
+	}
+
+	public long getLastRefreshTime() {
+		return lastRefreshTime;
+	}
+
+	public void setLastRefreshTime(long lastRefreshTime) {
+		this.lastRefreshTime = lastRefreshTime;
 	}
 	
 }

@@ -16,6 +16,7 @@ import com.aiteu.reading.api.dao.ApiDao;
 import com.aiteu.reading.api.model.Article;
 import com.aiteu.reading.base.dao.impl.BaseDaoImpl;
 import com.aiteu.reading.base.mapper.ArticleRowMapper;
+import com.aiteu.util.StringUtils;
 
 /**
  * 提供数据库的相关操作
@@ -34,10 +35,11 @@ public class ApiDaoImpl extends BaseDaoImpl implements ApiDao{
 				// TODO Auto-generated method stub
 				String sql = "select a.*,b.browse_value from article a, browse b where a.browse_id = b.browse_id and a.active = 'y'";
 				if(null != param.get("refresh") && param.get("refresh").equals("1")){
-					sql += " and show_time > now()  order by "+ param.get("order")+" limit ?,?";
+					sql += " and show_time between '"+StringUtils.dateToString(Long.parseLong(param.get("last_refresh")))+"' and now()  order by "+ param.get("order")+" limit ?,?";
 				}else{
 					sql += " and show_time < now()  order by "+ param.get("order")+" limit ?,?";
 				}
+				System.out.println(sql);
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ps.setInt(1, Integer.parseInt(param.get("offset")));
 				ps.setInt(2, Integer.parseInt(param.get("limit")));

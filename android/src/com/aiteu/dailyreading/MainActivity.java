@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.aiteu.http.util.NetWorkHelper;
+import com.aiteu.http.util.PreferenceUtil;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -134,6 +135,8 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	@Override
 	public void onRefresh() {
 		Log.d(TAG, "onRefresh");
+		mPageSplitor.setLastRefreshTime(PreferenceUtil.getLastRefreshTime(this));
+		PreferenceUtil.setLastRefreshTime(this, System.currentTimeMillis());
 		mPageSplitor.setLoadType(PageSplitor.LOAD_TYPE_REFRESH);
 		mPageSplitor.setStart(0);
 		mHandler.initData();
