@@ -135,8 +135,11 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	@Override
 	public void onRefresh() {
 		Log.d(TAG, "onRefresh");
-		mPageSplitor.setLastRefreshTime(PreferenceUtil.getLastRefreshTime(this));
-		PreferenceUtil.setLastRefreshTime(this, System.currentTimeMillis());
+		if(mPageSplitor.getDailyList().isEmpty()){
+			mPageSplitor.setLastRefreshTime(0);
+		}else{
+			mPageSplitor.setLastRefreshTime(PreferenceUtil.getLastRefreshTime(this));
+		}
 		mPageSplitor.setLoadType(PageSplitor.LOAD_TYPE_REFRESH);
 		mPageSplitor.setStart(0);
 		mHandler.initData();

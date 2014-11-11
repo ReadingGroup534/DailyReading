@@ -19,6 +19,7 @@ import com.aiteu.dailyreading.book.ItemDaily;
 import com.aiteu.dailyreading.book.PageSplitor;
 import com.aiteu.http.factory.JsonHttpFactory;
 import com.aiteu.http.handler.JsonHttpHandler;
+import com.aiteu.http.util.PreferenceUtil;
 
 public class LoadDataThread extends Thread{
 	private static final String TAG = LoadDataThread.class.getSimpleName();
@@ -106,7 +107,11 @@ public class LoadDataThread extends Thread{
 			emptyMsg.sendToTarget();
 			return;
 		}
+		
 		Log.d(TAG, "list data size : " + dailyList.size());
+		if(!dailyList.isEmpty()){
+			PreferenceUtil.setLastRefreshTime(activity, System.currentTimeMillis());
+		}
 		pageSplitor.addDailyList(dailyList);
 		Message show = activity.getHandler().obtainMessage();
 		show.what = R.id.msg_show;

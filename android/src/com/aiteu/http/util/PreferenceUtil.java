@@ -10,7 +10,7 @@ public class PreferenceUtil {
 	
 	public static long getLastRefreshTime(Context context){
 		SharedPreferences pref = context.getSharedPreferences(PREF_READING, Context.MODE_PRIVATE);
-		return pref.getLong(LAST_REFREAHTIME, System.currentTimeMillis());
+		return pref.getLong(LAST_REFREAHTIME, 0);
 	}
 	
 	public static void setLastRefreshTime(Context context, long lastRefresh){
