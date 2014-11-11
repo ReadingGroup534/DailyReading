@@ -34,7 +34,7 @@ public class MainHandler extends Handler{
 			break;
 		case R.id.msg_error:
 			Bundle d = msg.getData();
-			Toast.makeText(activity, activity.getString(R.string.msg_error, d.getString("status")+","+d.getString("message")), Toast.LENGTH_SHORT).show();
+			Toast.makeText(activity, activity.getString(R.string.msg_error, d.getString("status")+":"+d.getString("message")), Toast.LENGTH_LONG).show();
 			activity.showError();
 			break;
 		case R.id.msg_empty:
