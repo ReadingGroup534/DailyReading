@@ -11,10 +11,13 @@ import com.aiteu.dailyreading.reader.LocalBookReader;
 import com.aiteu.http.factory.XmlHttpFactory;
 import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
+import com.aiteu.log.LogTools;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -262,10 +265,13 @@ public class ReadPager extends Activity implements OnClickListener,
 		 * 根据传递的路径打开书
 		 */
 		try {
+			Intent intent = getIntent();
+			String URL = intent.getStringExtra("URL");
+			LogTools.getInstance().info(URL);
 //			pageFactory.openbook("/sdcard/test.txt");
-			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+//			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 //			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
-//			pageFactory.openbook(doc.toString());
+			pageFactory.openbook(URL);
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();

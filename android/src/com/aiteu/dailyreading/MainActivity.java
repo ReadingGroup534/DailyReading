@@ -4,21 +4,27 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.aiteu.dailyreading.book.PageSplitor;
+import com.aiteu.dailyreading.dealer.DataParser;
 import com.aiteu.dailyreading.handler.MainHandler;
 import com.aiteu.dailyreading.update.AppUpdate;
 import com.aiteu.dailyreading.view.drawer.SlidingDrawer;
 import com.aiteu.dailyreading.view.list.XListView;
 import com.aiteu.dailyreading.view.list.XListView.IXListViewListener;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.aiteu.http.util.NetWorkHelper;
 import com.aiteu.http.util.PreferenceUtil;
+import com.aiteu.log.LogTools;
 
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -63,6 +69,26 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 		mHandler = new MainHandler(this);
 		mHandler.initData(); //初始化数据
 
+		
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MainActivity.this, ReadPager.class);
+				
+//				int totalItem = mPageSplitor.getDailyList().size();
+				
+//				for (int i = 0; i < totalItem; i++) {
+					String url = mPageSplitor.getDailyList().get(position).getDetailUrl();
+					intent.putExtra("URL", url);
+					LogTools.getInstance().info(url);
+//				}
+				startActivity(intent);
+			}
+		});
+		
 //		settingLayout.setOnClickListener(new View.OnClickListener() {
 //
 //			@Override
