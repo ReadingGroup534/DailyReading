@@ -135,7 +135,7 @@ public class SlidingMenuView extends HorizontalScrollView {
 			break;
 		case MotionEvent.ACTION_MOVE:
 			//求瞬间速度：
-			mVelocityTracker.computeCurrentVelocity(1, 1000);
+			mVelocityTracker.computeCurrentVelocity(1, 1200);
 			velocityX = mVelocityTracker.getXVelocity(mPointerId);
 			Log.i("lyc","sudu:" + velocityX);
 			//改变slidstate的状态
@@ -216,10 +216,11 @@ public class SlidingMenuView extends HorizontalScrollView {
 		float leftScale = 1.0f - 0.3f * scale;
 		float leftAlpha = 0.6f + 0.4f * (1 - scale);
 		
-		ViewHelper.setTranslationX(mMenu, mMenuWidth * scale * 0.8f);
+		
 		ViewHelper.setScaleX(mMenu, leftScale);
 		ViewHelper.setScaleY(mMenu, leftScale);
 		ViewHelper.setAlpha(mMenu, leftAlpha);
+		ViewHelper.setTranslationX(mMenu, mMenuWidth * scale * 0.8f);
 		
 		//设置content的缩放中心点
 		ViewHelper.setPivotX(mContent, 0);
