@@ -3,30 +3,32 @@
     android:id="@+id/tool33"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dip"
-    android:layout_marginRight="10dip"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:background="@drawable/tool33" >
 
-    <ImageButton
-        android:id="@+id/imageBtn3_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dip"
-        android:layout_marginTop="28dip"
-        android:background="@android:color/transparent"
+    <Button
+        android:id="@+id/storeBtn3_1"
+        android:text="@string/mystore"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        style="@style/storeStyle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/tool33_1" >
-    </ImageButton>
+        android:background="@drawable/storebg">
+    </Button>
 
-    <ImageButton
-        android:id="@+id/imageBtn3_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="169dip"
-        android:layout_marginTop="28dip"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/tool33_2" >
-    </ImageButton>
+    <Button
+        android:id="@+id/storeBtn3_2"
+        android:text="@string/addstore"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        style="@style/storeStyle"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/storebg"
+        android:contentDescription="@string/app_name" />
 
 </RelativeLayout>
