@@ -26,6 +26,14 @@ public class MyStoreHelper extends SQLiteOpenHelper{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+
+	public MyStoreHelper(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+
+
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {

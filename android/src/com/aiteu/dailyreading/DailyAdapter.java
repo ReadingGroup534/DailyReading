@@ -18,6 +18,9 @@ public class DailyAdapter extends BaseAdapter{
 	private List<ItemDaily> dailyList = null; 
 	private LayoutInflater mInflater = null;
 	private Context mContext = null;
+	// 颜色
+    private int[] colors = { R.color.blue, R.color.green,
+                    R.color.light_blue, R.color.black_sub, R.color.yellow, R.color.lightgray};
 	
 	public DailyAdapter(Context context){
 		mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -58,6 +61,7 @@ public class DailyAdapter extends BaseAdapter{
 			mHolder.abstracts = (TextView)convertView.findViewById(R.id.item_abstract);
 			mHolder.scanTimes = (PrefixView)convertView.findViewById(R.id.item_scan);
 			convertView.setTag(mHolder);
+			convertView.setBackgroundColor(colors[position%10]);
 		}else{
 			mHolder = (ViewHolder)convertView.getTag();
 		}
