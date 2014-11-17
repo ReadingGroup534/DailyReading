@@ -77,4 +77,9 @@
         <item name="android:textColor">@color/black_sub</item>
         <item name="android:padding">@dimen/padding_normal</item>
     </style>
+    
+     <style name="storeStyle">
+       <item name="android:textSize">@dimen/title_size</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

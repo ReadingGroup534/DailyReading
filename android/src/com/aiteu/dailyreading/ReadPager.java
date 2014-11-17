@@ -43,6 +43,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -66,8 +67,9 @@ public class ReadPager extends Activity implements OnClickListener,
 			mToolPopupWindow3, mToolPopupWindow4, mToolPopupWindow5;
 	private View popupwindwow, toolpop1, toolpop2, toolpop3, toolpop4,
 			toolpop5;
-	private ImageButton imageBtn2, imageBtn3_1, imageBtn3_2, imageBtn4_1,
+	private ImageButton imageBtn2, imageBtn4_1,
 			imageBtn4_2;
+	private Button myStoreButton,addStoreButton;
 	private TextView percenTextView;
 	private static int begin = 0; // 记录书籍的开始位置
 	private static String word = "";// 记录当前页面的文字
@@ -404,7 +406,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			postInvalidateUI();
 			break;
 		// 我的收藏按钮
-		case R.id.imageBtn3_1:
+		case R.id.storeBtn3_1:
 			SQLiteDatabase db = myStoreHelper.getWritableDatabase();
 			BookBean bookBean = new BookBean();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm ss");
@@ -610,12 +612,12 @@ public class ReadPager extends Activity implements OnClickListener,
 				if (a == 3) {
 					mToolPopupWindow4.showAtLocation(mPageWidget,
 							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-					imageBtn3_1 = (ImageButton) toolpop4
-							.findViewById(R.id.imageBtn3_1);
-					imageBtn3_2 = (ImageButton) toolpop4
-							.findViewById(R.id.imageBtn3_2);
-					imageBtn3_1.setOnClickListener(this);
-					imageBtn3_2.setOnClickListener(this);
+					myStoreButton = (Button) toolpop4
+							.findViewById(R.id.storeBtn3_1);
+					addStoreButton = (Button) toolpop4
+							.findViewById(R.id.storeBtn3_2);
+					myStoreButton.setOnClickListener(this);
+					addStoreButton.setOnClickListener(this);
 				}
 
 				// 当点击跳转跳转按钮
@@ -689,12 +691,12 @@ public class ReadPager extends Activity implements OnClickListener,
 			if (a == 3) {
 				mToolPopupWindow4.showAtLocation(mPageWidget,
 						Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-				imageBtn3_1 = (ImageButton) toolpop4
-						.findViewById(R.id.imageBtn3_1);
-				imageBtn3_2 = (ImageButton) toolpop4
-						.findViewById(R.id.imageBtn3_2);
-				imageBtn3_1.setOnClickListener(this);
-				imageBtn3_2.setOnClickListener(this);
+				myStoreButton = (Button) toolpop4
+						.findViewById(R.id.storeBtn3_1);
+				addStoreButton = (Button) toolpop4
+						.findViewById(R.id.storeBtn3_2);
+				myStoreButton.setOnClickListener(this);
+				addStoreButton.setOnClickListener(this);
 			}
 
 			// 当点击跳转跳转按钮
