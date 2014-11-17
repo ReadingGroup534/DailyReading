@@ -74,14 +74,17 @@ public class LoadDataThread extends Thread{
 	public void loadData() throws JSONException{
 		PageSplitor pageSplitor = activity.getPageSplitor();
 		String url = "http://192.168.1.192:8080/reading-web/api/list.json?limit="
-				+ PageSplitor.LIMIT + "&offset=" + pageSplitor.getStart();
+				+ PageSplitor.LIMIT;
 		if(pageSplitor.getLoadType() == PageSplitor.LOAD_TYPE_REFRESH){
 			url += "&refresh=1";
 			url += "&last_refresh="+pageSplitor.getLastRefreshTime();
 		}else{
 			url += "&refresh=0";
 			url += "&last_refresh=0";
+			pageSplitor.nextPage();
 		}
+		url += "&offset=" + pageSplitor.getStart();
+		
 		Log.d(TAG, url);
 		JsonHttpHandler mHandler = (JsonHttpHandler) new JsonHttpFactory()
 				.create();
@@ -98,6 +101,7 @@ public class LoadDataThread extends Thread{
 		}
 		final int count = DataParser.parseDailyCount(json);
 		pageSplitor.setCount(count);
+		Log.d(TAG, "total : "+count);
 		final List<ItemDaily> dailyList = DataParser.parseDailyData(json);
 
 		if (dailyList == null) {

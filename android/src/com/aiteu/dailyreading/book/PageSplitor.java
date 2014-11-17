@@ -11,6 +11,7 @@ import java.util.List;
 public class PageSplitor {
 	public static final int LOAD_TYPE_REFRESH = 0x01;
 	public static final int LOAD_DATA_MORE = 0x02;
+	public static final int LOAD_DATA_FIRST = 0x00;
 	public static final int LIMIT = 2;
 	private int start = 0;
 	private int totalPage = -1;
@@ -28,7 +29,7 @@ public class PageSplitor {
 		this.start = 0;
 		this.currentPage = 1;
 		this.totalPage = -1;
-		this.loadType = LOAD_DATA_MORE;
+		this.loadType = LOAD_DATA_FIRST;
 		if(dailyList != null){
 			dailyList.clear();
 		}else{
@@ -89,6 +90,11 @@ public class PageSplitor {
 		}else{
 			return false;
 		}
+	}
+	
+	public void nextPage(){
+		int st = start + LIMIT;
+		setStart(st);
 	}
 
 	public int getLoadType() {

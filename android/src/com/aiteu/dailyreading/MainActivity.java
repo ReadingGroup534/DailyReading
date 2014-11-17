@@ -76,15 +76,12 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				// TODO Auto-generated method stub
+				//list从1开始,因为要加上header
+				final int pos = position-1;
 				Intent intent = new Intent(MainActivity.this, ReadPager.class);
-				
-//				int totalItem = mPageSplitor.getDailyList().size();
-				
-//				for (int i = 0; i < totalItem; i++) {
-					String url = mPageSplitor.getDailyList().get(position).getDetailUrl();
-					intent.putExtra("URL", url);
-					LogTools.getInstance().info(url);
-//				}
+				String url = mPageSplitor.getDailyList().get(pos).getDetailUrl();
+				intent.putExtra("URL", url);
+				LogTools.getInstance().info(url);
 				startActivity(intent);
 			}
 		});
