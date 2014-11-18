@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.aiteu.dailyreading.book.BookBean;
+import com.aiteu.dailyreading.book.ItemDaily;
 import com.aiteu.dailyreading.db.MyStoreHelper;
 import com.aiteu.dailyreading.reader.BookPage;
 import com.aiteu.dailyreading.reader.LocalBookReader;
@@ -128,10 +129,7 @@ public class ReadPager extends Activity implements OnClickListener,
 
 		mContext = getBaseContext();
 		xmlDoc = new XmlDocument();
-//		WindowManager manager = getWindowManager();
-//		Display display = manager.getDefaultDisplay();
-//		screenHeight = display.getHeight();
-//		screenWidth = display.getWidth();
+		
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		screenWidth = dm.widthPixels;
 		screenHeight = dm.heightPixels;
@@ -277,10 +275,10 @@ public class ReadPager extends Activity implements OnClickListener,
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			Toast.makeText(this, "电子书不存在！请把电子书放到SDCard更目录下...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "文章已不存在！请选择其他美文阅读...", Toast.LENGTH_SHORT).show();
 		}
 		
-		
+		myStoreHelper = new MyStoreHelper(this);
 		begin = sp.getInt(xmlDoc.getContent().toString() + "begin", 0);
 	}
 
@@ -405,10 +403,10 @@ public class ReadPager extends Activity implements OnClickListener,
 			pageFactory.setM_mbBufEnd(begin);
 			postInvalidateUI();
 			break;
-		// 我的收藏按钮
+		// 添加收藏按钮
 		case R.id.storeBtn3_1:
 			SQLiteDatabase db = myStoreHelper.getWritableDatabase();
-			BookBean bookBean = new BookBean();
+			ItemDaily itemDaily = new ItemDaily();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm ss");
 			String time = sdf.format(new Date());
 			// db.execSQL("insert into article(article_id,active,show_time,title,author,"
@@ -418,23 +416,38 @@ public class ReadPager extends Activity implements OnClickListener,
 			// "scan_times,physical_path) values (?,?,?,?,?,?,?,?,?,?,?,?)",new
 			// String[]{});
 			ContentValues cv = new ContentValues();
-			cv.put("article_id", bookBean.getArticle_id());
-			cv.put("active", bookBean.isActive());
+			cv.put("article_id", itemDaily.getArticle_id());
+			cv.put("active", itemDaily.isActive());
 			cv.put("show_time", time);
-			cv.put("title", bookBean.getTitle());
-			cv.put("author", bookBean.getAuthor());
-			cv.put("article_type", bookBean.getArticle_type());
-			cv.put("abstracts", bookBean.getAbstracts());
-			cv.put("recommend_star", bookBean.getRecommend_star());
+			cv.put("title", itemDaily.getTitle());
+			cv.put("author", itemDaily.getAuthor());
+			cv.put("article_type", itemDaily.getArticleType());
+			cv.put("abstracts", itemDaily.getAbstracts());
+			cv.put("recommend_star", itemDaily.getRecommendStar());
 			cv.put("praise_times", time);
 			cv.put("share_times", time);
 			cv.put("scan_times", time);
 			cv.put("physical_path", " ");
 
 			db.insert("article", null, cv);
+			db.close();
+			mToolPopupWindow1.dismiss();
+			mToolPopupWindow4.dismiss();
 			break;
+		// 我的收藏
+		case R.id.storeBtn3_2:
+			SQLiteDatabase dbAdd = myStoreHelper.getReadableDatabase();
 			
-			
+			break;
+		case R.id.imageBtn4_1:
+			clear();
+			pageFactory.setM_mbBufBegin(begin);
+			pageFactory.setM_mbBufEnd(begin);
+			postInvalidateUI();
+			break;
+		case R.id.imageBtn4_2:
+			clear();
+			break;
 		default:
 			break;
 		}
@@ -628,7 +641,7 @@ public class ReadPager extends Activity implements OnClickListener,
 							.findViewById(R.id.imageBtn4_1);
 					imageBtn4_2 = (ImageButton) toolpop5
 							.findViewById(R.id.imageBtn4_2);
-					seekBar3 = (SeekBar) toolpop4.findViewById(R.id.seekBar4);
+					seekBar3 = (SeekBar) toolpop5.findViewById(R.id.seekBar4);
 					percenTextView = (TextView) toolpop5
 							.findViewById(R.id.markEdit4);
 					float percent = (float) ((begin * 1.0) / pageFactory
@@ -707,7 +720,7 @@ public class ReadPager extends Activity implements OnClickListener,
 						.findViewById(R.id.imageBtn4_1);
 				imageBtn4_2 = (ImageButton) toolpop5
 						.findViewById(R.id.imageBtn4_2);
-				seekBar3 = (SeekBar) toolpop4.findViewById(R.id.seekBar4);
+				seekBar3 = (SeekBar) toolpop5.findViewById(R.id.seekBar4);
 				percenTextView = (TextView) toolpop5
 						.findViewById(R.id.markEdit4);
 				float percent = (float) ((begin * 1.0) / pageFactory

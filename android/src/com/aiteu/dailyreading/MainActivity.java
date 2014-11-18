@@ -3,6 +3,8 @@ package com.aiteu.dailyreading;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.xml.sax.Parser;
+
 import com.aiteu.dailyreading.book.PageSplitor;
 import com.aiteu.dailyreading.dealer.DataParser;
 import com.aiteu.dailyreading.handler.MainHandler;
@@ -35,7 +37,7 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	private SlidingDrawer mMenuDrawer = null;
 	private View mMenuView = null;
 	private View mContentView = null;
-	private View splashLay = null;
+//	private View splashLay = null;
 	private XListView mListView = null;
 	private DailyAdapter mAdapter = null;
 	//private LoadDailyDataTask mDailyDataTask = null;
@@ -63,7 +65,7 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main);
 		initViews(); //初始化控件
 		mPageSplitor = new PageSplitor();
 		mHandler = new MainHandler(this);
@@ -77,9 +79,8 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 					long id) {
 				// TODO Auto-generated method stub
 				//list从1开始,因为要加上header
-				final int pos = position-1;
 				Intent intent = new Intent(MainActivity.this, ReadPager.class);
-				String url = mPageSplitor.getDailyList().get(pos).getDetailUrl();
+				String url = mPageSplitor.getDailyList().get(position-1).getDetailUrl();
 				intent.putExtra("URL", url);
 				LogTools.getInstance().info(url);
 				startActivity(intent);
@@ -99,7 +100,7 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	}
 
 	private void initViews() {
-		splashLay = findViewById(R.id.welcome_lay_id);
+//		splashLay = findViewById(R.id.welcome_lay_id);
 		mListView = (XListView) findViewById(R.id.article_listview);
 		mListView.setXListViewListener(this);
 		mListView.setPullRefreshEnable(true);
@@ -131,17 +132,17 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	}
 	
 	public void showNetworkUnavailable(){
-		splashLay.setVisibility(View.GONE);
+//		splashLay.setVisibility(View.GONE);
 	}
 	
 	public void showEmpty(){
 		mListView.stopRefresh();
 		mListView.stopLoadMore();
-		splashLay.setVisibility(View.GONE);
+//		splashLay.setVisibility(View.GONE);
 	}
 	
 	public void showError(){
-		splashLay.setVisibility(View.GONE);
+//		splashLay.setVisibility(View.GONE);
 		mListView.stopRefresh();
 		mListView.stopLoadMore();
 	}
@@ -149,7 +150,7 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 	public void showDailyList() {
 		mListView.stopRefresh();
 		mListView.stopLoadMore();
-		splashLay.setVisibility(View.GONE);
+//		splashLay.setVisibility(View.GONE);
 		mAdapter.setData(mPageSplitor.getDailyList());
 		mAdapter.notifyDataSetChanged();
 	}
