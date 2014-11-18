@@ -1,7 +1,5 @@
 package com.aiteu.log;
 
-import android.util.Log;
-
 public final class LogTools {
 	
 	private static LogTools sLogTools;

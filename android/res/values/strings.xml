@@ -27,7 +27,7 @@
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
     <string name="xlistview_header_hint_loading">正在加载...</string>
     <string name="xlistview_header_last_time">上次更新时间：</string>
-    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_normal">查看更早的文章</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     <string name="item_prefix_scan">浏览:</string>
     <string name="item_sufix_scan">%d次</string>
@@ -48,6 +48,9 @@
     <string name="soft_update_later">稍后更新</string>
     <string name="soft_updating">正在更新</string>
     <string name="soft_update_cancel">取消</string>
+    
+    <string name="mystore">我的收藏</string>
+    <string name="addstore">添加收藏</string>
     
 
 </resources>

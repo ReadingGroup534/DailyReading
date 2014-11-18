@@ -2,6 +2,8 @@
 <resources>
 
     <color name="white">#ffffff</color>
+    <color name="ivory">#fffff0</color> <!-- 象牙色 -->
+    <color name="lightgoldenrodyellow">#fafad2</color> <!-- 亮金黄色 -->
     <color name="red">#ff0000</color>
     <color name="green">#669900</color>
     <color name="yellow">#ffbb33</color>

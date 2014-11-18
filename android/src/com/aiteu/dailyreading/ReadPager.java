@@ -5,16 +5,20 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.aiteu.dailyreading.book.BookBean;
+import com.aiteu.dailyreading.book.ItemDaily;
 import com.aiteu.dailyreading.db.MyStoreHelper;
 import com.aiteu.dailyreading.reader.BookPage;
 import com.aiteu.dailyreading.reader.LocalBookReader;
 import com.aiteu.http.factory.XmlHttpFactory;
 import com.aiteu.http.handler.XmlHttpHandler;
 import com.aiteu.http.xml.XmlDocument;
+import com.aiteu.log.LogTools;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -40,6 +44,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -63,8 +68,9 @@ public class ReadPager extends Activity implements OnClickListener,
 			mToolPopupWindow3, mToolPopupWindow4, mToolPopupWindow5;
 	private View popupwindwow, toolpop1, toolpop2, toolpop3, toolpop4,
 			toolpop5;
-	private ImageButton imageBtn2, imageBtn3_1, imageBtn3_2, imageBtn4_1,
+	private ImageButton imageBtn2, imageBtn4_1,
 			imageBtn4_2;
+	private Button myStoreButton,addStoreButton;
 	private TextView percenTextView;
 	private static int begin = 0; // 记录书籍的开始位置
 	private static String word = "";// 记录当前页面的文字
@@ -123,10 +129,7 @@ public class ReadPager extends Activity implements OnClickListener,
 
 		mContext = getBaseContext();
 		xmlDoc = new XmlDocument();
-//		WindowManager manager = getWindowManager();
-//		Display display = manager.getDefaultDisplay();
-//		screenHeight = display.getHeight();
-//		screenWidth = display.getWidth();
+		
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		screenWidth = dm.widthPixels;
 		screenHeight = dm.heightPixels;
@@ -262,17 +265,20 @@ public class ReadPager extends Activity implements OnClickListener,
 		 * 根据传递的路径打开书
 		 */
 		try {
+			Intent intent = getIntent();
+			String URL = intent.getStringExtra("URL");
+			LogTools.getInstance().info(URL);
 //			pageFactory.openbook("/sdcard/test.txt");
-			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+//			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 //			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
-//			pageFactory.openbook(doc.toString());
+			pageFactory.openbook(URL);
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			Toast.makeText(this, "电子书不存在！请把电子书放到SDCard更目录下...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "文章已不存在！请选择其他美文阅读...", Toast.LENGTH_SHORT).show();
 		}
 		
-		
+		myStoreHelper = new MyStoreHelper(this);
 		begin = sp.getInt(xmlDoc.getContent().toString() + "begin", 0);
 	}
 
@@ -397,10 +403,10 @@ public class ReadPager extends Activity implements OnClickListener,
 			pageFactory.setM_mbBufEnd(begin);
 			postInvalidateUI();
 			break;
-		// 我的收藏按钮
-		case R.id.imageBtn3_1:
+		// 添加收藏按钮
+		case R.id.storeBtn3_1:
 			SQLiteDatabase db = myStoreHelper.getWritableDatabase();
-			BookBean bookBean = new BookBean();
+			ItemDaily itemDaily = new ItemDaily();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm ss");
 			String time = sdf.format(new Date());
 			// db.execSQL("insert into article(article_id,active,show_time,title,author,"
@@ -410,23 +416,38 @@ public class ReadPager extends Activity implements OnClickListener,
 			// "scan_times,physical_path) values (?,?,?,?,?,?,?,?,?,?,?,?)",new
 			// String[]{});
 			ContentValues cv = new ContentValues();
-			cv.put("article_id", bookBean.getArticle_id());
-			cv.put("active", bookBean.isActive());
+			cv.put("article_id", itemDaily.getArticle_id());
+			cv.put("active", itemDaily.isActive());
 			cv.put("show_time", time);
-			cv.put("title", bookBean.getTitle());
-			cv.put("author", bookBean.getAuthor());
-			cv.put("article_type", bookBean.getArticle_type());
-			cv.put("abstracts", bookBean.getAbstracts());
-			cv.put("recommend_star", bookBean.getRecommend_star());
+			cv.put("title", itemDaily.getTitle());
+			cv.put("author", itemDaily.getAuthor());
+			cv.put("article_type", itemDaily.getArticleType());
+			cv.put("abstracts", itemDaily.getAbstracts());
+			cv.put("recommend_star", itemDaily.getRecommendStar());
 			cv.put("praise_times", time);
 			cv.put("share_times", time);
 			cv.put("scan_times", time);
 			cv.put("physical_path", " ");
 
 			db.insert("article", null, cv);
+			db.close();
+			mToolPopupWindow1.dismiss();
+			mToolPopupWindow4.dismiss();
 			break;
+		// 我的收藏
+		case R.id.storeBtn3_2:
+			SQLiteDatabase dbAdd = myStoreHelper.getReadableDatabase();
 			
-			
+			break;
+		case R.id.imageBtn4_1:
+			clear();
+			pageFactory.setM_mbBufBegin(begin);
+			pageFactory.setM_mbBufEnd(begin);
+			postInvalidateUI();
+			break;
+		case R.id.imageBtn4_2:
+			clear();
+			break;
 		default:
 			break;
 		}
@@ -604,12 +625,12 @@ public class ReadPager extends Activity implements OnClickListener,
 				if (a == 3) {
 					mToolPopupWindow4.showAtLocation(mPageWidget,
 							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-					imageBtn3_1 = (ImageButton) toolpop4
-							.findViewById(R.id.imageBtn3_1);
-					imageBtn3_2 = (ImageButton) toolpop4
-							.findViewById(R.id.imageBtn3_2);
-					imageBtn3_1.setOnClickListener(this);
-					imageBtn3_2.setOnClickListener(this);
+					myStoreButton = (Button) toolpop4
+							.findViewById(R.id.storeBtn3_1);
+					addStoreButton = (Button) toolpop4
+							.findViewById(R.id.storeBtn3_2);
+					myStoreButton.setOnClickListener(this);
+					addStoreButton.setOnClickListener(this);
 				}
 
 				// 当点击跳转跳转按钮
@@ -620,7 +641,7 @@ public class ReadPager extends Activity implements OnClickListener,
 							.findViewById(R.id.imageBtn4_1);
 					imageBtn4_2 = (ImageButton) toolpop5
 							.findViewById(R.id.imageBtn4_2);
-					seekBar3 = (SeekBar) toolpop4.findViewById(R.id.seekBar4);
+					seekBar3 = (SeekBar) toolpop5.findViewById(R.id.seekBar4);
 					percenTextView = (TextView) toolpop5
 							.findViewById(R.id.markEdit4);
 					float percent = (float) ((begin * 1.0) / pageFactory
@@ -683,12 +704,12 @@ public class ReadPager extends Activity implements OnClickListener,
 			if (a == 3) {
 				mToolPopupWindow4.showAtLocation(mPageWidget,
 						Gravity.BOTTOM, 0, screenWidth * 45 / 300);
-				imageBtn3_1 = (ImageButton) toolpop4
-						.findViewById(R.id.imageBtn3_1);
-				imageBtn3_2 = (ImageButton) toolpop4
-						.findViewById(R.id.imageBtn3_2);
-				imageBtn3_1.setOnClickListener(this);
-				imageBtn3_2.setOnClickListener(this);
+				myStoreButton = (Button) toolpop4
+						.findViewById(R.id.storeBtn3_1);
+				addStoreButton = (Button) toolpop4
+						.findViewById(R.id.storeBtn3_2);
+				myStoreButton.setOnClickListener(this);
+				addStoreButton.setOnClickListener(this);
 			}
 
 			// 当点击跳转跳转按钮
@@ -699,7 +720,7 @@ public class ReadPager extends Activity implements OnClickListener,
 						.findViewById(R.id.imageBtn4_1);
 				imageBtn4_2 = (ImageButton) toolpop5
 						.findViewById(R.id.imageBtn4_2);
-				seekBar3 = (SeekBar) toolpop4.findViewById(R.id.seekBar4);
+				seekBar3 = (SeekBar) toolpop5.findViewById(R.id.seekBar4);
 				percenTextView = (TextView) toolpop5
 						.findViewById(R.id.markEdit4);
 				float percent = (float) ((begin * 1.0) / pageFactory

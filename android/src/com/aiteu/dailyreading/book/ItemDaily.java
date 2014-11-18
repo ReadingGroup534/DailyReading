@@ -1,7 +1,15 @@
 package com.aiteu.dailyreading.book;
 
-public class ItemDaily {
+import java.io.Serializable;
+
+
+public class ItemDaily implements Serializable{
 	
+	/**
+	 * @author liyangchao
+	 */
+	private static final long serialVersionUID = 1L;
+	private int article_id;
 	private String title;
 	private String author;
 	private String articleType;
@@ -11,9 +19,18 @@ public class ItemDaily {
 	private int shareTimes;
 	private int scanTimes;
 	private String detailUrl;
+	private boolean active;
 	
 	public ItemDaily(){
 		
+	}
+
+	public int getArticle_id() {
+		return article_id;
+	}
+
+	public void setArticle_id(int article_id) {
+		this.article_id = article_id;
 	}
 
 	public String getTitle() {
@@ -87,4 +104,14 @@ public class ItemDaily {
 	public void setDetailUrl(String detailUrl) {
 		this.detailUrl = detailUrl;
 	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	
 }
