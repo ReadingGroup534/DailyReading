@@ -31,7 +31,7 @@ public class LoadDailyDataTask extends AsyncTask<PageSplitor, Integer, PageSplit
 	@Override
 	protected PageSplitor doInBackground(PageSplitor... params) {
 		PageSplitor mPageSplitor = params[0];
-		final String url = "http://192.168.1.192:8080/reading-web/api/list.json?limit="
+		final String url = "http://192.168.2.103:8080/reading-web/api/list.json?limit="
 				+ PageSplitor.LIMIT + "&offset=" + mPageSplitor.getStart();
 		Log.d(TAG, url);
 		JsonHttpHandler mHandler = (JsonHttpHandler) new JsonHttpFactory()

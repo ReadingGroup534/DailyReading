@@ -3,6 +3,8 @@ package com.aiteu.dailyreading;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.xml.sax.Parser;
+
 import com.aiteu.dailyreading.book.PageSplitor;
 import com.aiteu.dailyreading.dealer.DataParser;
 import com.aiteu.dailyreading.handler.MainHandler;
@@ -77,14 +79,11 @@ public class MainActivity extends BaseActivity implements IXListViewListener{
 					long id) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(MainActivity.this, ReadPager.class);
-				
-//				int totalItem = mPageSplitor.getDailyList().size();
-				
-//				for (int i = 0; i < totalItem; i++) {
-					String url = mPageSplitor.getDailyList().get(position).getDetailUrl();
-					intent.putExtra("URL", url);
-					LogTools.getInstance().info(url);
-//				}
+				int totalItem = mPageSplitor.getDailyList().size();
+				LogTools.getInstance().info(Integer.toString(totalItem));
+				String url = mPageSplitor.getDailyList().get(position-1).getDetailUrl();
+				intent.putExtra("URL", url);
+				LogTools.getInstance().info(url);
 				startActivity(intent);
 			}
 		});

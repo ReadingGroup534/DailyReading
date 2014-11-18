@@ -267,15 +267,15 @@ public class ReadPager extends Activity implements OnClickListener,
 		try {
 			Intent intent = getIntent();
 			String URL = intent.getStringExtra("URL");
-//			LogTools.getInstance().info(URL);
+			LogTools.getInstance().info(URL);
 //			pageFactory.openbook("/sdcard/test.txt");
-			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
+//			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 //			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
-//			pageFactory.openbook(URL);
+			pageFactory.openbook(URL);
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			Toast.makeText(this, "电子书不存在！请把电子书放到SDCard更目录下...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "文章已不存在！请选择其他美文阅读...", Toast.LENGTH_SHORT).show();
 		}
 		
 		myStoreHelper = new MyStoreHelper(this);

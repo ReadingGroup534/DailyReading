@@ -73,7 +73,7 @@ public class LoadDataThread extends Thread{
 	
 	public void loadData() throws JSONException{
 		PageSplitor pageSplitor = activity.getPageSplitor();
-		String url = "http://192.168.1.192:8080/reading-web/api/list.json?limit="
+		String url = "http://192.168.2.103:8080/reading-web/api/list.json?limit="
 				+ PageSplitor.LIMIT + "&offset=" + pageSplitor.getStart();
 		if(pageSplitor.getLoadType() == PageSplitor.LOAD_TYPE_REFRESH){
 			url += "&refresh=1";
