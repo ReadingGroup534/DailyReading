@@ -217,16 +217,16 @@ public class SlidingMenuView extends HorizontalScrollView {
 		float leftAlpha = 0.6f + 0.4f * (1 - scale);
 		
 		
-		ViewHelper.setScaleX(mMenu, leftScale);
-		ViewHelper.setScaleY(mMenu, leftScale);
-		ViewHelper.setAlpha(mMenu, leftAlpha);
+//		ViewHelper.setScaleX(mMenu, leftScale);
+//		ViewHelper.setScaleY(mMenu, leftScale);
+//		ViewHelper.setAlpha(mMenu, leftAlpha);
 		ViewHelper.setTranslationX(mMenu, mMenuWidth * scale * 0.8f);
 		
 		//设置content的缩放中心点
-		ViewHelper.setPivotX(mContent, 0);
-		ViewHelper.setPivotY(mContent, mContent.getHeight()/2);
-		ViewHelper.setScaleX(mContent, rightScale);
-		ViewHelper.setScaleY(mContent, rightScale);
+//		ViewHelper.setPivotX(mContent, 0);
+//		ViewHelper.setPivotY(mContent, mContent.getHeight()/2);
+//		ViewHelper.setScaleX(mContent, rightScale);
+//		ViewHelper.setScaleY(mContent, rightScale);
 	}
 
 }
