@@ -14,7 +14,7 @@
     <string name="bookpop_size">字体</string>
     <string name="bookpop_light">亮度/夜间</string>
     <string name="bookpop_store">收藏</string>
-    <string name="bookpop_send">跳转</string>
+    <string name="bookpop_share">分享</string>
     <!-- sendSuggest.xml -->
     <string name="send_suggest">发送建议</string>
     <string name="send_suggest_text">发送您的建议给我们，我们将会做的更好!</string>

@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+
 import com.aiteu.dailyreading.book.BookBean;
 import com.aiteu.dailyreading.book.ItemDaily;
 import com.aiteu.dailyreading.db.MyStoreHelper;
@@ -65,11 +69,12 @@ public class ReadPager extends Activity implements OnClickListener,
 	private PageWidget mPageWidget;
 //	private Pager mPageWidget ;
 	private PopupWindow mPopupWindow, mToolPopupWindow1, mToolPopupWindow2,
-			mToolPopupWindow3, mToolPopupWindow4, mToolPopupWindow5;
-	private View popupwindwow, toolpop1, toolpop2, toolpop3, toolpop4,
-			toolpop5;
-	private ImageButton imageBtn2, imageBtn4_1,
-			imageBtn4_2;
+			mToolPopupWindow3, mToolPopupWindow4;
+//	mToolPopupWindow5;
+	private View popupwindwow, toolpop1, toolpop2, toolpop3, toolpop4;
+//			toolpop5;
+	private ImageButton imageBtn2;
+//	imageBtn4_1,imageBtn4_2;
 	private Button myStoreButton,addStoreButton;
 	private TextView percenTextView;
 	private static int begin = 0; // 记录书籍的开始位置
@@ -304,7 +309,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f : light / 10.0f;
 			getWindow().setAttributes(lp);
 			break;
-		case R.id.seekBar4:
+		/*case R.id.seekBar4:
 			int percent = seekBar3.getProgress();
 			percenTextView.setText(percent + "%");
 			begin = (pageFactory.getM_mbBufLen()*percent) /100;
@@ -323,7 +328,7 @@ public class ReadPager extends Activity implements OnClickListener,
 				Log.e(TAG, "onProgressChanged seekBar4-> IOException error", e);
 			}
 			postInvalidateUI();
-			break;
+			break;*/
 		default:
 			break;
 		}
@@ -380,8 +385,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			setToolPop(a);
 			break;
 		case R.id.bookBtn4:
-			a = 4;
-			setToolPop(a);
+			showShare();
 			break;
 		// 夜间模式按钮
 		case R.id.imageBtn2:
@@ -439,15 +443,15 @@ public class ReadPager extends Activity implements OnClickListener,
 			SQLiteDatabase dbAdd = myStoreHelper.getReadableDatabase();
 			
 			break;
-		case R.id.imageBtn4_1:
-			clear();
-			pageFactory.setM_mbBufBegin(begin);
-			pageFactory.setM_mbBufEnd(begin);
-			postInvalidateUI();
-			break;
-		case R.id.imageBtn4_2:
-			clear();
-			break;
+//		case R.id.imageBtn4_1:
+//			clear();
+//			pageFactory.setM_mbBufBegin(begin);
+//			pageFactory.setM_mbBufEnd(begin);
+//			postInvalidateUI();
+//			break;
+//		case R.id.imageBtn4_2:
+//			showShare();
+//			break;
 		default:
 			break;
 		}
@@ -539,7 +543,7 @@ public class ReadPager extends Activity implements OnClickListener,
 		mToolPopupWindow2.dismiss();
 		mToolPopupWindow3.dismiss();
 		mToolPopupWindow4.dismiss();
-		mToolPopupWindow5.dismiss();
+//		mToolPopupWindow5.dismiss();
 	}
 
 	/**
@@ -577,9 +581,9 @@ public class ReadPager extends Activity implements OnClickListener,
 		toolpop4 = this.getLayoutInflater().inflate(R.layout.tool33, null);
 		mToolPopupWindow4 = new PopupWindow(toolpop4, LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
-		toolpop5 = this.getLayoutInflater().inflate(R.layout.tool44, null);
-		mToolPopupWindow5 = new PopupWindow(toolpop5, LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT);
+//		toolpop5 = this.getLayoutInflater().inflate(R.layout.tool44, null);
+//		mToolPopupWindow5 = new PopupWindow(toolpop5, LayoutParams.FILL_PARENT,
+//				LayoutParams.WRAP_CONTENT);
 	}
 
 	/**
@@ -633,7 +637,7 @@ public class ReadPager extends Activity implements OnClickListener,
 					addStoreButton.setOnClickListener(this);
 				}
 
-				// 当点击跳转跳转按钮
+				/*// 当点击跳转跳转按钮
 				if (a == 4) {
 					mToolPopupWindow5.showAtLocation(mPageWidget,
 							Gravity.BOTTOM, 0, screenWidth * 45 / 300);
@@ -655,7 +659,7 @@ public class ReadPager extends Activity implements OnClickListener,
 					seekBar3.setOnSeekBarChangeListener(this);
 					imageBtn4_1.setOnClickListener(this);
 					imageBtn4_2.setOnClickListener(this);
-				}
+				}*/
 			}
 		}else {
 			if (mToolPopupWindow1.isShowing()) {
@@ -712,7 +716,7 @@ public class ReadPager extends Activity implements OnClickListener,
 				addStoreButton.setOnClickListener(this);
 			}
 
-			// 当点击跳转跳转按钮
+		/*	// 当点击跳转跳转按钮
 			if (a == 4) {
 				mToolPopupWindow5.showAtLocation(mPageWidget,
 						Gravity.BOTTOM, 0, screenWidth * 45 / 300);
@@ -734,10 +738,40 @@ public class ReadPager extends Activity implements OnClickListener,
 				seekBar3.setOnSeekBarChangeListener(this);
 				imageBtn4_1.setOnClickListener(this);
 				imageBtn4_2.setOnClickListener(this);
-			}
+			}*/
 		}
 		// 记录上次点击的是哪一个
 		b = a;
+	}
+	
+	private void showShare() {
+		ShareSDK.initSDK(this);
+		OnekeyShare oks = new OnekeyShare();
+		// 关闭sso授权
+		oks.disableSSOWhenAuthorize();
+
+		// 分享时Notification的图标和文字
+		oks.setNotification(R.drawable.ic_launcher,
+				getString(R.string.app_name));
+		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+		oks.setTitle(getString(R.string.share));
+		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+		oks.setTitleUrl("http://sharesdk.cn");
+		// text是分享文本，所有平台都需要这个字段
+		oks.setText("请输入分享文本");
+		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+		oks.setImagePath("/sdcard/test.jpg");
+		// url仅在微信（包括好友和朋友圈）中使用
+		oks.setUrl("http://sharesdk.cn");
+		// comment是我对这条分享的评论，仅在人人网和QQ空间使用
+		oks.setComment("我是测试评论文本");
+		// site是分享此内容的网站名称，仅在QQ空间使用
+		oks.setSite(getString(R.string.app_name));
+		// siteUrl是分享此内容的网站地址，仅在QQ空间使用
+		oks.setSiteUrl("http://sharesdk.cn");
+
+		// 启动分享GUI
+		oks.show(this);
 	}
 
 	/**
