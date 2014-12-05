@@ -98,7 +98,7 @@ public class ReadPager extends Activity implements OnClickListener,
 	private SharedPreferences.Editor editor;
 	private WindowManager.LayoutParams lp;
 	private XmlDocument doc;
-	
+	private String URL = "https://github.com/ReadingGroup534/DailyReading/blob/master/test/reading/reading123456789000001.txt";
 	// 实例化Handler
 	public Handler myHandler = new Handler() {
 		//接收子线程的消息，同时更新UI
@@ -271,12 +271,15 @@ public class ReadPager extends Activity implements OnClickListener,
 		 */
 		try {
 			Intent intent = getIntent();
-			String URL = intent.getStringExtra("URL");
+//			URL = intent.getStringExtra("URL");
+			URL = "https://github.com/ReadingGroup534/DailyReading/blob/master/test/reading/reading123456789000001.txt";
 			LogTools.getInstance().info(URL);
 //			pageFactory.openbook("/sdcard/test.txt");
 //			pageFactory.openbook("/data/data/Notes_KT Day 1.txt");
 //			pageFactory.openbook("sdcard/dlna_log.txt");  //测试手机用
+			Log.i("System", URL.toString());
 			pageFactory.openbook(URL);
+			LogTools.getInstance().info(URL.toString());
 			pageFactory.onDraw(mCurCanvas);
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -385,6 +388,7 @@ public class ReadPager extends Activity implements OnClickListener,
 			setToolPop(a);
 			break;
 		case R.id.bookBtn4:
+			popToolsDismiss();
 			showShare();
 			break;
 		// 夜间模式按钮
@@ -756,19 +760,19 @@ public class ReadPager extends Activity implements OnClickListener,
 		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
 		oks.setTitle(getString(R.string.share));
 		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-		oks.setTitleUrl("http://sharesdk.cn");
+		oks.setTitleUrl(URL);
 		// text是分享文本，所有平台都需要这个字段
 		oks.setText("请输入分享文本");
 		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 		oks.setImagePath("/sdcard/test.jpg");
 		// url仅在微信（包括好友和朋友圈）中使用
-		oks.setUrl("http://sharesdk.cn");
+		oks.setUrl(URL);
 		// comment是我对这条分享的评论，仅在人人网和QQ空间使用
 		oks.setComment("我是测试评论文本");
 		// site是分享此内容的网站名称，仅在QQ空间使用
 		oks.setSite(getString(R.string.app_name));
 		// siteUrl是分享此内容的网站地址，仅在QQ空间使用
-		oks.setSiteUrl("http://sharesdk.cn");
+		oks.setSiteUrl(URL);
 
 		// 启动分享GUI
 		oks.show(this);

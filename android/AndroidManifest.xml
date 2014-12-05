@@ -28,7 +28,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.aiteu.dailyreading.MainActivity"
+            android:name="com.aiteu.dailyreading.ReadPager"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

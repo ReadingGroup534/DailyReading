@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class DailyAdapter extends BaseAdapter{
@@ -61,6 +62,7 @@ public class DailyAdapter extends BaseAdapter{
 			mHolder.title = (TextView)convertView.findViewById(R.id.item_title);
 			mHolder.abstracts = (TextView)convertView.findViewById(R.id.item_abstract);
 			mHolder.scanTimes = (PrefixView)convertView.findViewById(R.id.item_scan);
+			mHolder.recommand_star = (RatingBar) convertView.findViewById(R.id.recommand_star);
 			convertView.setTag(mHolder);
 		}else{
 			mHolder = (ViewHolder)convertView.getTag();
@@ -70,6 +72,7 @@ public class DailyAdapter extends BaseAdapter{
 		mHolder.title.setText(item.getTitle());
 		mHolder.abstracts.setText(item.getAbstracts());
 		mHolder.scanTimes.setText(String.format(mContext.getText(R.string.item_sufix_scan).toString(), item.getScanTimes()));
+		mHolder.recommand_star.setRating(item.getRecommendStar());
 		return convertView;
 	}
 	
@@ -77,6 +80,7 @@ public class DailyAdapter extends BaseAdapter{
 		private TextView title;
 		private TextView abstracts;
 		private PrefixView scanTimes;
+		private RatingBar recommand_star;
 	}
 	
 }
