@@ -10,7 +10,7 @@ public final class LogTools {
     public int level = DEGUB;
 
     private LogTools() {
-    }
+    } 
 
     public static LogTools getInstance() {
         if (sLogTools == null) {
