@@ -764,7 +764,7 @@ public class OnekeyShare extends FakeActivity implements
 			builder.setWhen(when);
 			builder.setContentIntent(pi);
 
-			Notification notification = builder.build();
+			Notification notification = builder.getNotification();
 			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 			nm.notify(id, notification);
 

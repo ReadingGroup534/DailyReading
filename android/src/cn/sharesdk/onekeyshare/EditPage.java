@@ -162,7 +162,7 @@ public class EditPage extends FakeActivity implements OnClickListener, TextWatch
 
 	private RelativeLayout getPageView() {
 		rlPage = new RelativeLayout(getContext());
-		rlPage.setBackground(background);
+		rlPage.setBackgroundDrawable(background);
 		if (dialogMode) {
 			RelativeLayout rlDialog = new RelativeLayout(getContext());
 			rlDialog.setBackgroundColor(0xc0323232);
@@ -263,7 +263,7 @@ public class EditPage extends FakeActivity implements OnClickListener, TextWatch
 		// 文字输入区域
 		etContent = new EditText(getContext());
 		etContent.setGravity(Gravity.LEFT | Gravity.TOP);
-		etContent.setBackground(null);
+		etContent.setBackgroundDrawable(null);
 		etContent.setText(String.valueOf(reqData.get("text")));
 		etContent.addTextChangedListener(this);
 		LinearLayout.LayoutParams lpEt = new LinearLayout.LayoutParams(
@@ -788,7 +788,7 @@ public class EditPage extends FakeActivity implements OnClickListener, TextWatch
 			rlPage.postDelayed(new Runnable() {
 				public void run() {
 					genBackground();
-					rlPage.setBackground(background);
+					rlPage.setBackgroundDrawable(background);
 				}
 			}, 1000);
 		} else {
@@ -800,7 +800,7 @@ public class EditPage extends FakeActivity implements OnClickListener, TextWatch
 			rlPage.postDelayed(new Runnable() {
 				public void run() {
 					genBackground();
-					rlPage.setBackground(background);
+					rlPage.setBackgroundDrawable(background);
 				}
 			}, 1000);
 		}
