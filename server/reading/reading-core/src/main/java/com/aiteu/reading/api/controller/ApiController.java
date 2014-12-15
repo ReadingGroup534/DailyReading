@@ -53,6 +53,13 @@ public class ApiController {
 		apiService.getDetail(res, form);
 	}
 	
+	@RequestMapping("/api/reading/category.json")
+	public String categoryList(ModelMap modelMap, HttpServletRequest req){
+		Map<String, String> form = initSharedForm(req);
+		
+		return "/api/category.json";
+	}
+	
 	/**
 	 * 初始化公共参数
 	 * @return
