@@ -28,7 +28,7 @@ public class Scheduler implements WorkerSchedule{
 		schedule("");
 	}
 
-	public void schedule(String name) {
+	public void schedule(String name) {	
 		if(mStorage.isEmpty()){
 			System.out.println("url set empty");
 			return;
