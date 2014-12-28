@@ -7,5 +7,6 @@ import com.aiteu.reading.api.model.Article;
 
 public interface ArticleDao {
 	
-	public List<Article> getDailyArticle(Map<String, Object> param);
+	public int getCount(Map<String, String> form);
+	public List<Article> getArticles(Map<String, String> form);
 }

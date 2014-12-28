@@ -59,7 +59,8 @@ public class ApiServiceImpl implements ApiService{
 		}
 		param.put("limit", limit);
 		param.put("order", "show_time desc");
-		List<Article> articles = articleDao.getDailyArticle(param);
+		List<Article> articles = null; 
+				//articleDao.getDailyArticle(param);
 		Map<String, Object> results = new HashMap<String, Object>();
 		if(null != articles){
 			results.put("total", articles.size());

@@ -2,11 +2,14 @@ package com.aiteu.reading.api.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import com.aiteu.reading.api.dao.ArticleDao;
@@ -17,24 +20,53 @@ import com.aiteu.reading.base.mapper.ArticleRowMapper;
 @Repository
 public class ArticleDaoImpl extends BaseDaoImpl implements ArticleDao{
 
-	public List<Article> getDailyArticle(final Map<String, Object> param) {
-		// TODO Auto-generated method stub
-		final String query = "select * from article where active='y' order by ? limit ? offset ?";
-		
+	public List<Article> getArticles(Map<String, String> form) {
+		final Map<String, String> params = form;
+
 		List<Article> articles = this.getTemplate().query(new PreparedStatementCreator() {
 			
 			public PreparedStatement createPreparedStatement(Connection con)
 					throws SQLException {
 				// TODO Auto-generated method stub
-				PreparedStatement ps = con.prepareStatement(query);
-				ps.setObject(1, param.get("order"));
-				ps.setInt(2, Integer.parseInt(param.get("limit")+""));
-				ps.setInt(3, Integer.parseInt(param.get("offset")+""));
+				String sql = "select * from article where active = 'y'";
+				if(null != params.get("browse_id")){
+					sql += (" and browse_id = "+params.get("browse_id"));
+				}
+				sql +=" order by show_time desc limit ?,?";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, Integer.parseInt(params.get("start")));
+				ps.setInt(2, Integer.parseInt(params.get("limit")));
 				return ps;
 			}
-		}, new ArticleRowMapper(param.get("base_url").toString()));
+		}, new ArticleRowMapper());
 		
 		return (null != articles && articles.size() > 0) ? articles : null;
+	}
+
+	public int getCount(Map<String, String> form) {
+		final Map<String, String> params = form;
+		return this.getTemplate().query(new PreparedStatementCreator() {
+			
+			public PreparedStatement createPreparedStatement(Connection conn)
+					throws SQLException {
+				String sql = "select count(*) from article where active = 'y'";
+				if(null != params.get("browse_id") && !params.get("browse_id").equals("0")){
+					sql += (" and browse_id = "+params.get("browse_id"));
+				}
+				PreparedStatement ps = conn.prepareStatement(sql);
+				return ps;
+			}
+		}, new ResultSetExtractor<Integer>() {
+
+			public Integer extractData(ResultSet rs) throws SQLException,
+					DataAccessException {
+				// TODO Auto-generated method stub
+				if(rs.next()){
+					return rs.getInt(1);
+				}
+				return 0;
+			}
+		});
 	}
 	
 }

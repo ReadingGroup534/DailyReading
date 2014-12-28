@@ -4,7 +4,6 @@ public class Browse {
 	
 	private String browseId;
 	private String browseValue;
-	private String description;
 	
 	public Browse(){
 		
@@ -25,13 +24,4 @@ public class Browse {
 	public void setBrowseValue(String browseValue) {
 		this.browseValue = browseValue;
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
 }

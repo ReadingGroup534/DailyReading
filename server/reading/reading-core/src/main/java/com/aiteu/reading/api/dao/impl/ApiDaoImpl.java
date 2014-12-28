@@ -45,7 +45,7 @@ public class ApiDaoImpl extends BaseDaoImpl implements ApiDao{
 				ps.setInt(2, Integer.parseInt(param.get("limit")));
 				return ps;
 			}
-		}, new ArticleRowMapper(param.get("base_url")));
+		}, new ArticleRowMapper());
 		return (articles == null || articles.size() == 0) ? null : articles;
 	}
 
