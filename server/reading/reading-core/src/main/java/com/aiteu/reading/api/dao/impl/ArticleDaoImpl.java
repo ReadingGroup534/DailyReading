@@ -29,8 +29,8 @@ public class ArticleDaoImpl extends BaseDaoImpl implements ArticleDao{
 					throws SQLException {
 				// TODO Auto-generated method stub
 				String sql = "select * from article where active = 'y'";
-				if(null != params.get("browse_id")){
-					sql += (" and browse_id = "+params.get("browse_id"));
+				if(null != params.get("browseId") && !params.get("browseId").equals("0")){
+					sql += (" and browse_id = "+params.get("browseId"));
 				}
 				sql +=" order by show_time desc limit ?,?";
 				PreparedStatement ps = con.prepareStatement(sql);
@@ -50,8 +50,8 @@ public class ArticleDaoImpl extends BaseDaoImpl implements ArticleDao{
 			public PreparedStatement createPreparedStatement(Connection conn)
 					throws SQLException {
 				String sql = "select count(*) from article where active = 'y'";
-				if(null != params.get("browse_id") && !params.get("browse_id").equals("0")){
-					sql += (" and browse_id = "+params.get("browse_id"));
+				if(null != params.get("browseId") && !params.get("browseId").equals("0")){
+					sql += (" and browse_id = "+params.get("browseId"));
 				}
 				PreparedStatement ps = conn.prepareStatement(sql);
 				return ps;
@@ -67,6 +67,22 @@ public class ArticleDaoImpl extends BaseDaoImpl implements ArticleDao{
 				return 0;
 			}
 		});
+	}
+
+	public List<Article> getDailyList(final String sql) {
+		// TODO Auto-generated method stub
+		List<Article> articles = this.getTemplate().query(new PreparedStatementCreator() {
+			
+			public PreparedStatement createPreparedStatement(Connection conn)
+					throws SQLException {
+				// TODO Auto-generated method stub
+				System.out.println("============================="+sql);
+				PreparedStatement ps = conn.prepareStatement(sql);
+				return ps;
+			}
+		}, new ArticleRowMapper());
+		
+		return (null != articles && articles.size() > 0) ? articles : null;
 	}
 	
 }

@@ -31,9 +31,24 @@ public class ApiDealer {
 			form.put("start", "0");
 		}
 		if(null == form.get("limit")){
-			form.put("limit", "5");
+			form.put("limit", String.valueOf(LIMIT));
+		}
+		if(null == form.get("browseId")){
+			form.put("browseId", "0");// 默认加载全部
 		}
 		modelMap.put("total", service.getCount(form));
 		modelMap.put("list", service.getList(form));
+	}
+	
+	public void doGetTodayList(ModelMap modelMap, Map<String, String> form, ArticleService service){
+		if(null == form.get("offset")){
+			form.put("offset", "0");
+		}
+		if(null == form.get("prevd")){
+			form.put("prevd", "1");
+		}
+		modelMap.put("offset", form.get("offset"));
+		modelMap.put("prevd", form.get("prevd"));
+		modelMap.put("list", service.getTodayList(form));
 	}
 }

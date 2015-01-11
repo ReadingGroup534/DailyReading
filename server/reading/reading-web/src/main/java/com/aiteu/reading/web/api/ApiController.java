@@ -36,9 +36,10 @@ public class ApiController extends BaseController{
 	}
 	
 	/**
-	 * 获得文章列表
+	 * 获得类目文章列表
 	 * @param modelMap
 	 * @param req
+	 * browseId:类目的id
 	 * @return
 	 */
 	@RequestMapping("/api/list.json")
@@ -49,12 +50,16 @@ public class ApiController extends BaseController{
 	}
 	
 	/**
-	 * 获得当天的文章列表
+	 * 获得当天的文章列表,加载方式：按天加载
+	 * prevd:默认是1
+	 * offset:默认是0
 	 * @return
 	 */
+	@RequestMapping("/api/today.json")
 	public String today(ModelMap modelMap, HttpServletRequest req){
-		
-		return "tooday.json";
+		Map<String, String> form = initForm(req);
+		mApiDealer.doGetTodayList(modelMap, form, articleService);
+		return "today.json";
 	}
 	
 	/**

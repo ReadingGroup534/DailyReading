@@ -15,6 +15,13 @@ public class ArticleRowMapper implements RowMapper<Article>{
 		
 		article.setTitle(rs.getString("title"));
 		article.setAuthor(rs.getString("author"));
+		article.setAbstracts(rs.getString("abstracts"));
+		article.setBrowseId(rs.getInt("browse_id"));
+		article.setRecommendStar(rs.getInt("recommend_star"));
+		article.setPraiseTimes(rs.getInt("praise_times"));
+		article.setScanTimes(rs.getInt("scan_times"));
+		article.setShareTimes(rs.getInt("share_times"));
+		article.setDetailUrl(rs.getString("url"));
 		
 		return article;
 	}

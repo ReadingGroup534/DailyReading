@@ -9,4 +9,5 @@ public interface ArticleDao {
 	
 	public int getCount(Map<String, String> form);
 	public List<Article> getArticles(Map<String, String> form);
+	public List<Article> getDailyList(String sql);
 }

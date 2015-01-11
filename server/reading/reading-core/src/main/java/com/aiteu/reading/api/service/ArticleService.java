@@ -9,4 +9,5 @@ public interface ArticleService {
 	
 	public int getCount(Map<String, String> form);
 	public List<ArticleVO> getList(Map<String, String> form);
+	public List<ArticleVO> getTodayList(Map<String, String> form);
 }

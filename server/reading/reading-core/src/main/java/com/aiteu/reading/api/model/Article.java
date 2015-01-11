@@ -11,6 +11,7 @@ public class Article {
 	private int shareTimes;
 	private int scanTimes;
 	private String detailUrl;
+	private int browseId;
 
 	public Article() {
 
@@ -87,4 +88,13 @@ public class Article {
 	public void setDetailUrl(String detailUrl) {
 		this.detailUrl = detailUrl;
 	}
+
+	public int getBrowseId() {
+		return browseId;
+	}
+
+	public void setBrowseId(int browseId) {
+		this.browseId = browseId;
+	}
+	
 }
