@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="md__drawer" />
+    <item type="id" name="md__menu" />
+    <item type="id" name="md__content" />
+    <item type="id" name="mdMenu" />
+    <item type="id" name="mdContent" />
+    <item type="id" name="mdActiveViewPosition" />
+</resources>
